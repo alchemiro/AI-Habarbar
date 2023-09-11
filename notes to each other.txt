@@ -9,3 +9,4 @@ Sections:
 Judges - display projects to the judges, allow them to grade (and save the grade), and direct them to the next projects
 Students - Allow them to like projects, and allow them to edit their own projects
 Admin - complete access, allows you to edit, erase, add new projects, edit grades and edit who the judges are
+lines 5-11 sept 11
