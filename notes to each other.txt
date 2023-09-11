@@ -10,3 +10,12 @@ Judges - display projects to the judges, allow them to grade (and save the grade
 Students - Allow them to like projects, and allow them to edit their own projects
 Admin - complete access, allows you to edit, erase, add new projects, edit grades and edit who the judges are
 lines 5-11 sept 11
+
+
+MAP
+code that gets a map, self evaluate places to put project, then we send a doc, each student reserves prefered location - ask eyal
+maybe connect to google maps and share location
+problems: signal interfirance in close space, students moving wothout control.
+
+another idea, using qr, every scan will update the project
+the map start from fixed point with fixed zoom, the admin can edit this \ another option is to make a ode that zoom around the locations auto (harder to do)
