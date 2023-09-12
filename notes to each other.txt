@@ -39,3 +39,11 @@ allow upload and edit, no deletion (unless authorized)
 ask eyal how he wants to do the map
 tell him that indoor api costs money
 use stand no. system
+
+this translates to the following pages:
+Judge profile page
+competitor project page
+Gallery = Home Page
+Admin dashboard
+My project page
+map page
