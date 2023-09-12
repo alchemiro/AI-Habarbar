@@ -19,3 +19,23 @@ problems: signal interfirance in close space, students moving wothout control.
 
 another idea, using qr, every scan will update the project
 the map start from fixed point with fixed zoom, the admin can edit this \ another option is to make a ode that zoom around the locations auto (harder to do)
+
+make UML of all objects
+permission levels:
+User - basic (no permissions)
+inherit users Judge and Admin
+who can like? also grade 13? if yes, student must be split into inherit competitor
+ethics of liked projects?
+judge can't like, only grade
+free like amount
+
+admin has a page to rwu judges
+click judge leads to judge's page instead of MyPage
+check that judge to project is 1:1 and not 1:M
+
+submission system for projects waiting for admin auth
+allow upload and edit, no deletion (unless authorized)
+
+ask eyal how he wants to do the map
+tell him that indoor api costs money
+use stand no. system
