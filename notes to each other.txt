@@ -47,3 +47,17 @@ Gallery = Home Page
 Admin dashboard
 My project page
 map page
+
+Q&A
+- likes can be hidden or shown by admin (screen, not shown normally)
+- ו המנהל צריך אםשרוצ לבצע החלטה  מודולרית של סבבים ושל שןפטים ופרויקטים
+
+להכניס מאקסל לDB
+
+Map is just a static jpeg
+everyone who receives a link to the app must enter their tz 
+each user can like up to 20 projects, and can unlike
+
+change student to guest and competitor to student
+
+add category for subject (electronics, mechanics, software)
