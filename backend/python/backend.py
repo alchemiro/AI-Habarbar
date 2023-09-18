@@ -1,9 +1,9 @@
 import sys
-
+from PIL import Image
 class user:
     def __init__(self, ID, password):
-        self.ID = ID
-        self.password = password
+        self.__ID = ID
+        self.__password = password
     def GetID(self):
         return self.ID
     def SetID(self, Id):
@@ -19,7 +19,7 @@ class admin(user):
 class guest(user):
     def __init__(self, ID, password):
         super().__init__(ID, password)
-        self.likes = []
+        self.__likes = []
     def AddLike(self, Pid):
         if len(self.likes) < 20:
             self.likes.append(Pid)
@@ -33,8 +33,8 @@ class guest(user):
 class student(guest):
     def __init__(self, ID, password, ProjectID, category):
         super().__init__(ID, password)
-        self.Pid = ProjectID
-        self.cat = category
+        self.__Pid = ProjectID
+        self.__cat = category
     def GetProject(self):
         return self.Pid
     def SetProject(self, ProjectID):
@@ -43,6 +43,21 @@ class student(guest):
         return self.cat
     def SetCategory(self, category):
         self.cat = category
+    
+
+
+class project():
+    def __init__(self, ID, name):
+        self.__ID = ID
+        self.__name = name
+        self.__Grades = [None] * 5 # here we put the amout of judges
+        self.__image = Image.open("your_image.jpg")  # Replace "your_image.jpg" with your image file path
+        self.__likes = 0
+        self.summery = ""
+    def ShowPhoto(self):
+        self.image.show()
+        
+        
     
 
 def main():
@@ -55,6 +70,9 @@ def main():
     l = g.GetLikes()
     for i in l:
         print(i)
+    s = student("11", "12", "13", "14")
+    s.AddLike("45")
+    s.likes
     
 
 if(__name__ == "__main__"):
