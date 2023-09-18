@@ -35,6 +35,14 @@ class student(guest):
         super().__init__(ID, password)
         self.Pid = ProjectID
         self.cat = category
+    def GetProject(self):
+        return self.Pid
+    def SetProject(self, ProjectID):
+        self.Pid = ProjectID
+    def GetCategory(self):
+        return self.cat
+    def SetCategory(self, category):
+        self.cat = category
     
 
 def main():
