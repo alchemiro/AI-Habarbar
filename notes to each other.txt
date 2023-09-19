@@ -61,3 +61,8 @@ each user can like up to 20 projects, and can unlike
 change student to guest and competitor to student
 
 add category for subject (electronics, mechanics, software)
+
+
+9/19/23
+Firestore uses collections (tables) and documents (rows) with a Document ID (pk)
+We'll use that and use queries to fetch data
