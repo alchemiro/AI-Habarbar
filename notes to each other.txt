@@ -66,3 +66,4 @@ add category for subject (electronics, mechanics, software)
 9/19/23
 Firestore uses collections (tables) and documents (rows) with a Document ID (pk)
 We'll use that and use queries to fetch data
+It also has a field type "reference" which is basically just a url to another table
