@@ -1,0 +1,14 @@
+{
+  "name": "ai-habarbar",
+  "version": "1.0.0",
+  "description": "the AI Habarbar fare control system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^10.4.0"
+  }
+}
