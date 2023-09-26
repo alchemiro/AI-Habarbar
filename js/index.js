@@ -99,10 +99,13 @@ class Project {
     #img;
     #category;
     #round;
-    constructor(id) {
-
-    }
-    constructor(name, id, summery, img, round, category) {
+    constructor(id, name = " ", summery = " ", img = " ", round = 0, category = " ") {
+        /*
+        if(id exist in db):
+            pull the info from the db
+        else:
+            create new doc
+         */
         this.name = name
         this.#id = id
         this.#summery = summery
@@ -111,43 +114,6 @@ class Project {
         this.#category = category
         this.#grades = new Array(NumberOfJudges)
     }
-    constructor(name, id, summery, img, category) {
-        this.name = name
-        this.#id = id
-        this.#summery = summery
-        this.#img = img
-        this.#round = 0
-        this.#category = category
-        this.#grades = new Array(NumberOfJudges)
-    }
-    constructor(name, id, summery, img, round) {
-        this.name = name
-        this.#id = id
-        this.#summery = summery
-        this.#img = img
-        this.#round = round
-        this.#category = " "
-        this.#grades = new Array(NumberOfJudges)
-    }
-    constructor(name, id, summery, round, category) {
-        this.name = name
-        this.#id = id
-        this.#summery = summery
-        this.#img = " "
-        this.#round = round
-        this.#category = category
-        this.#grades = new Array(NumberOfJudges)
-    }
-    constructor(name, id, summery) {
-        this.name = name
-        this.#id = id
-        this.#summery = summery
-        this.#img = " "
-        this.#round = 0
-        this.#category = " "
-        this.#grades = new Array(NumberOfJudges)
-    }
-
     get id() {
         return this.#id;
     }
