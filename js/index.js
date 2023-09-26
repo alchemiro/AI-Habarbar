@@ -75,7 +75,7 @@ class guest extends user {
       const docRef = doc(projectCol, projectID);
       const project = await getDocs(docRef);
       console.log(project);
-      /*
+        /*
       await setDoc(doc(projectCol, projectID), {
         likes: updateProjectLikeField + 1,
       });*/
@@ -91,47 +91,40 @@ class guest extends user {
 }
 
 class Project {
-  name;
-  #id;
-  #grades;
-  #likes;
-  #summary;
-  #img;
-  #category;
-  #round;
-  constructor(
-    id,
-    name = " ",
-    summary = " ",
-    img = " ",
-    round = 0,
-    category = " "
-  ) {
-    /*
-        if(id exist in db):
-            pull the info from the db
-        else:
-            create new doc
-         */
-    this.name = name;
-    this.#id = id;
-    this.#summary = summary;
-    this.#img = img;
-    this.#round = round;
-    this.#category = category;
-    this.#grades = new Array(NumberOfJudges);
-  }
-  get id() {
-    return this.#id;
-  }
-  get grade() {
-    let sum = 0;
-    for (let i = 0; i < this.#grades.length; i++) {
-      sum += this.#grades[i];
+    name;
+    #id;
+    #grades;
+    #likes;
+    #summary;
+    #img;
+    #category;
+    #round;
+    constructor(id, name = " ", summary = " ", img = " ", round = 0, category = " ") {
+        /*
+            if(id exist in db):
+                pull the info from the db
+            else:
+                create new doc
+             */
+        this.name = name;
+        this.#id = id;
+        this.#summary = summary;
+        this.#img = img;
+        this.#round = round;
+        this.#category = category;
+        this.#grades = new Array(NumberOfJudges);
     }
-    return sum / this.#grades.length;
-  }
-  get grades() {
-    return this.#grades;
-  }
+    get id() {
+        return this.#id;
+    }
+    get grade() {
+        let sum = 0;
+        for (let i = 0; i < this.#grades.length; i++) {
+            sum += this.#grades[i];
+        }
+        return sum / this.#grades.length;
+    }
+    get grades() {
+        return this.#grades;
+    }
 }
