@@ -31,6 +31,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const NumberOfJudges = 5;
+const projectCol = collection(db, "projects");
+const guestCol = collection(db, "guests");
+const judgesCol = collection(db, "judges");
+const studentCol = collection(db, "students");
+
+const docRef = doc(projectCol, projectID);
+const project = await getDocs(docRef);
+console.log(project);
+
 class user {
   #id;
   #password;
@@ -46,11 +56,9 @@ class user {
   get password() {
     return this.#password;
   }
-}
+} // this the defualt class for everyone that enters the site
 
 class guest extends user {
-  #id;
-  #password;
   #likes;
   constructor(ID, pass) {
     super(ID, pass);
@@ -62,14 +70,15 @@ class guest extends user {
   }
 
   async addLike(projectID) {
-    if (this.#likes.length > 20) {
+    if (this.#likes.length < 20) {
       this.#likes.push(projectID);
-      const docRef = doc(db, "projects", projectID);
-      const currentProjectLikes = await getDocs(docRef);
-      const projectRef = collection(db, "projects");
-      await setDoc(doc(projectRef, projectID), {
-        likes: currentProjectLikes + 1,
-      });
+      const docRef = doc(projectCol, projectID);
+      const project = await getDocs(docRef);
+      console.log(project);
+        /*
+      await setDoc(doc(projectCol, projectID), {
+        likes: updateProjectLikeField + 1,
+      });*/
     }
   }
 
@@ -79,4 +88,80 @@ class guest extends user {
     });
     this.#likes = newLikes;
   }
+}
+
+class Project {
+    name;
+    #id;
+    #grades;
+    #likes;
+    #summery;
+    #img;
+    #category;
+    #round;
+    constructor(id) {
+
+    }
+    constructor(name, id, summery, img, round, category) {
+        this.name = name
+        this.#id = id
+        this.#summery = summery
+        this.#img = img
+        this.#round = round
+        this.#category = category
+        this.#grades = new Array(NumberOfJudges)
+    }
+    constructor(name, id, summery, img, category) {
+        this.name = name
+        this.#id = id
+        this.#summery = summery
+        this.#img = img
+        this.#round = 0
+        this.#category = category
+        this.#grades = new Array(NumberOfJudges)
+    }
+    constructor(name, id, summery, img, round) {
+        this.name = name
+        this.#id = id
+        this.#summery = summery
+        this.#img = img
+        this.#round = round
+        this.#category = " "
+        this.#grades = new Array(NumberOfJudges)
+    }
+    constructor(name, id, summery, round, category) {
+        this.name = name
+        this.#id = id
+        this.#summery = summery
+        this.#img = " "
+        this.#round = round
+        this.#category = category
+        this.#grades = new Array(NumberOfJudges)
+    }
+    constructor(name, id, summery) {
+        this.name = name
+        this.#id = id
+        this.#summery = summery
+        this.#img = " "
+        this.#round = 0
+        this.#category = " "
+        this.#grades = new Array(NumberOfJudges)
+    }
+
+    get id() {
+        return this.#id;
+    }
+    get grade() {
+        let sum = 0;
+        for (let i = 0; i < this.#grades.length; i++) {
+            sum += this.#grades[i];
+        }
+        return sum / this.#grades.length;
+    }
+    get grades() {
+        return this.#grades;
+    }
+
+
+    
 }
