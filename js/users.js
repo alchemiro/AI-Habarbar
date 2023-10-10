@@ -11,8 +11,16 @@ class user {
         return this.#id;
     }
 
+    set id(ID) {
+        this.#id = ID
+    }
+
     get password() {
         return this.#password;
+    }
+
+    set password(pass) {
+        this.#password = pass;
     }
 } // this the defualt class for everyone that enters the site
 
@@ -41,6 +49,7 @@ class guest extends user {
             this.AmountOfLikes++;
             project = new Project(ProjectID);
             project.AddLike();
+            return null;
         }
 
     }
@@ -50,10 +59,31 @@ class guest extends user {
             this.AmountOfLikes--;
             project = new Project(ProjectID);
             project.RemoveLike();
+            return null;
         }
-        
+       
     }
 }
+
+class student extends guest {
+
+    #ProjectID;
+
+    constructor(ID, pass, ProjectID) {
+        super(ID, pass)
+        this.#ProjectID = ProjectID;
+    }
+
+    get project() {
+        return this.ProjectID;
+    }
+
+    set project(projectID) {
+        this.#ProjectID = projectID;
+    }
+}
+
+
 class Project {
     name;
     #id;
@@ -76,6 +106,10 @@ class Project {
     // check if project exists (function)
     }
 
+    get name() {
+        return this.name;
+    }
+
     get id() {
         return this.#id;
     }
@@ -92,6 +126,9 @@ class Project {
         return this.#grades;
     }
 
+    get likes() {
+        return 
+    }
     AddGrade(Grade) {
         this.#grades.push(Grade);
     }
@@ -112,4 +149,6 @@ class Project {
     RemoveLike() {
         this.#likes--;
     }
+
+
 }
