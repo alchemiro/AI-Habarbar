@@ -67,3 +67,6 @@ add category for subject (electronics, mechanics, software)
 Firestore uses collections (tables) and documents (rows) with a Document ID (pk)
 We'll use that and use queries to fetch data
 It also has a field type "reference" which is basically just a url to another table
+
+
+we need to create a function that return a list of all the guest and students that like specific project
