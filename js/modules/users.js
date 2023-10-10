@@ -27,12 +27,14 @@ class user {
 class guest extends user {
 
     #likes;
+    name;
     AmountOfLikes;
 
-    constructor(ID, pass) {
+    constructor(ID, pass, name) {
         super(ID, pass);
         this.#likes = [];
         this.AmountOfLikes = 0;
+        this.name = name;
     }
 
     get likes() {
@@ -69,8 +71,8 @@ class student extends guest {
 
     #ProjectID;
 
-    constructor(ID, pass, ProjectID) {
-        super(ID, pass)
+    constructor(ID, pass, name,  ProjectID) {
+        super(ID, pass, name)
         this.#ProjectID = ProjectID;
     }
 
