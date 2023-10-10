@@ -1,3 +1,3 @@
-import { studentCol, app, db } from "./database.js";
+import { studentCol, app, db } from "./modules/database.js";
 
 console.log(studentCol);
