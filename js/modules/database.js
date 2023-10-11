@@ -5,7 +5,7 @@ import {
   doc,
   setDoc,
   getDoc,
-  data,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -33,6 +33,7 @@ export {
   doc,
   getDoc,
   setDoc,
+  updateDoc,
   studentCollection,
   judgesCollection,
   guestCollection,

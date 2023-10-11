@@ -1,47 +1,47 @@
-import { guestsCollection, db, doc, setDoc, getDoc } from "./database.js";
+import { guestCollection, db, doc, setDoc, getDoc } from "./database.js";
 
 //pull entire guest and if it doesn't exist, create one
-async function pullguest(guestID) {
-    const guestDocumentReference = doc(guestCollection, guestID);
+async function pullGuest(guestID) {
+  const guestDocumentReference = doc(guestCollection, guestID);
 
-    try {
-        const guestSnapshot = await getDoc(guestDocumentReference);
-        console.log(
-            "A document with this ID exists, and the data has been retrieved and is being returned."
-        );
-        return guestSnapshot.data();
-    } catch {
-        return "No such document exists, or a different error occured.";
-    }
+  try {
+    const guestSnapshot = await getDoc(guestDocumentReference);
+    console.log(
+      "A document with this ID exists, and the data has been retrieved and is being returned."
+    );
+    return guestSnapshot.data();
+  } catch {
+    return "No such document exists, or a different error occured.";
+  }
 }
 
 //push entire guest - OVERWRITE
-async function pushguest(guest) {
-    const guestRef = doc(guestsCollection, guest.id);
-    const guestData = {
-        id: guest.id,
-        password: guest.password,
-        name: guest.name,
-        likes: guest.likes,
-    };
+async function pushGuest(guest) {
+  const guestRef = doc(guestsCollection, guest.id);
+  const guestData = {
+    id: guest.id,
+    password: guest.password,
+    name: guest.name,
+    likes: guest.likes,
+  };
 
-    await setDoc(guestRef, guestData, { merge: true });
+  await setDoc(guestRef, guestData, { merge: true });
 }
 
 //pull ambiguous parameter
-async function pullParam(guestID, field) {
-    const guest = pullguest(guestID);
-    return guest[field];
+async function pullGuestParam(guestID, field) {
+  const guest = pullguest(guestID);
+  return guest[field];
 }
 
 //push ambiguous parameter
-async function pushParam(guestID, field, value) {
-    const guestRef = doc(db, guestsCollection, guestID);
-    try {
-        await setDoc(guestRef, { [field]: value }, { merge: true });
-    } catch {
-        return "Something went wrong, push failed.";
-    }
+async function pushGuestParam(guestID, field, value) {
+  const guestRef = doc(db, guestsCollection, guestID);
+  try {
+    await setDoc(guestRef, { [field]: value }, { merge: true });
+  } catch {
+    return "Something went wrong, push failed.";
+  }
 }
 
-export { pushParam, pushguest, pullParam, pullguest };
+export { pushGuestParam, pushGuest, pullGuestParam, pullGuest };
