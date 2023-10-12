@@ -1,4 +1,5 @@
-import { pushProjectParam, pullProjectParam } from "./projectInteract";
+import { pushProjectParam, pullProjectParam } from "./projectInteract.js";
+import { pushGuestParam, pullGuestParam } from "./guestInteract.js";
 
 class user {
   #id;
@@ -53,8 +54,9 @@ class Guest extends user {
     if (this.AmountOfLikes < 20) {
       this.#likes.push(ProjectID);
       this.AmountOfLikes++;
-      pushProjectParam(ProjectID, "likes", this.likes);
-      pushProjectParam(ProjectID, "AmountOfLikes", this.AmountOfLikes);
+
+      // pushProjectParam(ProjectID, "likes", this.likes);
+      // pushProjectParam(ProjectID, "AmountOfLikes", this.AmountOfLikes);
       //   project = new Project(ProjectID);
       //   project.AddLike();
       // return null;
@@ -107,8 +109,8 @@ class Judge extends user {
 class Student extends Guest {
   #ProjectID;
 
-  constructor(ID, pass, name, ProjectID) {
-    super(ID, pass, name);
+  constructor(ID, pass, name, ProjectID, likes = [], amount = 0) {
+    super(ID, pass, name, amount, likes);
     this.#ProjectID = ProjectID;
   }
 
