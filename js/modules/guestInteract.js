@@ -1,51 +1,73 @@
-import { guestCollection, db, doc, setDoc, getDoc } from "./database.js";
+import {
+    guestCollection,
+    db,
+    doc,
+    setDoc,
+    getDoc,
+    updateDoc,
+} from "./database.js";
+import { guest } from "./users.js";
+
 const guestConverter = {
     toFirestore: (guest) => {
         return {
             id: guest.id,
-            pass: guest.pass,
             name: guest.name,
+            password: guest.password,
             likes: guest.likes,
-            AmountOfLikes: guest.AmountOfLikes,
         };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Guest(
+        return new guest(
             data.id,
-            data.pass,
             data.name,
-            data.AmountOfLikes,
-            data.likes
+            data.password,
+            data.likes,
         );
     },
 };
-//pull entire guest and if it doesn't exist, create one
-async function pullGuest(guestID) {
-    const guestDocumentReference = doc(guestCollection, guestID);
+
+async function validate(guestID) {
+    const guestDocumentReference = doc(
+        guestCollection,
+        guestID
+    ).withConverter(guestConverter);
 
     try {
-        const guestSnapshot = await getDoc(guestDocumentReference);
+        return guestnapshot.exists();
+    } catch {
+        return false;
+    }
+}
+
+//pull entire guest and if it doesn't exist, create one
+async function pullGuest(guestID) {
+    const guestDocumentReference = doc(
+        guestCollection,
+        guestID
+    ).withConverter(guestConverter);
+
+    try {
+        const guestnapshot = await getDoc(guestDocumentReference);
         console.log(
             "A document with this ID exists, and the data has been retrieved and is being returned."
         );
-        return guestSnapshot.data();
+        return guestnapshot.data();
     } catch {
-        return "No such document exists, or a different error occured.";
+        const newguest = new guest(guestID);
+        pushguest(newguest);
+        return newguest;
     }
 }
 
 //push entire guest - OVERWRITE
 async function pushGuest(guest) {
-    const guestRef = doc(guestsCollection, guest.id);
-    const guestData = {
-        id: guest.id,
-        password: guest.password,
-        name: guest.name,
-        likes: guest.likes,
-    };
+    const guestRef = doc(guestCollection, guest.id).withConverter(
+        guestConverter
+    );
 
-    await setDoc(guestRef, guestData, { merge: true });
+    await setDoc(guestRef, guest, { merge: true });
 }
 
 //pull ambiguous parameter
@@ -56,12 +78,12 @@ async function pullGuestParam(guestID, field) {
 
 //push ambiguous parameter
 async function pushGuestParam(guestID, field, value) {
-    const guestRef = doc(db, guestsCollection, guestID);
+    const guestRef = doc(db, guestCollection, guestID);
     try {
-        await setDoc(guestRef, { [field]: value }, { merge: true });
+        await updateDoc(guestRef, { [field]: value }, { merge: true });
     } catch {
         return "Something went wrong, push failed.";
     }
 }
 
-export { pushGuestParam, pushGuest, pullGuestParam, pullGuest };
+export { validate, pushGuestParam, pushGuest, pullGuestParam, pullGuest };

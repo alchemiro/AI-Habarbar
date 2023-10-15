@@ -1,75 +1,91 @@
-import { studentCollection, db, doc, setDoc, getDoc } from "./database.js";
+import {
+    studentCollection,
+    db,
+    doc,
+    setDoc,
+    getDoc,
+    updateDoc,
+} from "./database.js";
+import { student } from "./users.js";
 
 const studentConverter = {
-    toFirestore: (project) => {
+    toFirestore: (student) => {
         return {
-            id: project.id,
-            name: project.name,
-            grades: project.grades,
-            likes: project.likes,
-            AmountOfLikes: project.AmountOfLikes,
-            summary: project.summary,
-            img: project.img,
-            category: project.category,
-            round: project.round,
+            id: student.id,
+            name: student.name,
+            password: student.password,
+            likes: student.likes,
+            ProjectID: student.ProjectID
         };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Project(
+        return new student(
             data.id,
             data.name,
-            data.summary,
-            data.img,
-            data.round,
-            data.category
+            data.password,
+            data.likes,
+            data.ProjectID,
         );
     },
 };
 
-//pull entire student and if it doesn't exist, create one
-async function pullStudent(studentID) {
-    const studentDocumentReference = doc(studentCollection, studentID);
+async function validate(studentID) {
+    const studentDocumentReference = doc(
+        studentCollection,
+        studentID
+    ).withConverter(studentConverter);
 
     try {
-        const studentSnapshot = await getDoc(studentDocumentReference);
+        return studentnapshot.exists();
+    } catch {
+        return false;
+    }
+}
+
+//pull entire student and if it doesn't exist, create one
+async function pullStudent(studentID) {
+    const studentDocumentReference = doc(
+        studentCollection,
+        studentID
+    ).withConverter(studentConverter);
+
+    try {
+        const studentnapshot = await getDoc(studentDocumentReference);
         console.log(
             "A document with this ID exists, and the data has been retrieved and is being returned."
         );
-        return studentSnapshot.data();
+        return studentnapshot.data();
     } catch {
-        return "No such document exists, or a different error occured.";
+        const newstudent = new student(studentID);
+        pushstudent(newstudent);
+        return newstudent;
     }
 }
 
 //push entire student - OVERWRITE
 async function pushStudent(student) {
-    const studentRef = doc(studentsCollection, student.id);
-    const studentData = {
-        id: student.id,
-        password: student.password,
-        name: student.name,
-        ProjectID: student.ProjectID,
-        likes: student.likes,
-    };
+    const studentRef = doc(studentCollection, student.id).withConverter(
+        studentConverter
+    );
 
-    await setDoc(studentRef, studentData, { merge: true });
+    await setDoc(studentRef, student, { merge: true });
 }
 
 //pull ambiguous parameter
 async function pullStudentParam(studentID, field) {
-    const student = pullStudent(studentID);
+    const student = pullstudent(studentID);
     return student[field];
 }
 
 //push ambiguous parameter
 async function pushStudentParam(studentID, field, value) {
-    const studentRef = doc(db, studentsCollection, studentID);
+    const studentRef = doc(db, studentCollection, studentID);
     try {
-        await setDoc(studentRef, { [field]: value }, { merge: true });
+        await updateDoc(studentRef, { [field]: value }, { merge: true });
     } catch {
         return "Something went wrong, push failed.";
     }
 }
 
-export { pushStudentParam, pushStudent, pullStudentParam, pullStudent };
+export { validate, pushStudentParam, pushStudent, pullStudentParam, pullStudent };

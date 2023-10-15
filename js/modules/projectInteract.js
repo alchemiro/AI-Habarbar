@@ -27,7 +27,7 @@ const projectConverter = {
             data.id,
             data.name,
             data.grades,
-            data.likes
+            data.likes,
             data.summary,
             data.img,
             data.round,

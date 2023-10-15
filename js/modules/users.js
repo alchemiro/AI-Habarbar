@@ -1,5 +1,7 @@
 import { pushProjectParam, pushProject, pullProjectParam, pullProject, validate } from "./projectInteract.js";
-import { pushGuestParam, pullGuestParam } from "./guestInteract.js";
+import { pushStudentParam, pushStudent, pullStudentParam, pullStudent, validate } from "./studentInteract.js";
+import { pushGuestParam, pushGuest, pullGuestParam, pullGuest, validate } from "./guestInteract.js";
+import { pushJudgeParam, pushJudge, pullJudgeParam, pullJudge, validate } from "./judgeInteract.js";
 
 class user {
     #id;
@@ -32,11 +34,16 @@ class Guest extends user {
     name;
     #AmountOfLikes;
 
-    constructor(ID, pass, name, amount = 0, likes = []) {
-        super(ID, pass);
-        this.#likes = likes;
-        this.#AmountOfLikes = amount;
-        this.name = name;
+    constructor(ID, pass = "", name = "", amount = 0, likes = []) {
+        if (validate(ID)) {
+            this = pullGuest(ID);
+        }
+        else {
+            super(ID, pass);
+            this.#likes = likes;
+            this.#AmountOfLikes = amount;
+            this.name = name;
+        }
     }
 
     get name() {
@@ -72,10 +79,15 @@ class Judge extends user {
     name;
     #Projects;
 
-    constructor(ID, pass, name, Projects = []) {
-        super(ID, pass);
-        this.name = name;
-        this.#Projects = Projects;
+    constructor(ID, pass = "", name = "", Projects = []) {
+        if (validate(ID)) {
+            this = pullJudge(ID);
+        }
+        else {
+            super(ID, pass);
+            this.name = name;
+            this.#Projects = Projects;
+        }
     }
     get name() {
         return this.name;
@@ -104,9 +116,14 @@ class Judge extends user {
 class Student extends Guest {
     #ProjectID;
 
-    constructor(ID, pass, name, ProjectID, likes = [], amount = 0) {
-        super(ID, pass, name, amount, likes);
-        this.#ProjectID = ProjectID;
+    constructor(ID, pass = "", name = "", ProjectID = "", likes = [], amount = 0) {
+        if (validate(ID)) {
+            this = pullStudent(ID);
+        }
+        else {
+            super(ID, pass, name, amount, likes);
+            this.#ProjectID = ProjectID;
+        }
     }
 
     get project() {
@@ -128,21 +145,12 @@ class Project {
     #category;
     #round;
 
-    constructor(
-        id,
-        name = " ",
-        grade = [],
-        likes = 0,
-        summary = " ",
-        img = " ",
-        round = 0,
-        category = " "
-    ) {
+    constructor( id, name = " ", grade = [],  likes = 0, summary = " ", img = " ", round = 0, category = " ") {
+        this.#id = id;
         if (validate(this.#id)) {
-            pullProject(this.#id);
+            this = pullProject(this.#id);
         }
         else {
-            this.#id;
             this.#name = name;
             this.#grade = grades;
             this.#likes = 0;

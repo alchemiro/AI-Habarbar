@@ -22,12 +22,8 @@ const judgeConverter = {
         return new judge(
             data.id,
             data.name,
-            data.grades,
-            data.likes
-            data.summary,
-            data.img,
-            data.round,
-            data.category
+            data.password,
+            data.projects,
         );
     },
 };
@@ -46,7 +42,7 @@ async function validate(judgeID) {
 }
 
 //pull entire judge and if it doesn't exist, create one
-async function pulljudge(judgeID) {
+async function pullJudge(judgeID) {
     const judgeDocumentReference = doc(
         judgeCollection,
         judgeID
@@ -66,7 +62,7 @@ async function pulljudge(judgeID) {
 }
 
 //push entire judge - OVERWRITE
-async function pushjudge(judge) {
+async function pushJudge(judge) {
     const judgeRef = doc(judgeCollection, judge.id).withConverter(
         judgeConverter
     );
@@ -75,13 +71,13 @@ async function pushjudge(judge) {
 }
 
 //pull ambiguous parameter
-async function pulljudgeParam(judgeID, field) {
+async function pullJudgeParam(judgeID, field) {
     const judge = pulljudge(judgeID);
     return judge[field];
 }
 
 //push ambiguous parameter
-async function pushjudgeParam(judgeID, field, value) {
+async function pushJudgeParam(judgeID, field, value) {
     const judgeRef = doc(db, judgeCollection, judgeID);
     try {
         await updateDoc(judgeRef, { [field]: value }, { merge: true });
@@ -90,4 +86,4 @@ async function pushjudgeParam(judgeID, field, value) {
     }
 }
 
-export { validate, pushjudgeParam, pushjudge, pulljudgeParam, pulljudge };
+export { validate, pushJudgeParam, pushJudge, pullJudgeParam, pullJudge };
