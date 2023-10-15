@@ -1,4 +1,4 @@
-import { pushProjectParam, pullProjectParam } from "./projectInteract.js";
+import { pushProjectParam, pushProject, pullProjectParam, pullProject, validate } from "./projectInteract.js";
 import { pushGuestParam, pullGuestParam } from "./guestInteract.js";
 
 class user {
@@ -29,18 +29,18 @@ class user {
 
 class Guest extends user {
     #likes;
-    #name;
+    name;
     #AmountOfLikes;
 
     constructor(ID, pass, name, amount = 0, likes = []) {
         super(ID, pass);
         this.#likes = likes;
         this.#AmountOfLikes = amount;
-        this.#name = name;
+        this.name = name;
     }
 
     get name() {
-        return this.#name;
+        return this.name;
     }
     get likes() {
         return this.#likes;
@@ -54,42 +54,37 @@ class Guest extends user {
         if (this.AmountOfLikes < 20) {
             this.#likes.push(ProjectID);
             this.AmountOfLikes++;
+            project = new Project(ProjectID);
+            project.AddLike()
 
-      // pushProjectParam(ProjectID, "likes", this.likes);
-      // pushProjectParam(ProjectID, "AmountOfLikes", this.AmountOfLikes);
-      //   project = new Project(ProjectID);
-      //   project.AddLike();
-      // return null;
         }
     }
     RemoveLike(ProjectID) {
         if (this.AmountOfLikes > 0) {
             this.#likes.splice(this.#likes.indexOf(ProjectID), 1);
             this.AmountOfLikes--;
-      //   project = new Project(ProjectID);
-            pushProjectParam(ProjectID, "likes", this.likes);
-            pushProjectParam(ProjectID, "AmountOfLikes", this.AmountOfLikes);
-      // return null;
+            project.RemoveLike()
         }
     }
 }
 
 class Judge extends user {
-    #name;
+    name;
     #Projects;
 
     constructor(ID, pass, name, Projects = []) {
         super(ID, pass);
-        this.#name = name;
+        this.name = name;
         this.#Projects = Projects;
     }
     get name() {
-        return this.#name;
+        return this.name;
     }
 
     get Projects() {
         return this.#Projects;
     }
+
 
     get Project() {
         for (var i = 0; i < this.#Projects.length; i++) {
@@ -136,21 +131,28 @@ class Project {
     constructor(
         id,
         name = " ",
+        grade = [],
+        likes = 0,
         summary = " ",
         img = " ",
         round = 0,
         category = " "
     ) {
-        this.#name = name;
-        this.#id = id;
-        this.#summary = summary;
-        this.#img = img;
-        this.#round = round;
-        this.#category = category;
-        this.#likes = 0;
-        this.#grades = new Array(NumberOfJudges);
-    // check if project exists (function)
+        if (validate(this.#id)) {
+            pullProject(this.#id);
+        }
+        else {
+            this.#id;
+            this.#name = name;
+            this.#grade = grades;
+            this.#likes = 0;
+            this.#summary = summary;
+            this.#img = img;
+            this.#round = round;
+            this.#category = " ";
+        }
     }
+    g
 
     get name() {
         return this.#name;
@@ -174,6 +176,7 @@ class Project {
 
     get likes() {
         return this.#likes;
+
     }
 
     get summary() {
@@ -207,10 +210,12 @@ class Project {
 
     AddLike() {
         this.#likes++;
+        pushProjectParam(ProjectID, "likes", this.likes);
     }
 
     RemoveLike() {
         this.#likes--;
+        pushProjectParam(ProjectID, "likes", this.likes);
     }
 }
 

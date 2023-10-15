@@ -1,5 +1,5 @@
 import {
-    projectsCollection,
+    projectCollection,
     db,
     doc,
     setDoc,
@@ -26,6 +26,8 @@ const projectConverter = {
         return new Project(
             data.id,
             data.name,
+            data.grades,
+            data.likes
             data.summary,
             data.img,
             data.round,
@@ -34,27 +36,41 @@ const projectConverter = {
     },
 };
 
-//pull entire project and if it doesn't exist, create one
-async function pullProject(projectID) {
-    const projectDocumentReference = doc(
-        projectsCollection,
+async function validate(projectID){    const projectDocumentReference = doc(
+        projectCollection,
         projectID
     ).withConverter(projectConverter);
 
     try {
-        const projectSnapshot = await getDoc(projectDocumentReference);
+        return projectnapshot.exists();
+    } catch {
+        return false;
+    }
+}
+
+//pull entire project and if it doesn't exist, create one
+async function pullProject(projectID) {
+    const projectDocumentReference = doc(
+        projectCollection,
+        projectID
+    ).withConverter(projectConverter);
+
+    try {
+        const projectnapshot = await getDoc(projectDocumentReference);
         console.log(
             "A document with this ID exists, and the data has been retrieved and is being returned."
         );
-        return projectSnapshot.data();
+        return projectnapshot.data();
     } catch {
-        return "No such document exists, or a different error occured.";
+        const newProject = new Project(projectID);
+        pushProject(newProject);
+        return newProject;
     }
 }
 
 //push entire project - OVERWRITE
 async function pushProject(project) {
-    const projectRef = doc(projectsCollection, project.id).withConverter(
+    const projectRef = doc(projectCollection, project.id).withConverter(
         projectConverter
     );
 
@@ -69,7 +85,7 @@ async function pullProjectParam(projectID, field) {
 
 //push ambiguous parameter
 async function pushProjectParam(projectID, field, value) {
-    const projectRef = doc(db, projectsCollection, projectID);
+    const projectRef = doc(db, projectCollection, projectID);
     try {
         await updateDoc(projectRef, { [field]: value }, { merge: true });
     } catch {
@@ -77,4 +93,4 @@ async function pushProjectParam(projectID, field, value) {
     }
 }
 
-export { pushProjectParam, pushProject, pullProjectParam, pullProject };
+export { validate, pushProjectParam, pushProject, pullProjectParam, pullProject };
