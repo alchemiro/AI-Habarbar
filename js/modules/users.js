@@ -77,39 +77,39 @@ class Guest extends user {
 
 class Judge extends user {
     name;
-    #Projects;
+    #projects;
 
-    constructor(ID, pass = "", name = "", Projects = []) {
+    constructor(ID, pass = "", name = "", projects = []) {
         if (validate(ID)) {
             this = pullJudge(ID);
         }
         else {
             super(ID, pass);
             this.name = name;
-            this.#Projects = Projects;
+            this.#projects = projects;
         }
     }
     get name() {
         return this.name;
     }
 
-    get Projects() {
-        return this.#Projects;
+    get pullGuestProjects() {
+        return this.#projects;
     }
 
 
     get Project() {
-        for (var i = 0; i < this.#Projects.length; i++) {
+        for (var i = 0; i < this.#projects.length; i++) {
       // yield this.#Projects[i];
         }
     }
 
     AddProject(projectID) {
-        this.#Projects.push(projectID);
+        this.#projects.push(projectID);
     }
 
     RemoveProject(projectID) {
-        this.#Projects.splice(this.#Projects.indexOf(projectID), 1);
+        this.#projects.splice(this.#projects.indexOf(projectID), 1);
     }
 }
 
@@ -152,12 +152,12 @@ class Project {
         }
         else {
             this.#name = name;
-            this.#grade = grades;
-            this.#likes = 0;
+            this.#grades = grade;
+            this.#likes = likes;
             this.#summary = summary;
             this.#img = img;
             this.#round = round;
-            this.#category = " ";
+            this.#category = category;
         }
     }
     g
@@ -218,12 +218,12 @@ class Project {
 
     AddLike() {
         this.#likes++;
-        pushProjectParam(ProjectID, "likes", this.likes);
+        pushProjectParam(this.#id(), "likes", this.likes);
     }
 
     RemoveLike() {
         this.#likes--;
-        pushProjectParam(ProjectID, "likes", this.likes);
+        pushProjectParam(this.#id(), "likes", this.likes);
     }
 }
 
