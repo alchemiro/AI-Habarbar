@@ -1,11 +1,4 @@
-import {
-    studentCollection,
-    db,
-    doc,
-    setDoc,
-    getDoc,
-    updateDoc,
-} from "./database.js";
+import { studentCollection, db, doc, setDoc, getDoc, updateDoc,} from "./database.js";
 import { student } from "./users.js";
 
 const studentConverter = {

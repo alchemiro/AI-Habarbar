@@ -1,11 +1,4 @@
-import {
-    guestCollection,
-    db,
-    doc,
-    setDoc,
-    getDoc,
-    updateDoc,
-} from "./database.js";
+import { guestCollection, db, doc, setDoc, getDoc,updateDoc,} from "./database.js";
 import { guest } from "./users.js";
 
 const guestConverter = {
