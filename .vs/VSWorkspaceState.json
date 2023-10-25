@@ -2,8 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\frontend",
-    "\\js"
+    "\\frontend\\css",
+    "\\frontend\\html",
+    "\\js",
+    "\\js\\modules"
   ],
-  "SelectedNode": "\\js\\index.js",
+  "SelectedNode": "\\js\\modules\\projectInteract.js",
   "PreviewInSolutionExplorer": false
 }
