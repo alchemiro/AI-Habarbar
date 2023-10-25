@@ -227,4 +227,9 @@ class Project {
     }
 }
 
+class DBInteract {
+    
+
+}
+
 export { user, Guest, Project, Student, Judge };
