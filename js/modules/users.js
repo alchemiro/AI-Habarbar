@@ -2,8 +2,9 @@ import { pushProjectParam, pushProject, pullProjectParam, pullProject, validate 
 import { pushStudentParam, pushStudent, pullStudentParam, pullStudent, validate } from "./studentInteract.js";
 import { pushGuestParam, pushGuest, pullGuestParam, pullGuest, validate } from "./guestInteract.js";
 import { pushJudgeParam, pushJudge, pullJudgeParam, pullJudge, validate } from "./judgeInteract.js";
+import { projectCollection, studentCollection, judgeCollection, guestCollection, guestConverter, judgeConverter, studentConverter } from "./database.js";
 
-class user {
+class User {
     #id;
     #password;
 
@@ -29,7 +30,7 @@ class user {
     }
 } // this the defualt class for everyone that enters the site
 
-class Guest extends user {
+class Guest extends User {
     #likes;
     name;
     #AmountOfLikes;
@@ -75,7 +76,7 @@ class Guest extends user {
     }
 }
 
-class Judge extends user {
+class Judge extends User {
     name;
     #projects;
 
@@ -228,8 +229,62 @@ class Project {
 }
 
 class DBInteract {
-    
+    converter;
+    collection;
+    static getType(object){
+        switch(true){
+            case object instanceof Guest:
+                 this.collection = guestCollection;
+                 this.converter = guestConverter;
+                break;
+            case object instanceof Judge:
+                this.collection = judgeCollection;
+                this.converter = judgeConverter;
 
+                break;
+            case object instanceof Student:
+                 this.collection = studentCollection;
+                 this.converter = studentConverter;
+
+                break;
+            case object instanceof Project:
+                 this.collection = projectCollection;
+                 this.converter = projectCollection
+                break;
+            default:
+                console.log("Not really sure what this object is. Aborting...")
+                return;
+        }
+    }
+    static async getAll(object) {
+        this.getType(object);
+
+        const document = doc(
+            this.collection,
+            object.id
+            ).withConverter(this.converter);
+        
+        const snapshot = await getDoc(document); //snapshot.data() is the data
+        if(snapshot.exists()){
+            return snapshot.data();
+        }
+        else{
+            this.setAll(object);
+            return object;
+        }
+    }
+    static async setAll(object){
+        this.getType(object);
+        const document = doc(this.collection, object.id).withConverter(
+            this.converter
+          );
+          await setDoc(document, object, { merge: true });
+    }
+
+    static async updateParameter(object, field, value){
+        const document = doc(db, this.collection, object.id);
+        await updateDoc(document, { [field]: value }, { merge: true });
+    }
 }
 
-export { user, Guest, Project, Student, Judge };
+export { User, Guest, Project, Student, Judge };
