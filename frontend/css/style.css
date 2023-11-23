@@ -1,0 +1,11 @@
+.mason-container {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-rows: masonry;
+}
+
+img {
+  max-width: 100%;
+  max-height: auto;
+}

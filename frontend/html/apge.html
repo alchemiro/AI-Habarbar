@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Excel to JSON Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+  </head>
+  <body>
+    <h1>Excel to JSON Converter</h1>
+    <label for="excelFile">File Input</label>
+    <input type="file" id="excelFile" accept=".xlsx" />
+    <button id="convertButton">Convert to JSON</button>
+    <div id="jsonResult"></div>
+
+    <script>
+      document.getElementById("convertButton").addEventListener("click", () => {
+        const fileInput = document.getElementById("excelFile");
+        const file = fileInput.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onload = (e) => {
+            try {
+              const data = new Uint8Array(e.target.result);
+              const workbook = XLSX.read(data, { type: "array" });
+
+              // Assume the first sheet contains your data
+              const sheetName = workbook.SheetNames[0];
+              const worksheet = workbook.Sheets[sheetName];
+
+              const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+              // You can now use 'jsonData' as needed
+              document.getElementById("jsonResult").textContent =
+                JSON.stringify(jsonData, null, 2);
+            } catch (error) {
+              console.error("An error occurred:", error);
+            }
+          };
+
+          reader.readAsArrayBuffer(file);
+        }
+      });
+    </script>
+  </body>
+</html>
