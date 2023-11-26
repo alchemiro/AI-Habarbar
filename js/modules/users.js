@@ -1,16 +1,9 @@
-import { pushProjectParam, pushProject, pullProjectParam, pullProject, validate } from "./projectInteract.js";
-import { pushStudentParam, pushStudent, pullStudentParam, pullStudent, validate } from "./studentInteract.js";
-import { pushGuestParam, pushGuest, pullGuestParam, pullGuest, validate } from "./guestInteract.js";
-import { pushJudgeParam, pushJudge, pullJudgeParam, pullJudge, validate } from "./judgeInteract.js";
 import { projectCollection, studentCollection, judgeCollection, guestCollection, guestConverter, judgeConverter, studentConverter } from "./database.js";
 
 class User {
     #id;
-    #password;
-
-    constructor(ID, Password) {
+    constructor(ID = -1) {
         this.#id = ID;
-        this.#password = Password;
     }
 
     get id() {
@@ -20,30 +13,24 @@ class User {
     set id(ID) {
         this.#id = ID;
     }
-
-    get password() {
-        return this.#password;
-    }
-
-    set password(pass) {
-        this.#password = pass;
-    }
 } // this the defualt class for everyone that enters the site
-
-class Guest extends User {
+class Guest extends User {//set and get done
+    #pass
     #likes;
     name;
     #AmountOfLikes;
 
     constructor(ID, pass = "", name = "", amount = 0, likes = []) {
-        if (validate(ID)) {
-            this = pullGuest(ID);
+        super(ID);
+        if (DBInteract.validate(this)) {
+            this = DBInteract.getAll(this);
         }
         else {
-            super(ID, pass);
+            this.#pass = pass
             this.#likes = likes;
             this.#AmountOfLikes = amount;
             this.name = name;
+            DBInteract.setAll(this);
         }
     }
 
@@ -54,15 +41,38 @@ class Guest extends User {
         return this.#likes;
     }
 
+    get pass(){
+        return this.#pass;
+    }
+
     get AmountOfLikes() {
         return this.#AmountOfLikes;
+    }
+
+    // set name(newname){
+    //     this.name = newname;
+    // }
+
+    set pass(newpass){
+        this.#pass = newpass
+    }
+
+    set likes(newlikes){
+        this.#likes = newlikes;
+    }
+
+    set AmountOfLikes(newamount){
+        this.#AmountOfLikes = newamount;
+    }
+    set name(newName){
+        this.name = newName;
     }
 
     addLike(ProjectID) {
         if (this.AmountOfLikes < 20) {
             this.#likes.push(ProjectID);
             this.AmountOfLikes++;
-            project = new Project(ProjectID);
+            let project = new Project(ProjectID);
             project.AddLike()
 
         }
@@ -71,27 +81,34 @@ class Guest extends User {
         if (this.AmountOfLikes > 0) {
             this.#likes.splice(this.#likes.indexOf(ProjectID), 1);
             this.AmountOfLikes--;
+            let project = new Project(ProjectID);
             project.RemoveLike()
         }
     }
 }
 
-class Judge extends User {
+class Judge extends User {//set and get done
     name;
+    #pass;
     #projects;
 
     constructor(ID, pass = "", name = "", projects = []) {
-        if (validate(ID)) {
-            this = pullJudge(ID);
+        super(ID);
+        if (DBInteract.validate(this)) {
+            this = DBInteract.getAll(this);
         }
         else {
-            super(ID, pass);
+            this.#pass = pass;
             this.name = name;
             this.#projects = projects;
         }
     }
     get name() {
         return this.name;
+    }
+
+    get pass(){
+        return this.#pass;
     }
 
     get pullGuestProjects() {
@@ -105,6 +122,18 @@ class Judge extends User {
         }
     }
 
+    set name(newName){
+        this.name = newName;
+    }
+
+    set pass(newpass){
+        this.#pass = newpass;
+    }
+
+    set projects(newProjects){
+        this.#projects = newProjects;
+    }
+
     AddProject(projectID) {
         this.#projects.push(projectID);
     }
@@ -114,15 +143,15 @@ class Judge extends User {
     }
 }
 
-class Student extends Guest {
+class Student extends Guest {//set and get done
     #ProjectID;
 
     constructor(ID, pass = "", name = "", ProjectID = "", likes = [], amount = 0) {
-        if (validate(ID)) {
-            this = pullStudent(ID);
+        super(ID, pass, name, amount, likes);
+        if (DBInteract.validate(this)) {
+            this = DBInteract.getAll(this);
         }
         else {
-            super(ID, pass, name, amount, likes);
             this.#ProjectID = ProjectID;
         }
     }
@@ -134,9 +163,10 @@ class Student extends Guest {
     set project(projectID) {
         this.#ProjectID = projectID;
     }
+
 }
 
-class Project {
+class Project {//set and get done
     #name;
     #id;
     #grades;
@@ -148,8 +178,8 @@ class Project {
 
     constructor( id, name = " ", grade = [],  likes = 0, summary = " ", img = " ", round = 0, category = " ") {
         this.#id = id;
-        if (validate(this.#id)) {
-            this = pullProject(this.#id);
+        if (DBInteract.validate(this)) {
+            this = DBInteract.getAll(this);
         }
         else {
             this.#name = name;
@@ -161,7 +191,6 @@ class Project {
             this.#category = category;
         }
     }
-    g
 
     get name() {
         return this.#name;
@@ -204,12 +233,47 @@ class Project {
         return this.#category;
     }
 
+    set name(newparam) {
+        this.#name = newparam
+    }
+
+    set id(newparam) {
+        this.#id = newparam
+    }
+
+    set grades(newparam) {
+        this.#grades = newparam
+    }
+
+    set likes(newparam) {
+        this.#likes = newparam
+
+    }
+
+    set summary(newparam) {
+        this.#summary = newparam
+    }
+
+    set img(newparam) {
+        this.#img = newparam
+    }
+
+    set round(newparam) {
+        this.#round = newparam
+    }
+
+    set category(newparam) {
+        this.#category = newparam
+    }
+
     AddGrade(Grade) {
         this.#grades.push(Grade);
+        DBInteract.updateParameter(this,"grades",this.#grades);
     }
 
     RemoveGrade(Grade) {
         this.#grades.splice(this.#grades.indexOf(Grade), 1);
+        DBInteract.updateParameter(this,"grades",this.#grades);
     }
 
     ChangeGrade(OldGrade, NewGrade) {
@@ -219,48 +283,60 @@ class Project {
 
     AddLike() {
         this.#likes++;
-        pushProjectParam(this.#id(), "likes", this.likes);
+        DBInteract.updateParameter(this,"likes",this.#likes);
     }
 
     RemoveLike() {
         this.#likes--;
-        pushProjectParam(this.#id(), "likes", this.likes);
+        DBInteract.updateParameter(this,"likes",this.#likes);
     }
 }
 
 class DBInteract {
-    converter;
-    collection;
+    static converter;
+    static collection;
+    
     static getType(object){
         switch(true){
             case object instanceof Guest:
-                 this.collection = guestCollection;
-                 this.converter = guestConverter;
+                 collection = guestCollection;
+                 converter = guestConverter;
                 break;
             case object instanceof Judge:
-                this.collection = judgeCollection;
-                this.converter = judgeConverter;
+                collection = judgeCollection;
+                converter = judgeConverter;
 
                 break;
             case object instanceof Student:
-                 this.collection = studentCollection;
-                 this.converter = studentConverter;
+                 collection = studentCollection;
+                 converter = studentConverter;
 
                 break;
             case object instanceof Project:
-                 this.collection = projectCollection;
-                 this.converter = projectCollection
+                 collection = projectCollection;
+                 converter = projectCollection
                 break;
             default:
                 console.log("Not really sure what this object is. Aborting...")
                 return;
         }
     }
+    static async validate(object){
+        getType(object);
+        const document = doc(
+            collection,
+            object.id
+            ).withConverter(this.converter);
+        
+        const snapshot = await getDoc(document); //snapshot.data() is the data
+        return snapshot.exists();
+    }
+
     static async getAll(object) {
-        this.getType(object);
+        getType(object);
 
         const document = doc(
-            this.collection,
+            collection,
             object.id
             ).withConverter(this.converter);
         
@@ -287,4 +363,4 @@ class DBInteract {
     }
 }
 
-export { User, Guest, Project, Student, Judge };
+export { User, Guest, Project, Student, Judge, DBInteract };
