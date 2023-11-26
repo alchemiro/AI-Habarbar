@@ -15,7 +15,8 @@
   justify-content: center;
   background-color: gray;
   border-radius: 20%;
-  border: aliceblue solid 1vw;
+  border: aliceblue solid;
+  border-width: 0.5rem;
 }
 
 img {
