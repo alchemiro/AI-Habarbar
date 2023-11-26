@@ -3,6 +3,8 @@
   gap: 0.5rem;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   grid-template-rows: masonry;
+  align-tracks: center;
+  /* align-items: center; */
 }
 
 img {
