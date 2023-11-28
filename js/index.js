@@ -1,3 +1,4 @@
+
 // console.log(studentCol);
 function controlSidebar() {
   const navigation = document.getElementById("navigation");
@@ -23,3 +24,4 @@ function controlSidebar() {
     console.log("false");
   }
 }
+
