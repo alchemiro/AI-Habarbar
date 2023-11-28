@@ -4,8 +4,47 @@
     <meta charset="utf-8" />
     <title>Excel to JSON Converter</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="../css/glob-header.css" />
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/4520f8aada.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
+    <header>
+      <nav class="navbar" id="navigation">
+        <a href="#" class="nav-link nav-home" onclick="controlSidebar()">
+          <i
+            class="fa-solid fa-bars fa-flip-horizontal nav-icon nav-logo"
+            id="wheel"
+          ></i>
+          <span class="nav-logotext nav-icon" id="wheeltext">naut</span>
+        </a>
+        <ul class="navlist">
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-text">
+              <i class="fa-solid fa-magnifying-glass"> </i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-text">
+              <i class="fa-solid fa-user"></i>
+              <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div id="mySidebar" class="sidebar">
+        <a href="./index.html">Home</a>
+        <a href="./login.html">Login</a>
+        <a href="./project.html">My Projects</a>
+        <a href="./admin.html">Admin Dashboard</a>
+        <a href="./apge.html">Excel Converter</a>
+      </div>
+    </header>
     <h1>Excel to JSON Converter</h1>
     <label for="excelFile">File</label>
     <input type="file" id="excelFile" accept=".xlsx" />
@@ -43,5 +82,6 @@
         }
       });
     </script>
+    <script src="../../js/sidebar.js"></script>
   </body>
 </html>
