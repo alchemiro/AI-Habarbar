@@ -1,0 +1,26 @@
+.mason-container {
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-rows: masonry;
+  align-tracks: center;
+  background-color: aqua;
+  /* align-items: center; */
+}
+
+.grid-item {
+  padding: 8%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: gray;
+  border-radius: 20%;
+  border: aliceblue solid;
+  border-width: 0.5rem;
+}
+
+img {
+  border-radius: 25%;
+  max-width: 100%;
+  max-height: auto;
+}
