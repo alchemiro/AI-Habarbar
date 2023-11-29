@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="../css/glob-header.css" />
 
     <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/carousel.css" />
     <script
       src="https://kit.fontawesome.com/4520f8aada.js"
       crossorigin="anonymous"
@@ -47,31 +48,52 @@
     </header>
 
     <main>
-      <div class="mason-container">
+      <!-- <student-project> -->
+      <!-- <img src="../img/pizza.jpg" alt="pizza" />
+      <project-title>asd</project-title>
+      <project-subtitle>asd</project-subtitle> -->
+
+      <project-image src="../img/catfull.jpg"></project-image>
+      <!-- </student-project> -->
+      <section class="mason-carousel project-carousel">
+        <ul class="slide-imageset">
+          <li class="slide-image">
+            <img src="../img/pizza.jpg" alt="" />
+          </li>
+          <li class="slide-image">
+            <img src="../img/america.png" alt="" />
+          </li>
+          <li class="slide-image">
+            <img src="../img/eeper.jpg" alt="" />
+          </li>
+        </ul>
+      </section>
+      <section class="mason-container project-gallery">
         <div class="grid-item special">
-          <img src="../img/20220425_050153.jpg" alt="pizza" />
+          <img src="../img/pizza.jpg" alt="pizza" />
         </div>
         <div class="grid-item">
-          <img src="../img/20220503_082224.jpg" alt="shine" />
+          <img src="../img/catshine.jpg" alt="shine" />
         </div>
         <div class="grid-item">
-          <img src="../img/20220530_021058.jpg" alt="gone" />
+          <img src="../img/catfull.jpg" alt="gone" />
         </div>
         <div class="grid-item">
-          <img src="../img/20220704_180505.jpg" alt="eeper" />
+          <img src="../img/eeper.jpg" alt="eeper" />
         </div>
         <div class="grid-item">
-          <img src="../img/20220716_212450.jpg" alt="kirby" />
+          <img src="../img/kirbysmile.jpg" alt="kirby" />
         </div>
         <div class="grid-item">
-          <img src="../img/20220809_224933.jpg" alt="roger" />
+          <img src="../img/woeroger.jpg" alt="roger" />
         </div>
         <div class="grid-item">
-          <img src="../img/Screenshot 2023-04-10 011657.png" alt="america" />
+          <img src="../img/america.png" alt="america" />
         </div>
-      </div>
+      </section>
     </main>
 
+    <script src="../../js/custom-elements.js" defer></script>
     <script type="module" src="../../js/database.js"></script>
     <script src="../../js/index.js"></script>
     <script src="../../js/sidebar.js"></script>

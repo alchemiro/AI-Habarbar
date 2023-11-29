@@ -1,0 +1,19 @@
+.project-carousel {
+  max-width: 80%;
+  margin: auto;
+  display: flex;
+}
+
+.slide-image {
+  float: inline-start;
+  width: 33%;
+}
+
+.slide-image img {
+  width: 100%;
+  height: auto;
+}
+
+ul {
+  list-style-type: none;
+}
