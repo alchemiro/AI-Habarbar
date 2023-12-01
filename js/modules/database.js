@@ -102,13 +102,22 @@ const guestConverter = {
 };
 
 const app = initializeApp(firebaseConfig);
+console.log("Initialized app");
 const db = getFirestore(app);
+console.log("Got Database");
 
 const NumberOfJudges = 5;
 const projectCollection = collection(db, "projects");
+console.log("got proj collect");
+
 const guestCollection = collection(db, "guests");
+console.log("got guest collect");
+
 const judgeCollection = collection(db, "judges");
+console.log("got judge collect");
+
 const studentCollection = collection(db, "students");
+console.log("got student collect");
 
 export {
   doc,

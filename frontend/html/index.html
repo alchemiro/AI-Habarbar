@@ -53,10 +53,10 @@
       <project-title>asd</project-title>
       <project-subtitle>asd</project-subtitle> -->
 
-      <project-image src="../img/catfull.jpg"></project-image>
+      <!-- <project-image src="../img/catfull.jpg"></project-image> -->
       <!-- </student-project> -->
       <section class="mason-carousel project-carousel">
-        <ul class="slide-imageset">
+        <!-- <ul class="slide-imageset">
           <li class="slide-image">
             <img src="../img/pizza.jpg" alt="" />
           </li>
@@ -66,36 +66,32 @@
           <li class="slide-image">
             <img src="../img/eeper.jpg" alt="" />
           </li>
-        </ul>
+        </ul> -->
       </section>
-      <section class="mason-container project-gallery">
+      <section class="mason-container project-gallery" id="masonry-grid">
         <div class="grid-item special">
           <img src="../img/pizza.jpg" alt="pizza" />
-        </div>
-        <div class="grid-item">
-          <img src="../img/catshine.jpg" alt="shine" />
-        </div>
-        <div class="grid-item">
-          <img src="../img/catfull.jpg" alt="gone" />
-        </div>
-        <div class="grid-item">
-          <img src="../img/eeper.jpg" alt="eeper" />
-        </div>
-        <div class="grid-item">
-          <img src="../img/kirbysmile.jpg" alt="kirby" />
-        </div>
-        <div class="grid-item">
-          <img src="../img/woeroger.jpg" alt="roger" />
-        </div>
-        <div class="grid-item">
-          <img src="../img/america.png" alt="america" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
         </div>
       </section>
+      <button type="button" id="projectButton">Get Projects</button>
     </main>
 
-    <script src="../../js/custom-elements.js" defer></script>
-    <script type="module" src="../../js/database.js"></script>
-    <script src="../../js/index.js"></script>
+    <script type="module" src="../../js/modules/database.js"></script>
+    <script type="module" src="../../js/modules/users.js"></script>
+    <script type="module" src="../../js/index.js"></script>
     <script src="../../js/sidebar.js"></script>
+    <script>
+      class A {
+        number;
+        constructor(a) {
+          this.number = a;
+        }
+      }
+
+      var a = new A(7);
+      console.log(a instanceof A);
+    </script>
   </body>
 </html>
