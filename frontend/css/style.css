@@ -9,6 +9,10 @@
   background-color: aqua;
   place-items: center;
   justify-content: center;
+  scroll-behavior: smooth;
+  max-height: 30%;
+  block-size: start;
+  inline-size: start;
   /* align-items: center; */
 }
 

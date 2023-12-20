@@ -1,0 +1,18 @@
+saveNewUser(){
+    get email
+    get pass
+    firebase.auth().createUserWithEmailAndPassword(em, pass).then((usercreds)=>{
+        var user = usercreds.user;
+        newUser = {
+            uid: user.uid,
+            email:em,
+            age:20
+        }
+        firebase.database().ref('users/'+user.uid).set(newUser);
+    })
+    .catch((error)=>{
+        var code = error.code;
+        var errorMessage = error.message;
+        console.log(errorMessage);
+    })
+}

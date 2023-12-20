@@ -1,26 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  deleteDoc,
-} from "https://www.gstatic.com/firebasejs/10.4.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDbwHRNfml9PgY9iCBP-RXJKgza0cBhS2s",
-  authDomain: "ai-habarbar.firebaseapp.com",
-  databaseURL:
-    "https://ai-habarbar-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "ai-habarbar",
-  storageBucket: "ai-habarbar.appspot.com",
-  messagingSenderId: "377582621016",
-  appId: "1:377582621016:web:de9d0a40e1ffe4e7e2152d",
-  measurementId: "G-H6QWR8BCR1",
-};
-
 const studentConverter = {
   toFirestore: (student) => {
     return {
@@ -99,42 +76,4 @@ const guestConverter = {
     const data = snapshot.data(options);
     return new guest(data.id, data.name, data.password, data.likes);
   },
-};
-
-const app = initializeApp(firebaseConfig);
-console.log("Initialized app");
-const db = getFirestore(app);
-console.log("Got Database");
-
-const NumberOfJudges = 5;
-const projectCollection = collection(db, "projects");
-console.log("got proj collect");
-
-const guestCollection = collection(db, "guests");
-console.log("got guest collect");
-
-const judgeCollection = collection(db, "judges");
-console.log("got judge collect");
-
-const studentCollection = collection(db, "students");
-console.log("got student collect");
-
-export {
-  doc,
-  getDoc,
-  setDoc,
-  updateDoc,
-  deleteDoc,
-  studentCollection,
-  judgeCollection,
-  guestCollection,
-  projectCollection,
-  NumberOfJudges,
-  app,
-  db,
-  firebaseConfig,
-  studentConverter,
-  projectConverter,
-  judgeConverter,
-  guestConverter,
 };

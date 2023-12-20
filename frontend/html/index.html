@@ -60,7 +60,7 @@
           <li class="slide-image">
             <img src="../img/pizza.jpg" alt="" />
           </li>
-          <li class="slide-image">
+          <li class="slide-image">lo
             <img src="../img/america.png" alt="" />
           </li>
           <li class="slide-image">
@@ -74,24 +74,61 @@
           <p>Sample Title</p>
           <p>sample subtitle</p>
         </div>
+        <div class="grid-item special">
+          <img src="../img/kirbysmile.jpg" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div>
+        <div class="grid-item special">
+          <img src="../img/america.png" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div>
+        <div class="grid-item special">
+          <img src="../img/eeper.jpg" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div>
+        <div class="grid-item special">
+          <img src="../img/catshine.jpg" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div>
+        <div class="grid-item special">
+          <img src="../img/catfull.jpg" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div>
+
+        <!-- <div class="grid-item special">
+          <img src="../img/pizza.jpg" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div>
+        <div class="grid-item special">
+          <img src="../img/woeroger.jpg" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div>
+        <div class="grid-item special">
+          <img src="../img/pizza.jpg" alt="pizza" />
+          <p>Sample Title</p>
+          <p>sample subtitle</p>
+        </div> -->
       </section>
-      <button type="button" id="projectButton">Get Projects</button>
+
+      <button type="submit" id="addProject">Add Project to grid</button>
     </main>
 
-    <script type="module" src="../../js/modules/database.js"></script>
-    <script type="module" src="../../js/modules/users.js"></script>
-    <script type="module" src="../../js/index.js"></script>
-    <script src="../../js/sidebar.js"></script>
-    <script>
-      class A {
-        number;
-        constructor(a) {
-          this.number = a;
-        }
-      }
+    <script src="../../js/modules/converters.js"></script>
 
-      var a = new A(7);
-      console.log(a instanceof A);
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../../js/modules/init-firebase.js"></script>
+
+    <script src="../../js/index.js"></script>
+    <script src="../../js/indextwo.js" defer></script>
+    <script src="../../js/sidebar.js"></script>
   </body>
 </html>

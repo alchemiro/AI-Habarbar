@@ -1,97 +1,3 @@
-import {
-  projectCollection,
-  studentCollection,
-  judgeCollection,
-  guestCollection,
-  guestConverter,
-  judgeConverter,
-  studentConverter,
-  doc,
-  projectConverter,
-} from "./database.js";
-
-class DBInteract {
-  converter;
-  collection;
-  constructor() {
-    // this.converter = projectConverter;
-    // this.collection = projectCollection;
-  }
-
-  async getType(object) {
-    if (object instanceof Guest) {
-      console.log("Received a Guest");
-      this.collection = guestCollection;
-      this.converter = guestConverter;
-      return;
-    } else if (object instanceof Judge) {
-      console.log("Received a Judge");
-      this.collection = judgeCollection;
-      this.converter = judgeConverter;
-      return;
-    } else if (object instanceof Student) {
-      console.log("Received a Student");
-      this.collection = studentCollection;
-      this.converter = studentConverter;
-      return;
-    } else if (object instanceof Project) {
-      console.log("Received a Project");
-      this.collection = projectCollection;
-      this.converter = projectConverter;
-      return;
-    } else {
-      console.log(
-        "Not really sure what this object is. Probably a User. Aborting..."
-      );
-      return;
-    }
-  }
-  async validate(object) {
-    if (!this.collection || !this.converter) {
-      console.log("collection or converter is null");
-      return false;
-    }
-    const document = this.collection
-      .doc(object.id)
-      .withConverter(this.converter);
-
-    const snapshot = getDoc(document); //snapshot.data() is the data
-    return snapshot.exists();
-  }
-
-  async getAll(object) {
-    if (!this.validate(object)) {
-      console.log("object not valid");
-      this.getType(object);
-    }
-    const document = this.collection
-      .doc(object.id)
-      .withConverter(this.converter);
-
-    const snapshot = await getDoc(document); //snapshot.data() is the data
-    if (snapshot.exists()) {
-      return snapshot.data();
-    } else {
-      this.setAll(object);
-      return object;
-    }
-  }
-  async setAll(object) {
-    if (!this.validate(object)) return;
-    const document = this.collection
-      .doc(object.id)
-      .withConverter(this.converter);
-    await setDoc(document, object, { merge: true });
-  }
-
-  async updateParameter(object, field, value) {
-    this.getType(object);
-    const document = this.collection.doc(object.id);
-    await updateDoc(document, { [field]: value }, { merge: true });
-  }
-}
-
-const dblayer = new DBInteract();
 class User {
   #id;
   constructor(ID = -1) {
@@ -298,6 +204,7 @@ class Project {
     console.log(`Project Constructor called, using project ID ${this.#id}`);
     if (dblayer.validate(this)) {
       var projTemplate = dblayer.getAll(this).then(() => {
+        console.log("Object found on db, taking data");
         this.#name = projTemplate.name;
         this.#grades = projTemplate.grades;
         this.#likes = projTemplate.likes;
@@ -307,6 +214,7 @@ class Project {
         this.#category = projTemplate.category;
       });
     } else {
+      console.log("Object not found on database, using local data");
       this.#name = name;
       this.#grades = grade;
       this.#likes = likes;
@@ -315,78 +223,6 @@ class Project {
       this.#round = round;
       this.#category = category;
     }
-  }
-
-  get name() {
-    return this.#name;
-  }
-
-  get id() {
-    return this.#id;
-  }
-
-  get grade() {
-    let sum = 0;
-    for (let i = 0; i < this.#grades.length; i++) {
-      sum += this.#grades[i];
-    }
-    return sum / this.#grades.length;
-  }
-
-  get grades() {
-    return this.#grades;
-  }
-
-  get likes() {
-    return this.#likes;
-  }
-
-  get summary() {
-    return this.#summary;
-  }
-
-  get img() {
-    return this.#img;
-  }
-
-  get round() {
-    return this.#round;
-  }
-
-  get category() {
-    return this.#category;
-  }
-
-  set name(newparam) {
-    this.#name = newparam;
-  }
-
-  set id(newparam) {
-    this.#id = newparam;
-  }
-
-  set grades(newparam) {
-    this.#grades = newparam;
-  }
-
-  set likes(newparam) {
-    this.#likes = newparam;
-  }
-
-  set summary(newparam) {
-    this.#summary = newparam;
-  }
-
-  set img(newparam) {
-    this.#img = newparam;
-  }
-
-  set round(newparam) {
-    this.#round = newparam;
-  }
-
-  set category(newparam) {
-    this.#category = newparam;
   }
 
   AddGrade(Grade) {

@@ -1,20 +1,20 @@
-import { DBInteract, Project, Student, Judge, Guest } from "./modules/users.js";
-const masongrid = document.getElementById("masonry-grid");
+// const firefile = document.getElementById("local-firefile");
+// console.log(firefile);
+// window.getCollectionType();
 
-const button = document.getElementById("projectButton");
-const db = new DBInteract();
+const addBtn = document.getElementById("addProject");
+const grid = document.getElementById("masonry-grid");
 
-button.addEventListener("click", getAllProjects());
+addBtn.addEventListener("click", () => {
+  let proj = new Project("1");
 
-function getAllProjects() {
-  var projectwrapper = document.createElement("div");
-  projectwrapper.classList = ["grid-item"];
-
-  var projectImage = document.createElement("img");
-
-  var projectTitle = document.createElement("p");
-  var projectSubtitle = document.createElement("p");
-
-  var projecttemplate = new Project(1);
-  db.getType(projecttemplate);
-}
+  getDocument(proj).then((gotProj) => {
+    console.log(gotProj.toString());
+    grid.innerHTML += `<div class="grid-item special">
+  <img src="../img/america.png" alt="pizza" />
+  <p>${gotProj.name}</p>
+  <p>${gotProj.summary}</p>
+  <p>${gotProj.likes}</p>
+  </div>`;
+  });
+});

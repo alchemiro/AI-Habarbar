@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <label for="projectID">Project ID:</label>
+    <input
+      type="text"
+      name="projectID"
+      id="projectIDInput"
+      title="projectIDInput"
+    />
+
+    <label for="projectName">Project Name:</label>
+    <input
+      type="text"
+      name="projectName"
+      id="projectNameInput"
+      title="projectNameInput"
+    />
+
+    <label for="projectLikes">Project Likes:</label>
+    <input
+      type="number"
+      name="projectLikes"
+      id="projectLikesInput"
+      title="projectLikesInput"
+    />
+
+    <label for="projectSummary">Project Summary:</label>
+    <input
+      type="text"
+      name="projectSummary"
+      id="projectSummaryInput"
+      title="projectSummaryInput"
+    />
+
+    <button type="submit" id="submitButtonSetProject">Submit</button>
+
+    <label for="projectIDOut">Project ID:</label>
+    <input
+      type="text"
+      name="projectIDOut"
+      id="projectIDOutput"
+      title="projectIDInput"
+    />
+
+    <button type="submit" id="projectSubmitOutput">Submit</button>
+
+    <script src="../../js/modules/converters.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../../js/modules/init-firebase.js"></script>
+    <script src="../../js/setter.js"></script>
+  </body>
+</html>
