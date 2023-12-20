@@ -119,13 +119,15 @@ class Project {
 
 const getDocumentFirebase = async function (collection, keystring, converter) {
   // keystring = "1";
+  console.log("before proj get");
   var objectRef = collection.doc(keystring).withConverter(converter);
-  objectRef.get().then((document) => {
+  return objectRef.get().then((document) => {
     if (document.exists) {
       console.log("Found!");
       // console.log(document.data().toString());
-      return Promise.resolve(document.data());
-      // var proj = document.data();
+      const data = document.data();
+      console.log(data.toString());
+      return data; // var proj = document.data();
       // console.log(proj.toString());
     } else {
       console.log("Not found.");
@@ -135,49 +137,61 @@ const getDocumentFirebase = async function (collection, keystring, converter) {
 };
 
 const getDocument = async function (object) {
-  if (object instanceof Project) {
-    console.log("Got a project");
-    await getDocumentFirebase(projectCollection, object.id, projectConverter)
-      .then(document, () => {
-        console.log(document.toString());
-        var obj = document.data();
-        return obj;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  } else if (object instanceof Student) {
-    await getDocumentFirebase(studentCollection, object.id, studentConverter)
-      .then((document) => {
-        console.log(document.toString());
-        var obj = document.data();
-        return obj;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  } else if (object instanceof Judge) {
-    await getDocumentFirebase(projectCollection, object.id, judgeConverter)
-      .then((document) => {
-        console.log(document.toString());
-        var obj = document.data();
-        return obj;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  } else if (object instanceof Guest) {
-    await getDocumentFirebase(projectCollection, object.id, guestConverter)
-      .then((document) => {
-        console.log(document.toString());
-        var obj = document.data();
-        return obj;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  } else {
-    console.log("Not really sure what this is, aborting...");
-    return;
-  }
+  console.log("Got a project");
+  console.log("getting");
+  const data = await getDocumentFirebase(
+    projectCollection,
+    object.id,
+    projectConverter
+  );
+  console.log("hello!");
+  console.log(data.toString());
 };
+
+// const getDocument = async function (object) {
+//   if (object instanceof Project) {
+//     console.log("Got a project");
+//     console.log("getting");
+//     await getDocumentFirebase(projectCollection, object.id, projectConverter)
+//       .then((data) => {
+//         console.log("hello!");
+//         console.log(data);
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   } else if (object instanceof Student) {
+//     getDocumentFirebase(studentCollection, object.id, studentConverter)
+//       .then((document) => {
+//         console.log(document.toString());
+//         var obj = document.data();
+//         return obj;
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   } else if (object instanceof Judge) {
+//     getDocumentFirebase(projectCollection, object.id, judgeConverter)
+//       .then((document) => {
+//         console.log(document.toString());
+//         var obj = document.data();
+//         return obj;
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   } else if (object instanceof Guest) {
+//     getDocumentFirebase(projectCollection, object.id, guestConverter)
+//       .then((document) => {
+//         console.log(document.toString());
+//         var obj = document.data();
+//         return obj;
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   } else {
+//     console.log("Not really sure what this is, aborting...");
+//     return;
+//   }
+// };
