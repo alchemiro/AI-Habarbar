@@ -119,7 +119,7 @@ class Project {
 
 const getDocumentFirebase = async function (collection, keystring, converter) {
   // keystring = "1";
-  console.log("before proj get");
+  // console.log("before proj get");
   var objectRef = collection.doc(keystring).withConverter(converter);
   return objectRef.get().then((document) => {
     if (document.exists) {
@@ -137,15 +137,16 @@ const getDocumentFirebase = async function (collection, keystring, converter) {
 };
 
 const getDocument = async function (object) {
-  console.log("Got a project");
+  // console.log("Got a project");
   console.log("getting");
-  const data = await getDocumentFirebase(
+  const data = getDocumentFirebase(
     projectCollection,
     object.id,
     projectConverter
   );
-  console.log("hello!");
+  // console.log("hello!");
   console.log(data.toString());
+  return Promise.resolve(data);
 };
 
 // const getDocument = async function (object) {

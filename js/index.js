@@ -4,17 +4,19 @@
 
 const addBtn = document.getElementById("addProject");
 const grid = document.getElementById("masonry-grid");
+const input = document.getElementById("projectInputID");
 
 addBtn.addEventListener("click", () => {
-  let proj = new Project("1");
+  if (!input.value) return console.log("break!");
+  let proj = new Project(input.value);
 
-  getDocument(proj).then((gotProj) => {
-    console.log(gotProj.toString());
+  getDocument(proj).then((project) => {
+    // console.log(gotProj.toString());
     grid.innerHTML += `<div class="grid-item special">
-  <img src="../img/america.png" alt="pizza" />
-  <p>${gotProj.name}</p>
-  <p>${gotProj.summary}</p>
-  <p>${gotProj.likes}</p>
-  </div>`;
+    <img src="../img/america.png" alt="pizza" />
+    <p>${project.name}</p>
+    <p>${project.summary}</p>
+    <p>${project.likes}</p>
+    </div>`;
   });
 });
