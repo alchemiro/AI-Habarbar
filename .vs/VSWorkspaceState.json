@@ -3,10 +3,8 @@
     "",
     "\\frontend",
     "\\frontend\\css",
-    "\\frontend\\html",
-    "\\js",
-    "\\js\\modules"
+    "\\frontend\\html"
   ],
-  "SelectedNode": "\\js\\modules\\projectInteract.js",
+  "SelectedNode": "\\frontend\\html\\index.html",
   "PreviewInSolutionExplorer": false
 }
