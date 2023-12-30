@@ -3,7 +3,7 @@
 // window.getCollectionType();
 
 const addBtn = document.getElementById("addProject");
-const grid = document.getElementById("masonry-grid");
+const gridrow = document.getElementById("gallery-container-row");
 const input = document.getElementById("projectInputID");
 
 addBtn.addEventListener("click", async () => {
@@ -29,7 +29,7 @@ addBtn.addEventListener("click", async () => {
     console.log(project.toString());
 
     // console.log(gotProj.toString());
-    grid.innerHTML += `
+    gridrow.innerHTML += `
     <div class="col-xl-3 col-md-4 col-sm-6">
                     <div class="card" style="width: 18rem;">
                         <img src= ${project.Photo} class="card-img-top" alt="...">
