@@ -116,7 +116,186 @@ class Project {
     );
   }
 }
+class User {
+  #id;
+  constructor(ID = -1) {
+    this.#id = ID;
+  }
 
+  get id() {
+    return this.#id;
+  }
+
+  set id(ID) {
+    this.#id = ID;
+  }
+}
+class Guest extends User {
+  //set and get done
+  #pass;
+  #likes;
+  name;
+  #AmountOfLikes;
+
+  constructor(ID, pass = "", name = "", amount = 0, likes = []) {
+    super(ID);
+    if (dblayer.validate(this)) {
+      var guesttemplate = dblayer.getAll(this).then(() => {
+        this.#pass = guesttemplate.pass;
+        this.#likes = guesttemplate.likes;
+        this.#AmountOfLikes = guesttemplate.AmountOfLikes;
+        this.name = guesttemplate.name;
+      });
+    } else {
+      this.#pass = pass;
+      this.#likes = likes;
+      this.#AmountOfLikes = amount;
+      this.name = name;
+      dblayer.setAll(this);
+    }
+  }
+
+  get name() {
+    return this.name;
+  }
+  get likes() {
+    return this.#likes;
+  }
+
+  get pass() {
+    return this.#pass;
+  }
+
+  get AmountOfLikes() {
+    return this.#AmountOfLikes;
+  }
+
+  // set name(newname){
+  //     this.name = newname;
+  // }
+
+  set pass(newpass) {
+    this.#pass = newpass;
+  }
+
+  set likes(newlikes) {
+    this.#likes = newlikes;
+  }
+
+  set AmountOfLikes(newamount) {
+    this.#AmountOfLikes = newamount;
+  }
+  set name(newName) {
+    this.name = newName;
+  }
+
+  addLike(ProjectID) {
+    if (this.AmountOfLikes < 20) {
+      this.#likes.push(ProjectID);
+      this.AmountOfLikes++;
+      let project = new Project(ProjectID);
+      project.AddLike();
+    }
+  }
+  RemoveLike(ProjectID) {
+    if (this.AmountOfLikes > 0) {
+      this.#likes.splice(this.#likes.indexOf(ProjectID), 1);
+      this.AmountOfLikes--;
+      let project = new Project(ProjectID);
+      project.RemoveLike();
+    }
+  }
+}
+
+class Judge extends User {
+  //set and get done
+  name;
+  #pass;
+  #projects;
+
+  constructor(ID, pass = "", name = "", projects = []) {
+    super(ID);
+    if (dblayer.validate(this)) {
+      var judgetemplate = dblayer.getAll(this).then(() => {
+        this.#pass = judgetemplate.pass;
+        this.name = judgetemplate.name;
+        this.#projects = judgetemplate.pullGuestProjects;
+      });
+    } else {
+      this.#pass = pass;
+      this.name = name;
+      this.#projects = projects;
+    }
+  }
+  get name() {
+    return this.name;
+  }
+
+  get pass() {
+    return this.#pass;
+  }
+
+  get pullGuestProjects() {
+    return this.#projects;
+  }
+
+  get Project() {
+    for (var i = 0; i < this.#projects.length; i++) {
+      // yield this.#Projects[i];
+    }
+  }
+
+  set name(newName) {
+    this.name = newName;
+  }
+
+  set pass(newpass) {
+    this.#pass = newpass;
+  }
+
+  set projects(newProjects) {
+    this.#projects = newProjects;
+  }
+
+  AddProject(projectID) {
+    this.#projects.push(projectID);
+  }
+
+  RemoveProject(projectID) {
+    this.#projects.splice(this.#projects.indexOf(projectID), 1);
+  }
+}
+
+class Student extends Guest {
+  //set and get done
+  #ProjectID;
+
+  constructor(
+    ID,
+    pass = "",
+    name = "",
+    ProjectID = "",
+    likes = [],
+    amount = 0
+  ) {
+    super(ID, pass, name, amount, likes);
+    if (dblayer.validate(this)) {
+      var studenttemplate = dblayer.getAll(this).then(() => {
+        this.#ProjectID = studenttemplate.project;
+      });
+    } else {
+      this.#ProjectID = ProjectID;
+    }
+  }
+
+  get project() {
+    return this.#ProjectID;
+  }
+
+  set project(projectID) {
+    this.#ProjectID = projectID;
+  }
+}
 const getDocumentFirebase = async function (collection, keystring, converter) {
   // keystring = "1";
   // console.log("before proj get");
@@ -138,61 +317,40 @@ const getDocumentFirebase = async function (collection, keystring, converter) {
 
 const getDocument = async function (object) {
   // console.log("Got a project");
-  console.log("getting");
-  const data = getDocumentFirebase(
-    projectCollection,
-    object.id,
-    projectConverter
-  );
-  // console.log("hello!");
-  console.log(data.toString());
-  return Promise.resolve(data);
+  // console.log("getting");
+  if (object instanceof Project) {
+    const data = getDocumentFirebase(
+      projectCollection,
+      object.id,
+      projectConverter
+    );
+    console.log(data.toString());
+    return Promise.resolve(data);
+  } else if (object instanceof Student) {
+    const data = getDocumentFirebase(
+      studentCollection,
+      object.id,
+      studentConverter
+    );
+    console.log(data.toString());
+    return Promise.resolve(data);
+  } else if (object instanceof Judge) {
+    const data = getDocumentFirebase(
+      judgeCollection,
+      object.id,
+      judgeConverter
+    );
+    console.log(data.toString());
+    return Promise.resolve(data);
+  } else if (object instanceof Guest) {
+    const data = getDocumentFirebase(
+      guestCollection,
+      object.id,
+      guestConverter
+    );
+    console.log(data.toString());
+    return Promise.resolve(data);
+  } else {
+    return Promise.reject("Unknown object type");
+  }
 };
-
-// const getDocument = async function (object) {
-//   if (object instanceof Project) {
-//     console.log("Got a project");
-//     console.log("getting");
-//     await getDocumentFirebase(projectCollection, object.id, projectConverter)
-//       .then((data) => {
-//         console.log("hello!");
-//         console.log(data);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   } else if (object instanceof Student) {
-//     getDocumentFirebase(studentCollection, object.id, studentConverter)
-//       .then((document) => {
-//         console.log(document.toString());
-//         var obj = document.data();
-//         return obj;
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   } else if (object instanceof Judge) {
-//     getDocumentFirebase(projectCollection, object.id, judgeConverter)
-//       .then((document) => {
-//         console.log(document.toString());
-//         var obj = document.data();
-//         return obj;
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   } else if (object instanceof Guest) {
-//     getDocumentFirebase(projectCollection, object.id, guestConverter)
-//       .then((document) => {
-//         console.log(document.toString());
-//         var obj = document.data();
-//         return obj;
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   } else {
-//     console.log("Not really sure what this is, aborting...");
-//     return;
-//   }
-// };

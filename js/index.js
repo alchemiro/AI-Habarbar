@@ -3,16 +3,33 @@
 // window.getCollectionType();
 
 const addBtn = document.getElementById("addProject");
-const grid = document.getElementById("masonry-grid");
+const gridrow = document.getElementById("gallery-container-row");
 const input = document.getElementById("projectInputID");
 
-addBtn.addEventListener("click", () => {
-  if (!input.value) return console.log("break!");
-  let proj = new Project(input.value);
+addBtn.addEventListener("click", async () => {
+  // if (!input.value) return console.log("break!");
+  // let proj = new Project(input.value);
 
-  getDocument(proj).then((project) => {
+  // getDocument(proj).then((project) => {
+  //   // console.log(gotProj.toString());
+  //   grid.innerHTML += `<div class="grid-item special">
+  //   <img src="../img/america.png" alt="pizza" />
+  //   <p>${project.name}</p>
+  //   <p>${project.summary}</p>
+  //   <p>${project.likes}</p>
+  //   </div>`;
+  // });
+
+  const projectsRef = await projectCollection
+    .withConverter(projectConverter)
+    .get();
+  const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
+
+  projectsRefMapped.forEach((project) => {
+    console.log(project.toString());
+
     // console.log(gotProj.toString());
-    grid.innerHTML += `
+    gridrow.innerHTML += `
     <div class="col-xl-3 col-md-4 col-sm-6">
                     <div class="card" style="width: 18rem;">
                         <img src= ${project.Photo} class="card-img-top" alt="...">
