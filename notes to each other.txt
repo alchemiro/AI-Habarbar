@@ -1,4 +1,4 @@
-is the login a page for it self, or is it a popup? could even be part of the home page
+972 524581501is the login a page for it self, or is it a popup? could even be part of the home page
 
 בשביל לעשות אפיון בצורה תקינה אנחנו צריכים לנסח באופן מפורט את הבקשה של הלקוח (אייל) ולאחר מכן להתחיל לפרט על מסכים שיענו לבקשה, עדיפות לציור המסך או המחשה אחרת, כולל פירוט פונצקיות אפשריות על המסך. לאחר כל זה לגשת לאייל לוודא איצו שזה באמת הבקשה, אם לא לשנות, אם כן נתחיל יצירת קוד
 
@@ -70,3 +70,12 @@ It also has a field type "reference" which is basically just a url to another ta
 
 
 we need to create a function that return a list of all the guest and students that like specific project
+
+todo :
+- add the like check-mark to project card, if user is logged in and able to like
+- create the projects on create page
+- create project[] for the search , foreach project ( foreach value (if search in value(projects.append(project)))) and make it properly 
+like should be checked when user liked project
+add option to view projects in table
+admin see all In table, hover for image to show, click to edit the page
+create project page, toggle like/grade for users
