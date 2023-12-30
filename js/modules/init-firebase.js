@@ -129,7 +129,7 @@ class User {
   set id(ID) {
     this.#id = ID;
   }
-} // this the defualt class for everyone that enters the site
+}
 class Guest extends User {
   //set and get done
   #pass;
