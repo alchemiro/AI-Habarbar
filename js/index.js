@@ -6,20 +6,12 @@ const addBtn = document.getElementById("addProject");
 const gridrow = document.getElementById("gallery-container-row");
 const input = document.getElementById("projectInputID");
 
+const redirectProjectWithParams = (id) => {
+  const url = "../../frontend/html/project.html";
+  window.location.href = `${url}?id=${id}`;
+};
+
 addBtn.addEventListener("click", async () => {
-  // if (!input.value) return console.log("break!");
-  // let proj = new Project(input.value);
-
-  // getDocument(proj).then((project) => {
-  //   // console.log(gotProj.toString());
-  //   grid.innerHTML += `<div class="grid-item special">
-  //   <img src="../img/america.png" alt="pizza" />
-  //   <p>${project.name}</p>
-  //   <p>${project.summary}</p>
-  //   <p>${project.likes}</p>
-  //   </div>`;
-  // });
-
   const projectsRef = await projectCollection
     .withConverter(projectConverter)
     .get();
@@ -31,7 +23,7 @@ addBtn.addEventListener("click", async () => {
     // console.log(gotProj.toString());
     gridrow.innerHTML += `
     <div class="col offset-1">
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 18rem;" onclick="redirectProjectWithParams(${project.id})">
                 <img src= ${project.Photo} class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".../">
           <div class="card-body">
               <h5 class="card-title">${project.name}</h5>

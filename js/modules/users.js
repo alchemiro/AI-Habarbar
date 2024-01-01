@@ -250,5 +250,3 @@ class Project {
     dblayer.updateParameter(this, "likes", this.#likes);
   }
 }
-
-export { User, Guest, Project, Student, Judge, DBInteract };

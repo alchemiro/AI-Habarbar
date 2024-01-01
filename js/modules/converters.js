@@ -59,7 +59,7 @@ const judgeConverter = {
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new judge(data.id, data.name, data.password, data.projects);
+    return new Judge(data.id, data.name, data.password, data.projects);
   },
 };
 
@@ -74,6 +74,6 @@ const guestConverter = {
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new guest(data.id, data.name, data.password, data.likes);
+    return new Guest(data.id, data.name, data.password, data.likes);
   },
 };
