@@ -17,15 +17,15 @@ addBtn.addEventListener("click", async () => {
     .get();
   const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
- projectsRefMapped.forEach((project) => {
-  console.log(project.toString());
-    project.name = project.name ? "." : project.name; 
-    project.summary = project.summary ? "." : project.summary; 
-  // console.log(gotProj.toString());
-  gridrow.innerHTML += `
+  projectsRefMapped.forEach((project) => {
+    console.log(project.toString());
+    project.name = project.name ? "." : project.name;
+    project.summary = project.summary ? "." : project.summary;
+    // console.log(gotProj.toString());
+    gridrow.innerHTML += `
   <div class="col offset-1">
       <div class="card" style="width: 18rem;">
-              <img src= ${project.Photo} class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".../">
+              <img src= ${project.img} class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".../">
         <div class="card-body"> 
             <h5 class="card-title">${project.name}</h5>
             <p class="card-text">${project.summary}</p>
