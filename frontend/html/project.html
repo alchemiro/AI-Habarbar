@@ -17,7 +17,7 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body>
+  <body onload="ProjectLoaded()">
     <header>
       <nav class="navbar" id="navigation">
         <a href="#" class="nav-link nav-home" onclick="controlSidebar()">
@@ -81,7 +81,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="../../js/modules/init-firebase.js"></script>
-    <script src="../../js/projectPage.js"></script>
+    <script src="../../js/modules/functions.js"></script>
 
     <script src="../../js/sidebar.js"></script>
   </body>

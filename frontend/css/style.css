@@ -27,7 +27,10 @@
 }
 
 .container {
-    background-color: #f0f0f0;
+  background-color: #f0f0f0;
+}
+.card {
+  margin: 10px;
 }
 
 img {
@@ -35,6 +38,7 @@ img {
   max-width: 100%;
   max-height: auto;
 }
+
 /* 
 project {
   width: 100%;

@@ -19,7 +19,7 @@
       crossorigin="anonymous"
     ></script>
   </head>
-  <body>
+  <body onload="indexLoaded()">
     <header>
       <nav class="navbar" id="navigation">
         <a href="#" class="nav-link nav-home" onclick="controlSidebar()">
@@ -55,47 +55,9 @@
     </header>
 
     <main>
-      <label for="ProjectInput">Input project ID:</label>
-      <input
-        type="text"
-        name="ProjectInput"
-        title="ProjectInput"
-        id="projectInputID"
-      />
-
       <button type="submit" id="addProject">Add Project to grid</button>
       <div class="container text-center" style="height: 75vh; overflow-y: auto">
-        <div class="row" id="gallery-container-row">
-          <div class="col offset-1">
-            <div class="card" style="width: 18rem">
-              <img
-                src="C:\Users\fainn\OneDrive\Pictures\Screenshots\Screenshot 2023-10-15 141015.png"
-                class="img-thumbnail"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">title</h5>
-                <p class="card-text">text</p>
-                <div class="card-footer">footer</div>
-              </div>
-            </div>
-          </div>
-          <div class="col offset-1">
-            <div class="card" style="width: 18rem">
-              <img
-                src="C:\Users\fainn\source\repos\alchemiro\AI-Habarbar\frontend\img\america.png"
-                class="img-thumbnail"
-                style="width: 18rem; height: 18rem"
-                alt="..."
-              />
-              <div class="card-body">
-                <h5 class="card-title">title</h5>
-                <p class="card-text">text</p>
-                <div class="card-footer">footer</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="row" id="gallery-container-row"></div>
       </div>
     </main>
 
@@ -110,9 +72,7 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-
-    <script src="../../js/index.js"></script>
-    <script src="../../js/indextwo.js" defer></script>
+    <script src="../../js/modules/functions.js"></script>
     <script src="../../js/sidebar.js"></script>
   </body>
 </html>
