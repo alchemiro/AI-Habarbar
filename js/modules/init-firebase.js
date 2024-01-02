@@ -137,7 +137,7 @@ class Guest extends User {
   name;
   #AmountOfLikes;
 
-  constructor(ID, pass = "", name = "", amount = 0, likes = []) {
+    constructor(ID, name = "", pass = "" , amount = 0, likes = []) {
     super(ID);
     this.#pass = pass;
     this.#likes = likes;
@@ -206,7 +206,7 @@ class Judge extends User {
   #pass;
   #projects;
 
-  constructor(ID, pass = "", name = "", projects = []) {
+    constructor(ID, name = "", pass = "" , projects = []) {
     super(ID);
     this.#pass = pass;
     this.name = name;
