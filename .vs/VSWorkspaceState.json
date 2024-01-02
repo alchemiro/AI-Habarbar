@@ -2,9 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\frontend",
-    "\\frontend\\css",
-    "\\frontend\\html"
+    "\\frontend\\html",
+    "\\js",
+    "\\js\\modules"
   ],
-  "SelectedNode": "\\frontend\\html\\index.html",
   "PreviewInSolutionExplorer": false
 }

@@ -69,3 +69,7 @@ const ProjectLoaded = async () => {
   }
   getProject(id);
 };
+
+const AdminLoaded = async () => {
+
+}
