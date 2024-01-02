@@ -71,19 +71,19 @@ const ProjectLoaded = async () => {
 };
 
 const AdminLoaded = async () => {
-    const div = document.getElementById("holdstuff");
+  const div = document.getElementById("holdstuff");
 
-    const ProjectTable = document.getElementById('ProjectBody');
-    const ProjectRows = ProjectTable.getElementsByTagName('tr');
+  const ProjectTable = document.getElementById("ProjectBody");
+  const ProjectRows = ProjectTable.getElementsByTagName("tr");
 
-    const StudentTable = document.getElementById('StudentBody');
-    const StudentRows = StudentRows.getElementsByTagName('tr');
+  const StudentTable = document.getElementById("StudentBody");
+  const StudentRows = StudentTable.getElementsByTagName("tr");
 
-    const JudgeTable = document.getElementById('JudgeBody');
-    const JudgeRows = JudgeTable.getElementsByTagName('tr');
+  const JudgeTable = document.getElementById("JudgeBody");
+  const JudgeRows = JudgeTable.getElementsByTagName("tr");
 
-    const GuestTable = document.getElementById('GuestBody');
-    const GuestRows = GuestTable.getElementsByTagName('tr');
+  const GuestTable = document.getElementById("GuestBody");
+  const GuestRows = GuestTable.getElementsByTagName("tr");
 
   async function getAllProjects() {
     const projectsRef = await projectCollection
@@ -92,14 +92,13 @@ const AdminLoaded = async () => {
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
     projectsRefMapped.forEach((project) => {
-        ProjectTable.innerHTML += `<tr>
+      ProjectTable.innerHTML += `<tr>
                     <th scope="row">${project.id}</th>
-                    <td>Mark</td>
+                    <td>${project.name}</td>
                     <td>Otto</td>
                     <td>@mdo</td>
-                </tr>`
+                </tr>`;
     });
-    
   }
   async function getAllJudges() {
     const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
