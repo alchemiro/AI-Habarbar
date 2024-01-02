@@ -71,5 +71,37 @@ const ProjectLoaded = async () => {
 };
 
 const AdminLoaded = async () => {
+  const div = document.getElementById("holdstuff");
+  async function getAll() {
+    const projectsRef = await projectCollection
+      .withConverter(projectConverter)
+      .get();
+    const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
-}
+    projectsRefMapped.forEach((project) => {
+      console.log(project.toString());
+    });
+
+    const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
+    const judgesRefMapped = judgesRef.docs.map((doc) => doc.data());
+
+    judgesRefMapped.forEach((judge) => {
+      console.log(judge.toString());
+    });
+
+    const guestsRef = await guestCollection.withConverter(guestConverter).get();
+    const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
+    guestRefMapped.forEach((guest) => {
+      console.log(guest.toString());
+    });
+
+    const studentsRef = await studentCollection
+      .withConverter(studentConverter)
+      .get();
+    const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
+    studentRefMapped.forEach((student) => {
+      console.log(student.toString());
+    });
+  }
+  getAll();
+};

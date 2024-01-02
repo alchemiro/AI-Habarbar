@@ -1,88 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8" />
     <title>Excel to JSON Converter</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="../css/glob-header.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
 
     <link rel="stylesheet" href="../css/style.css" />
-    <script src="https://kit.fontawesome.com/4520f8aada.js"
-            crossorigin="anonymous"></script>
-</head>
+    <script
+      src="https://kit.fontawesome.com/4520f8aada.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
   <body>
-      <header>
-          <nav class="navbar" id="navigation">
-              <a href="#" class="nav-link nav-home" onclick="controlSidebar()">
-                  <i class="fa-solid fa-bars fa-flip-horizontal nav-icon nav-logo"
-                     id="wheel"></i>
-                  <span class="nav-logotext nav-icon" id="wheeltext">naut</span>
-              </a>
-              <ul class="navlist">
-                  <li class="nav-item">
-                      <a href="#" class="nav-link nav-text">
-                          <i class="fa-solid fa-magnifying-glass"> </i>
-                      </a>
-                  </li>
-                  <li class="nav-item">
-                      <a href="#" class="nav-link nav-text">
-                          <i class="fa-solid fa-user"></i>
-                          <i class="fa-solid fa-right-to-bracket"></i>
-                      </a>
-                  </li>
-              </ul>
-          </nav>
+    <header>
+      <nav class="navbar" id="navigation">
+        <a href="#" class="nav-link nav-home" onclick="controlSidebar()">
+          <i
+            class="fa-solid fa-bars fa-flip-horizontal nav-icon nav-logo"
+            id="wheel"
+          ></i>
+          <span class="nav-logotext nav-icon" id="wheeltext">naut</span>
+        </a>
+        <ul class="navlist">
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-text">
+              <i class="fa-solid fa-magnifying-glass"> </i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link nav-text">
+              <i class="fa-solid fa-user"></i>
+              <i class="fa-solid fa-right-to-bracket"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-          <div id="mySidebar" class="sidebar">
-              <a href="./index.html">Home</a>
-              <a href="./login.html">Login</a>
-              <a href="./project.html">My Projects</a>
-              <a href="./projectInput.html">Set and Get</a>
-              <a href="./admin.html">Admin Dashboard</a>
-              <a href="./apge.html">Excel Converter</a>
-          </div>
-      </header>
-      <h1>Excel to JSON Converter</h1>
-      <label for="excelFile">File</label>
-      <input type="file" id="excelFile" accept=".xlsx" />
-      <button id="convertButton">Convert to JSON</button>
-      <div id="jsonResult"></div>
-
-      <script>
-      document.getElementById("convertButton").addEventListener("click", () => {
-        const fileInput = document.getElementById("excelFile");
-        const file = fileInput.files[0];
-
-        if (file) {
-          const reader = new FileReader();
-
-          reader.onload = (e) => {
-            try {
-              const data = new Uint8Array(e.target.result);
-              const workbook = XLSX.read(data, { type: "array" });
-
-              // Assume the first sheet contains your data
-              const sheetName = workbook.SheetNames[0];
-              const worksheet = workbook.Sheets[sheetName];
-
-              const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-              // You can now use 'jsonData' as needed
-              document.getElementById("jsonResult").textContent =
-                JSON.stringify(jsonData, null, 2);
-            } catch (error) {
-              console.error("An error occurred:", error);
-            }
-          };
-
-          reader.readAsArrayBuffer(file);
-        }
-      });
-      </script>
-      <script src="../../js/sidebar.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
+      <div id="mySidebar" class="sidebar">
+        <a href="./index.html">Home</a>
+        <a href="./login.html">Login</a>
+        <a href="./project.html">My Projects</a>
+        <a href="./projectInput.html">Set and Get</a>
+        <a href="./admin.html">Admin Dashboard</a>
+        <a href="./apge.html">Excel Converter</a>
+      </div>
+    </header>
+    <h1>Excel to JSON Converter</h1>
+    <label for="excelFile">File</label>
+    <input type="file" id="excelFile" accept=".xlsx" />
+    <button id="convertButton" type="button">Convert to JSON</button>
+    <div id="jsonResult"></div>
+    <script src="../../js/sidebar.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../../js/modules/makejson.js"></script>
   </body>
 </html>

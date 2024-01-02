@@ -139,20 +139,10 @@ class Guest extends User {
 
   constructor(ID, pass = "", name = "", amount = 0, likes = []) {
     super(ID);
-    if (dblayer.validate(this)) {
-      var guesttemplate = dblayer.getAll(this).then(() => {
-        this.#pass = guesttemplate.pass;
-        this.#likes = guesttemplate.likes;
-        this.#AmountOfLikes = guesttemplate.AmountOfLikes;
-        this.name = guesttemplate.name;
-      });
-    } else {
-      this.#pass = pass;
-      this.#likes = likes;
-      this.#AmountOfLikes = amount;
-      this.name = name;
-      dblayer.setAll(this);
-    }
+    this.#pass = pass;
+    this.#likes = likes;
+    this.#AmountOfLikes = amount;
+    this.name = name;
   }
 
   get name() {
@@ -205,6 +195,9 @@ class Guest extends User {
       project.RemoveLike();
     }
   }
+  toString() {
+    return `Guest ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}`;
+  }
 }
 
 class Judge extends User {
@@ -215,17 +208,9 @@ class Judge extends User {
 
   constructor(ID, pass = "", name = "", projects = []) {
     super(ID);
-    if (dblayer.validate(this)) {
-      var judgetemplate = dblayer.getAll(this).then(() => {
-        this.#pass = judgetemplate.pass;
-        this.name = judgetemplate.name;
-        this.#projects = judgetemplate.pullGuestProjects;
-      });
-    } else {
-      this.#pass = pass;
-      this.name = name;
-      this.#projects = projects;
-    }
+    this.#pass = pass;
+    this.name = name;
+    this.#projects = projects;
   }
   get name() {
     return this.name;
@@ -264,6 +249,10 @@ class Judge extends User {
   RemoveProject(projectID) {
     this.#projects.splice(this.#projects.indexOf(projectID), 1);
   }
+
+  toString() {
+    return `Judge ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.projects}`;
+  }
 }
 
 class Student extends Guest {
@@ -279,13 +268,7 @@ class Student extends Guest {
     amount = 0
   ) {
     super(ID, pass, name, amount, likes);
-    if (dblayer.validate(this)) {
-      var studenttemplate = dblayer.getAll(this).then(() => {
-        this.#ProjectID = studenttemplate.project;
-      });
-    } else {
-      this.#ProjectID = ProjectID;
-    }
+    this.#ProjectID = ProjectID;
   }
 
   get project() {
@@ -294,6 +277,9 @@ class Student extends Guest {
 
   set project(projectID) {
     this.#ProjectID = projectID;
+  }
+  toString() {
+    return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.project}`;
   }
 }
 const getDocumentFirebase = async function (collection, keystring, converter) {

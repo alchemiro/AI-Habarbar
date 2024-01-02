@@ -5,17 +5,17 @@ const studentConverter = {
       name: student.name,
       password: student.password,
       likes: student.likes,
-      ProjectID: student.ProjectID,
+      project: student.project,
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new student(
+    return new Student(
       data.id,
-      data.name,
       data.password,
-      data.likes,
-      data.ProjectID
+      data.name,
+      data.project,
+      data.likes
     );
   },
 };
