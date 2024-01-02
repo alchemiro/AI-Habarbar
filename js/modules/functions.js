@@ -72,7 +72,7 @@ const ProjectLoaded = async () => {
 
 const AdminLoaded = async () => {
   const div = document.getElementById("holdstuff");
-  async function getAll() {
+  async function getAllProjects() {
     const projectsRef = await projectCollection
       .withConverter(projectConverter)
       .get();
@@ -81,20 +81,28 @@ const AdminLoaded = async () => {
     projectsRefMapped.forEach((project) => {
       console.log(project.toString());
     });
-
+    return projectsRefMapped;
+  }
+  async function getAllJudges() {
     const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
     const judgesRefMapped = judgesRef.docs.map((doc) => doc.data());
 
     judgesRefMapped.forEach((judge) => {
       console.log(judge.toString());
     });
+    return judgesRefMapped;
+  }
 
+  async function getAllGuests() {
     const guestsRef = await guestCollection.withConverter(guestConverter).get();
     const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
     guestRefMapped.forEach((guest) => {
       console.log(guest.toString());
     });
+    return guestRefMapped;
+  }
 
+  async function getAllStudents() {
     const studentsRef = await studentCollection
       .withConverter(studentConverter)
       .get();
@@ -102,6 +110,13 @@ const AdminLoaded = async () => {
     studentRefMapped.forEach((student) => {
       console.log(student.toString());
     });
+    return studentRefMapped;
+  }
+  async function getAll() {
+    getAllProjects();
+    getAllJudges();
+    getAllGuests;
+    getAllStudents();
   }
   getAll();
 };
