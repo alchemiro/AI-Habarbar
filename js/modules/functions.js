@@ -19,7 +19,7 @@ const indexLoaded = async () => {
       project.name = project.name == " " ? "." : project.name;
       project.summary = project.summary == " " ? "." : project.summary;
       projects.push(project);
-      
+
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
       cardDiv.style = "width: 18rem;";
@@ -84,7 +84,24 @@ const AdminLoaded = async () => {
 
   const GuestTable = document.getElementById("GuestBody");
   const GuestRows = GuestTable.getElementsByTagName("tr");
-
+  async function FindStudentsByProject(project) {
+    const studentsQuery = studentCollection.where(
+      "projectID",
+      "==",
+      project.id
+    );
+    console.log("before query");
+    await studentsQuery
+      .withConverter(studentConverter)
+      .get()
+      .then((queryResult) => {
+        queryResult.forEach((doc) => {
+          console.log(doc.id);
+          console.log(doc.data().toString());
+        });
+      });
+    console.log("after query");
+  }
   async function getAllProjects() {
     const projectsRef = await projectCollection
       .withConverter(projectConverter)
@@ -94,14 +111,41 @@ const AdminLoaded = async () => {
     projectsRefMapped.forEach((project) => {
       project.name = project.name == " " ? "." : project.name;
       project.summary = project.summary == " " ? "." : project.summary;
-      ProjectTable.innerHTML += `<tr>
-                    <th scope="row">${project.id}</th>
-                    <td>${project.name}</td>
-                    <td>student name</td>
-                    <td>100</td>
-                    <td>${project.summary}</td>
-                </tr>`;
-      console.log("projectssssss");
+      const row = document.createElement("tr");
+      row.addEventListener("click", async () => {
+        await FindStudentsByProject(project);
+        console.log("click");
+      });
+
+      const header = document.createElement("th");
+      header.textContent = project.id;
+
+      const name = document.createElement("td");
+      name.textContent = project.name;
+
+      const summary = document.createElement("td");
+      summary.textContent = project.summary;
+
+      const students = document.createElement("td");
+      students.textContent = "student place";
+
+      const grade = document.createElement("td");
+      grade.textContent = "100";
+
+      row.appendChild(header);
+      row.appendChild(name);
+      row.appendChild(students);
+      row.appendChild(grade);
+      row.appendChild(summary);
+      ProjectTable.appendChild(row);
+      // ProjectTable.innerHTML += `<tr onclick="FindStudentsByProject(project)">
+      //               <th scope="row">${project.id}</th>
+      //               <td>${project.name}</td>
+      //               <td>student name</td>
+      //               <td>100</td>
+      //               <td>${project.summary}</td>
+      //           </tr>`;
+      // console.log("projectssssss");
     });
   }
   async function getAllJudges() {
@@ -109,7 +153,7 @@ const AdminLoaded = async () => {
     const judgesRefMapped = judgesRef.docs.map((doc) => doc.data());
 
     judgesRefMapped.forEach((judge) => {
-      console.log(judge.toString());
+      // console.log(judge.toString());
       //judge.name = judge.name == " " ? "." : judge.name;
       JudgeTable.innerHTML += `<tr>
                     <th scope="row">${judge.id}</th>
@@ -139,8 +183,8 @@ const AdminLoaded = async () => {
       .withConverter(studentConverter)
       .get();
     const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
-      studentRefMapped.forEach((student) => {
-          console.log(student);
+    studentRefMapped.forEach((student) => {
+      // console.log(student);
       StudentTable.innerHTML += `<tr>
       <th scope="row">${student.id}</th>
       <td>${student.name}</td>

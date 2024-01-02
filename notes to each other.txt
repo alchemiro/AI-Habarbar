@@ -79,3 +79,12 @@ like should be checked when user liked project
 add option to view projects in table
 admin see all In table, hover for image to show, click to edit the page
 create project page, toggle like/grade for users
+
+new object = Grade(judge, project, value, round)
+- judge can edit his own grade
+- admin can edit all grades
+- average shown on table
+- project page hidden window of all grades, only admin can see (not even judge)
+
+- script for f5 reload
+- allow anonymous view (guest)

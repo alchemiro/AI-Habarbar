@@ -257,26 +257,19 @@ class Judge extends User {
 
 class Student extends Guest {
   //set and get done
-  #projectID;
+  #project;
 
-  constructor(
-    ID,
-    name = "",
-    pass = "",
-    amount = 0,
-    likes = [],
-    projectID = ""
-  ) {
+  constructor(ID, name = "", pass = "", amount = 0, likes = [], project = "") {
     super(ID, name, pass, amount, likes);
-    this.#projectID = projectID;
+    this.#project = project;
   }
 
   get project() {
-    return this.#projectID;
+    return this.#project;
   }
 
-  set project(projectID) {
-    this.#projectID = projectID;
+  set projectID(project) {
+    this.#project = project;
   }
   toString() {
     return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.project}, Amount: ${this.amount}`;
