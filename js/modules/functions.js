@@ -91,33 +91,32 @@ const AdminLoaded = async () => {
       .get();
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
-      projectsRefMapped.forEach((project) => {
-          project.name = project.name == " " ? "." : project.name;
-          project.summary = project.summary == " " ? "." : project.summary;
-        ProjectTable.innerHTML += `<tr>
+    projectsRefMapped.forEach((project) => {
+      project.name = project.name == " " ? "." : project.name;
+      project.summary = project.summary == " " ? "." : project.summary;
+      ProjectTable.innerHTML += `<tr>
                     <th scope="row">${project.id}</th>
                     <td>${project.name}</td>
                     <td>student name</td>
                     <td>100</td>
                     <td>${project.summary}</td>
                 </tr>`;
-          console.log("projectssssss");
+      console.log("projectssssss");
     });
   }
   async function getAllJudges() {
     const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
     const judgesRefMapped = judgesRef.docs.map((doc) => doc.data());
 
-      judgesRefMapped.forEach((judge) => {
-          console.log(judge.toString());
-        //judge.name = judge.name == " " ? "." : judge.name;
-        JudgeTable.innerHTML += `<tr>
+    judgesRefMapped.forEach((judge) => {
+      console.log(judge.toString());
+      //judge.name = judge.name == " " ? "." : judge.name;
+      JudgeTable.innerHTML += `<tr>
                     <th scope="row">${judge.id}</th>
                     <td>${judge.name}</td>
                     <td>none!</td>
                     <td>none!</td>
                 </tr>`;
-        
     });
   }
 
@@ -125,8 +124,8 @@ const AdminLoaded = async () => {
     const guestsRef = await guestCollection.withConverter(guestConverter).get();
     const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
     guestRefMapped.forEach((guest) => {
-        guest.name = guest.name == " " ? "." : guest.name;
-        GuestTable.innerHTML += `<tr>
+      guest.name = guest.name == " " ? "." : guest.name;
+      GuestTable.innerHTML += `<tr>
                     <th scope="row">${guest.id}</th>
                     <td>${guest.name}</td>
                     <td>none!</td>
@@ -141,9 +140,13 @@ const AdminLoaded = async () => {
       .get();
     const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
     studentRefMapped.forEach((student) => {
-      console.log(student.toString());
+      StudentTable.innerHTML += `<tr>
+      <th scope="row">${student.id}</th>
+      <td>${student.name}</td>
+      <td>${student.projectID}</td>
+      <td>${student.amount}</td>
+  </tr>`;
     });
-    return studentRefMapped;
   }
   async function getAll() {
     getAllProjects();

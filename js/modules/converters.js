@@ -3,19 +3,21 @@ const studentConverter = {
     return {
       id: student.id,
       name: student.name,
-      password: student.password,
+      pass: student.pass,
       likes: student.likes,
       project: student.project,
+      amount: student.amount,
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     return new Student(
       data.id,
-      data.password,
       data.name,
-      data.project,
-      data.likes
+      data.pass,
+      data.amount,
+      data.likes,
+      data.project
     );
   },
 };
@@ -53,13 +55,13 @@ const judgeConverter = {
     return {
       id: judge.id,
       name: judge.name,
-      password: judge.password,
+      pass: judge.pass,
       projects: judge.projects,
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Judge(data.id, data.name, data.password, data.projects);
+    return new Judge(data.id, data.name, data.pass, data.projects);
   },
 };
 
@@ -68,12 +70,13 @@ const guestConverter = {
     return {
       id: guest.id,
       name: guest.name,
-      password: guest.password,
+      password: guest.pass,
+      amount: guest.amount,
       likes: guest.likes,
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Guest(data.id, data.name, data.password, data.likes);
+    return new Guest(data.id, data.name, data.pass, data.amount, data.likes);
   },
 };

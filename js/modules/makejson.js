@@ -17,11 +17,29 @@ document.getElementById("convertButton").addEventListener("click", () => {
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
 
         // You can now use 'jsonData' as needed
-        document.getElementById("jsonResult").textContent = JSON.stringify(
-          jsonData,
-          null,
-          2
-        );
+        // document.getElementById("jsonResult").textContent = JSON.stringify(
+        //   jsonData,
+        //   null,
+        //   2
+        // );
+        jsonData.forEach((student) => {
+          const studentObj = new Student(
+            `${student.id}`,
+            `${student.name}`,
+            `${student.pass}`,
+            student.amount,
+            [],
+            `${student.projectID}`
+          );
+          studentCollection
+            .doc(studentObj.id)
+            .withConverter(studentConverter)
+            .set(studentObj);
+        });
+
+        console.log("done");
+
+        // studentsJson[0]
       } catch (error) {
         console.error("An error occurred:", error);
       }

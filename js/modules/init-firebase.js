@@ -135,13 +135,13 @@ class Guest extends User {
   #pass;
   #likes;
   name;
-  #AmountOfLikes;
+  #amount;
 
-    constructor(ID, name = "", pass = "" , amount = 0, likes = []) {
+  constructor(ID, name = "", pass = "", amount = 0, likes = []) {
     super(ID);
     this.#pass = pass;
     this.#likes = likes;
-    this.#AmountOfLikes = amount;
+    this.#amount = amount;
     this.name = name;
   }
 
@@ -156,8 +156,8 @@ class Guest extends User {
     return this.#pass;
   }
 
-  get AmountOfLikes() {
-    return this.#AmountOfLikes;
+  get amount() {
+    return this.#amount;
   }
 
   // set name(newname){
@@ -172,8 +172,8 @@ class Guest extends User {
     this.#likes = newlikes;
   }
 
-  set AmountOfLikes(newamount) {
-    this.#AmountOfLikes = newamount;
+  set amount(newamount) {
+    this.#amount = newamount;
   }
   set name(newName) {
     this.name = newName;
@@ -206,7 +206,7 @@ class Judge extends User {
   #pass;
   #projects;
 
-    constructor(ID, name = "", pass = "" , projects = []) {
+  constructor(ID, name = "", pass = "", projects = []) {
     super(ID);
     this.#pass = pass;
     this.name = name;
@@ -257,29 +257,29 @@ class Judge extends User {
 
 class Student extends Guest {
   //set and get done
-  #ProjectID;
+  #projectID;
 
   constructor(
     ID,
-    pass = "",
     name = "",
-    ProjectID = "",
+    pass = "",
+    amount = 0,
     likes = [],
-    amount = 0
+    projectID = ""
   ) {
-    super(ID, pass, name, amount, likes);
-    this.#ProjectID = ProjectID;
+    super(ID, name, pass, amount, likes);
+    this.#projectID = projectID;
   }
 
   get project() {
-    return this.#ProjectID;
+    return this.#projectID;
   }
 
   set project(projectID) {
-    this.#ProjectID = projectID;
+    this.#projectID = projectID;
   }
   toString() {
-    return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.project}`;
+    return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.project}, Amount: ${this.amount}`;
   }
 }
 const getDocumentFirebase = async function (collection, keystring, converter) {
