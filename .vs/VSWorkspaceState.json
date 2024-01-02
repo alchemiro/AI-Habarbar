@@ -2,10 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\frontend",
+    "\\frontend\\css",
     "\\frontend\\html",
     "\\js",
     "\\js\\modules"
   ],
-  "SelectedNode": "\\js\\modules\\converters.js",
+  "SelectedNode": "\\js\\modules\\users.js",
   "PreviewInSolutionExplorer": false
 }

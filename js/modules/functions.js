@@ -19,7 +19,7 @@ const indexLoaded = async () => {
       project.name = project.name == " " ? "." : project.name;
       project.summary = project.summary == " " ? "." : project.summary;
       projects.push(project);
-
+      
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
       cardDiv.style = "width: 18rem;";
@@ -139,11 +139,12 @@ const AdminLoaded = async () => {
       .withConverter(studentConverter)
       .get();
     const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
-    studentRefMapped.forEach((student) => {
+      studentRefMapped.forEach((student) => {
+          console.log(student);
       StudentTable.innerHTML += `<tr>
       <th scope="row">${student.id}</th>
       <td>${student.name}</td>
-      <td>${student.projectID}</td>
+      <td>${student.project}</td>
       <td>${student.amount}</td>
   </tr>`;
     });

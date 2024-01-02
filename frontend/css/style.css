@@ -27,10 +27,15 @@
 }
 
 .container {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
 }
 .card {
   margin: 10px;
+}
+
+.table {
+    margin: 10px;
 }
 
 img {
