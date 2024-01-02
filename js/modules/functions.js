@@ -76,6 +76,8 @@ const AdminLoaded = async () => {
   const ProjectTable = document.getElementById("ProjectBody");
   const ProjectRows = ProjectTable.getElementsByTagName("tr");
 
+  console.log("a");
+
   const StudentTable = document.getElementById("StudentBody");
   const StudentRows = StudentTable.getElementsByTagName("tr");
 
