@@ -84,38 +84,33 @@ const AdminLoaded = async () => {
 
   const GuestTable = document.getElementById("GuestBody");
   const GuestRows = GuestTable.getElementsByTagName("tr");
+
   async function FindStudentsByProject(project) {
-    const studentsQuery = studentCollection.where(
-      "projectID",
-      "==",
-      project.id
-    );
-    console.log("before query");
+    const studentsQuery = studentCollection.where("project", "==", project.id);
+    // console.log("before query");
+    const list = [];
     await studentsQuery
       .withConverter(studentConverter)
       .get()
       .then((queryResult) => {
         queryResult.forEach((doc) => {
-          console.log(doc.id);
-          console.log(doc.data().toString());
+          list.push(doc.data());
         });
       });
-    console.log("after query");
+    // console.log("after query");
+    return list;
   }
+
   async function getAllProjects() {
     const projectsRef = await projectCollection
       .withConverter(projectConverter)
       .get();
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
-    projectsRefMapped.forEach((project) => {
+    projectsRefMapped.forEach(async (project) => {
       project.name = project.name == " " ? "." : project.name;
       project.summary = project.summary == " " ? "." : project.summary;
       const row = document.createElement("tr");
-      row.addEventListener("click", async () => {
-        await FindStudentsByProject(project);
-        console.log("click");
-      });
 
       const header = document.createElement("th");
       header.textContent = project.id;
@@ -127,7 +122,13 @@ const AdminLoaded = async () => {
       summary.textContent = project.summary;
 
       const students = document.createElement("td");
-      students.textContent = "student place";
+      students.textContent = "";
+      await FindStudentsByProject(project).then((document) => {
+        document.forEach((student) => {
+          students.textContent += student.name + ", ";
+        });
+        // console.log("click");
+      });
 
       const grade = document.createElement("td");
       grade.textContent = "100";
@@ -200,4 +201,62 @@ const AdminLoaded = async () => {
     getAllStudents();
   }
   getAll();
+};
+
+const LoginLoaded = async () => {
+  async function checkGuests(id, password) {
+    await guestCollection
+      .where("id", "==", id)
+      .where("pass", "==", password)
+      .withConverter(guestConverter)
+      .get()
+      .then((query) => {
+        // console.log(query);
+        if (query.empty) {
+          //if there is no user with these credentials
+          console.log("empty!");
+        } else {
+          query.forEach((doc) => {
+            //there is a user with these credentials
+            return doc.data();
+          });
+        }
+      });
+  }
+  async function checkJudges(id, password) {
+    await judgeCollectionCollection
+      .where("id", "==", id)
+      .where("pass", "==", password)
+      .withConverter(judgeConverter)
+      .get()
+      .then((query) => {
+        // console.log(query);
+        if (query.empty) {
+          console.log("empty");
+        } else {
+          query.forEach((doc) => {
+            // console.log(doc.data().toString());
+            return doc.data();
+          });
+        }
+      });
+  }
+  async function checkStudents(id, password) {
+    await studentCollection
+      .where("id", "==", id)
+      .where("pass", "==", password)
+      .withConverter(studentConverter)
+      .get()
+      .then((query) => {
+        // console.log(query);
+        if (query.empty) {
+          console.log("empty");
+        } else {
+          query.forEach((doc) => {
+            // console.log(doc.data().toString());
+            return doc.data();
+          });
+        }
+      });
+  }
 };

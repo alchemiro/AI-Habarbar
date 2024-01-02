@@ -272,7 +272,7 @@ class Student extends Guest {
     this.#project = project;
   }
   toString() {
-    return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.project}, Amount: ${this.amount}`;
+    return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Project ID: ${this.project}, Amount of Likes: ${this.amount}`;
   }
 }
 const getDocumentFirebase = async function (collection, keystring, converter) {
