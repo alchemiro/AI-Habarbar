@@ -288,7 +288,7 @@ const getDocumentFirebase = async function (collection, keystring, converter) {
   var objectRef = collection.doc(keystring).withConverter(converter);
   return objectRef.get().then((document) => {
     if (document.exists) {
-      console.log("Found!");
+      // console.log("Found!");
       // console.log(document.data().toString());
       const data = document.data();
       console.log(data.toString());
