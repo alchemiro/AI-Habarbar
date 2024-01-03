@@ -55,7 +55,8 @@
           <table class="table" id="ProjectTable">
               <thead>
                   <tr>
-                      <th scope="col">ProjectID
+                      <th scope="col">
+                          ProjectID
                           <button class="btn btn-primary btn-sm" onclick="">Add</button>
                       </th>
                       <th scope="col">Name</th>
@@ -66,6 +67,17 @@
               </thead>
               <tbody id="ProjectBody"></tbody>
           </table>
+          <script>
+              const projectRows = document.querySelectorAll("tbody tr");
+
+              projectRows.forEach(row => {
+                  row.addEventListener("click", function () {
+                      const projectId = row.cells[0].innerText;
+                      const url = "../../frontend/html/project.html";
+                      window.location.href = `${url}?id=${projectId}`;
+                  });
+              });
+          </script>
       </div>
       <div class="container text-center" style="height: 23vh; overflow-y: auto">
           <table class="table" id="JudgeTable">
