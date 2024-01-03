@@ -131,7 +131,7 @@ const AdminLoaded = async () => {
       });
 
       const grade = document.createElement("td");
-      grade.textContent = "100";
+      grade.textContent = "10";
 
       row.appendChild(header);
       row.appendChild(name);
@@ -203,7 +203,8 @@ const AdminLoaded = async () => {
   getAll();
 };
 
-const LoginLoaded = async () => {
+const LoginLoaded = async (id, password) => {
+    if (id == 'admin' && password == 'admin') console.log('admin');
   async function checkGuests(id, password) {
     await guestCollection
       .where("id", "==", id)
@@ -258,5 +259,9 @@ const LoginLoaded = async () => {
           });
         }
       });
-  }
+    }
+
+    const user = checkGuests(id, password) || checkStudents(id, password) || checkJudges(id, password);
+    if (user) console.log(typeof user);
+    else console.log("no");
 };
