@@ -48,8 +48,11 @@ const ProjectLoaded = async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const nameDiv = document.getElementById("nametag");
   const sumDiv = document.getElementById("summarytag");
-  const imageDiv = document.getElementById("imagetag");
+  const iddiv = document.getElementById("idtag");
   const likegradeDiv = document.getElementById("likegradediv");
+  const btn = document.getElementById("gradeButton");
+  const input = document.getElementById("gradeInput");
+
   // console.log(urlParams.toString());
 
   const id = urlParams.get("id");
@@ -58,16 +61,26 @@ const ProjectLoaded = async () => {
   async function getProject(id) {
     const p = await getDocument(new Project(id));
 
-    nameDiv.innerHTML += `<h2>${p.name}</h2>`;
+    nameDiv.textContent = p.name;
 
-    sumDiv.innerHTML += `<h2>${p.summary}</h2>`;
+    sumDiv.textContent = p.summary;
 
-    imageDiv.innerHTML += `<img src="${p.img}" alt="Project Image">`;
+    iddiv.textContent = id;
 
     //   if(loginIsGuest) show likes
     //   else if(loginIsJudge) show grading
   }
+
+  async function uploadGrade(grade) {
+    console.log("hello");
+    await projectCollection.doc(id).set({ grades: [grade] }, { merge: true });
+  }
+
   getProject(id);
+
+  btn.addEventListener("click", () => {
+    uploadGrade(parseInt(input.value));
+  });
 };
 
 const AdminLoaded = async () => {
@@ -204,7 +217,7 @@ const AdminLoaded = async () => {
 };
 
 const LoginLoaded = async (id, password) => {
-    if (id == 'admin' && password == 'admin') console.log('admin');
+  if (id == "admin" && password == "admin") console.log("admin");
   async function checkGuests(id, password) {
     await guestCollection
       .where("id", "==", id)
@@ -259,9 +272,12 @@ const LoginLoaded = async (id, password) => {
           });
         }
       });
-    }
+  }
 
-    const user = checkGuests(id, password) || checkStudents(id, password) || checkJudges(id, password);
-    if (user) console.log(typeof user);
-    else console.log("no");
+  const user =
+    checkGuests(id, password) ||
+    checkStudents(id, password) ||
+    checkJudges(id, password);
+  if (user) console.log(typeof user);
+  else console.log("no");
 };
