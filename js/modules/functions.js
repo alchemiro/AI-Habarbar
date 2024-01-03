@@ -1,13 +1,13 @@
+function redirectProjectWithParams(id) {
+  const url = "../../frontend/html/project.html";
+  window.location.href = `${url}?id=${id}`;
+}
+
 const indexLoaded = async () => {
   const addBtn = document.getElementById("addProject");
   const gridrow = document.getElementById("gallery-container-row");
   const input = document.getElementById("projectInputID");
   let projects = [];
-
-  function redirectProjectWithParams(id) {
-    const url = "../../frontend/html/project.html";
-    window.location.href = `${url}?id=${id}`;
-  }
 
   async function getGallery() {
     const projectsRef = await projectCollection
