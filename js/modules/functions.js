@@ -3,6 +3,11 @@ function redirectProjectWithParams(id) {
   window.location.href = `${url}?id=${id}`;
 }
 
+function bailout() {
+  const url = "../../frontend/html/index.html";
+  window.location.href = url;
+}
+
 const indexLoaded = async () => {
   const addBtn = document.getElementById("addProject");
   const gridrow = document.getElementById("gallery-container-row");
@@ -84,6 +89,8 @@ const ProjectLoaded = async () => {
 };
 
 const AdminLoaded = async () => {
+  checkIfAdmin();
+
   const div = document.getElementById("holdstuff");
 
   const ProjectTable = document.getElementById("ProjectBody");
@@ -97,6 +104,13 @@ const AdminLoaded = async () => {
 
   const GuestTable = document.getElementById("GuestBody");
   const GuestRows = GuestTable.getElementsByTagName("tr");
+
+  function checkIfAdmin() {
+    checkLoggedIn();
+    if (localStorage.getItem("CurrentUser") != "admin") {
+      bailout();
+    }
+  }
 
   async function FindStudentsByProject(project) {
     const studentsQuery = studentCollection.where("project", "==", project.id);
@@ -177,7 +191,6 @@ const AdminLoaded = async () => {
                 </tr>`;
     });
   }
-
   async function getAllGuests() {
     const guestsRef = await guestCollection.withConverter(guestConverter).get();
     const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
@@ -191,7 +204,6 @@ const AdminLoaded = async () => {
                 </tr>`;
     });
   }
-
   async function getAllStudents() {
     const studentsRef = await studentCollection
       .withConverter(studentConverter)
@@ -217,73 +229,81 @@ const AdminLoaded = async () => {
 };
 
 const LoginLoaded = async () => {
+  async function checkGuests(id, password) {
+    const querySnapshot = await guestCollection
+      .where("id", "==", id)
+      .where("pass", "==", password)
+      .withConverter(guestConverter)
+      .get();
 
-
-    async function checkGuests(id, password) {
-        const querySnapshot = await guestCollection
-            .where("id", "==", id)
-            .where("pass", "==", password)
-            .withConverter(guestConverter)
-            .get();
-
-        if (querySnapshot.empty) {
-            return null; // No user found
-        } else {
-            return querySnapshot.docs[0].data(); // Return user data from the first match
-        }
+    if (querySnapshot.empty) {
+      return null; // No user found
+    } else {
+      return querySnapshot.docs[0].data(); // Return user data from the first match
     }
+  }
 
-    async function checkJudges(id, password) {
-        const querySnapshot = await judgeCollection
-            .where("id", "==", id)
-            .where("pass", "==", password)
-            .withConverter(judgeConverter)
-            .get();
+  async function checkJudges(id, password) {
+    const querySnapshot = await judgeCollection
+      .where("id", "==", id)
+      .where("pass", "==", password)
+      .withConverter(judgeConverter)
+      .get();
 
-        if (querySnapshot.empty) {
-            return null; // No user found
-        } else {
-            return querySnapshot.docs[0].data(); // Return user data from the first match
-        }
+    if (querySnapshot.empty) {
+      return null; // No user found
+    } else {
+      return querySnapshot.docs[0].data(); // Return user data from the first match
     }
+  }
 
-    async function checkStudents(id, password) {
-        const querySnapshot = await studentCollection
-            .where("id", "==", id)
-            .where("pass", "==", password)
-            .withConverter(studentConverter)
-            .get();
+  async function checkStudents(id, password) {
+    const querySnapshot = await studentCollection
+      .where("id", "==", id)
+      .where("pass", "==", password)
+      .withConverter(studentConverter)
+      .get();
 
-        if (querySnapshot.empty) {
-            return null; // No user found
-        } else {
-            return querySnapshot.docs[0].data(); // Return user data from the first match
-        }
+    if (querySnapshot.empty) {
+      return null; // No user found
+    } else {
+      return querySnapshot.docs[0].data(); // Return user data from the first match
     }
+  }
 
-    async function checkExist(id, password) {
-        if (id === "admin" && password === "admin") {
-            console.log("Admin login detected");
-        } else {
-            const user =
-                (await checkGuests(id, password)) ||
-                (await checkStudents(id, password)) ||
-                (await checkJudges(id, password));
+  async function checkExist(id, password) {
+    if (id === "admin" && password === "admin") {
+      console.log("Admin login detected");
+      localStorage.setItem("CurrentUser", "admin");
+    } else {
+      const user =
+        (await checkGuests(id, password)) ||
+        (await checkStudents(id, password)) ||
+        (await checkJudges(id, password));
 
-            if (user) {
-                console.log("User found:", user);
-                localStorage.setItem("CurrentUser", user);
-            } else {
-                console.log("User not found");
-            }
-        }
+      if (user) {
+        console.log("User found:", user.toString());
+        localStorage.setItem("CurrentUser", user);
+      } else {
+        console.log("User not found");
+      }
     }
+  }
 
-        document.getElementById('logBTN').addEventListener('click', () => {
-            console.log("heeeeeeee")
-            const usernameValue = document.getElementById('username').value;
-            const passwordValue = document.getElementById('password').value;
+  document.getElementById("logBTN").addEventListener("click", () => {
+    console.log("heeeeeeee");
+    const usernameValue = document.getElementById("username").value;
+    const passwordValue = document.getElementById("password").value;
 
-            checkExist(usernameValue, passwordValue);
-        });
-}
+    checkExist(usernameValue, passwordValue);
+  });
+};
+
+const checkLoggedIn = () => {
+  const user = localStorage.getItem("CurrentUser");
+
+  if (!user) {
+    bailout();
+    return true;
+  } else return false;
+};
