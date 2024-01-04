@@ -22,19 +22,23 @@ document.getElementById("convertButton").addEventListener("click", () => {
         //   null,
         //   2
         // );
-        jsonData.forEach((student) => {
-          const studentObj = new Student(
-            `${student.id}`,
-            `${student.name}`,
-            `${student.pass}`,
-            student.amount,
+
+        jsonData.forEach(async (project) => {
+          console.log(project);
+          const projectObj = new Project(
+            `${project.id}`,
+            ``,
             [],
-            `${student.projectID}`
+            project.likes,
+            `${project.summary}`,
+            ``,
+            undefined,
+            `${project.category}`
           );
-          studentCollection
-            .doc(studentObj.id)
-            .withConverter(studentConverter)
-            .set(studentObj);
+          projectCollection
+            .doc(projectObj.id)
+            .withConverter(projectConverter)
+            .set(projectObj);
         });
 
         console.log("done");
