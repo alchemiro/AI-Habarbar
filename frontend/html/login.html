@@ -15,7 +15,7 @@
     <script src="https://kit.fontawesome.com/4520f8aada.js"
             crossorigin="anonymous"></script>
 </head>
-<body>
+<body onload="LoginLoaded()">
     <header>
         <nav class="navbar" id="navigation">
             <a href="#" class="nav-link nav-home" onclick="controlSidebar()">
@@ -65,7 +65,7 @@
                                 <label for="password">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Enter password">
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" onclick="checkStudents(username, password)">Login</button>
+                            <button type="button" class="btn btn-primary btn-block" id="logBTN">Login</button>
                         </form>
                     </div>
                 </div>

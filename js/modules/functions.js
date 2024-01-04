@@ -216,68 +216,74 @@ const AdminLoaded = async () => {
   getAll();
 };
 
-const LoginLoaded = async (id, password) => {
-  if (id == "admin" && password == "admin") console.log("admin");
-  async function checkGuests(id, password) {
-    await guestCollection
-      .where("id", "==", id)
-      .where("pass", "==", password)
-      .withConverter(guestConverter)
-      .get()
-      .then((query) => {
-        // console.log(query);
-        if (query.empty) {
-          //if there is no user with these credentials
-          console.log("empty!");
-        } else {
-          query.forEach((doc) => {
-            //there is a user with these credentials
-            return doc.data();
-          });
-        }
-      });
-  }
-  async function checkJudges(id, password) {
-    await judgeCollectionCollection
-      .where("id", "==", id)
-      .where("pass", "==", password)
-      .withConverter(judgeConverter)
-      .get()
-      .then((query) => {
-        // console.log(query);
-        if (query.empty) {
-          console.log("empty");
-        } else {
-          query.forEach((doc) => {
-            // console.log(doc.data().toString());
-            return doc.data();
-          });
-        }
-      });
-  }
-  async function checkStudents(id, password) {
-    await studentCollection
-      .where("id", "==", id)
-      .where("pass", "==", password)
-      .withConverter(studentConverter)
-      .get()
-      .then((query) => {
-        // console.log(query);
-        if (query.empty) {
-          console.log("empty");
-        } else {
-          query.forEach((doc) => {
-            // console.log(doc.data().toString());
-            return doc.data();
-          });
-        }
-      });
-  }
+const LoginLoaded = async () => {
 
-  const user =
-    checkGuests(id, password) ||
-    checkStudents(id, password) ||
-    checkJudges(id, password);
-  if (user) console.log(typeof user);
-  else console.log("no");
-};
+
+    async function checkGuests(id, password) {
+        const querySnapshot = await guestCollection
+            .where("id", "==", id)
+            .where("pass", "==", password)
+            .withConverter(guestConverter)
+            .get();
+
+        if (querySnapshot.empty) {
+            return null; // No user found
+        } else {
+            return querySnapshot.docs[0].data(); // Return user data from the first match
+        }
+    }
+
+    async function checkJudges(id, password) {
+        const querySnapshot = await judgeCollection
+            .where("id", "==", id)
+            .where("pass", "==", password)
+            .withConverter(judgeConverter)
+            .get();
+
+        if (querySnapshot.empty) {
+            return null; // No user found
+        } else {
+            return querySnapshot.docs[0].data(); // Return user data from the first match
+        }
+    }
+
+    async function checkStudents(id, password) {
+        const querySnapshot = await studentCollection
+            .where("id", "==", id)
+            .where("pass", "==", password)
+            .withConverter(studentConverter)
+            .get();
+
+        if (querySnapshot.empty) {
+            return null; // No user found
+        } else {
+            return querySnapshot.docs[0].data(); // Return user data from the first match
+        }
+    }
+
+    async function checkExist(id, password) {
+        if (id === "admin" && password === "admin") {
+            console.log("Admin login detected");
+        } else {
+            const user =
+                (await checkGuests(id, password)) ||
+                (await checkStudents(id, password)) ||
+                (await checkJudges(id, password));
+
+            if (user) {
+                console.log("User found:", user);
+                localStorage.setItem("CurrentUser", user);
+            } else {
+                console.log("User not found");
+            }
+        }
+    }
+
+        document.getElementById('logBTN').addEventListener('click', () => {
+            console.log("heeeeeeee")
+            const usernameValue = document.getElementById('username').value;
+            const passwordValue = document.getElementById('password').value;
+
+            checkExist(usernameValue, passwordValue);
+        });
+}
