@@ -27,7 +27,7 @@ getBtn.addEventListener("click", () => {
   const id = projOutputID.value;
   var project = new Project(id);
   //   const projRef = projectConverter.doc(id).withConverter(projectConverter);
-  console.log("before get");
+  // console.log("before get");
   getDocument(project);
-  console.log("after get");
+  // console.log("after get");
 });

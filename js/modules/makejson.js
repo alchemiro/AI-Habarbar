@@ -25,15 +25,18 @@ document.getElementById("convertButton").addEventListener("click", () => {
 
         jsonData.forEach(async (project) => {
           console.log(project);
+          const summary = project.summary ? project.summary : ".";
+          const name = project.name ? project.name : ".";
+          const likes = project.likes ? project.likes : 0;
+          const image = project.img ? project.img : ".";
+          const cat = project.category ? project.category : ".";
           const projectObj = new Project(
             `${project.id}`,
-            ``,
-            [],
-            project.likes,
-            `${project.summary}`,
-            ``,
-            undefined,
-            `${project.category}`
+            name,
+            likes,
+            summary,
+            image,
+            cat
           );
           projectCollection
             .doc(projectObj.id)

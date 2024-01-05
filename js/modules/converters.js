@@ -27,12 +27,10 @@ const projectConverter = {
     return {
       id: project.id,
       name: project.name,
-      grades: project.grades,
       likes: project.likes,
       summary: project.summary,
       img: project.img,
       category: project.category,
-      round: project.round,
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -40,11 +38,9 @@ const projectConverter = {
     return new Project(
       data.id,
       data.name,
-      data.grades,
       data.likes,
       data.summary,
       data.img,
-      data.round,
       data.category
     );
   },
@@ -78,5 +74,21 @@ const guestConverter = {
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
     return new Guest(data.id, data.name, data.pass, data.amount, data.likes);
+  },
+};
+
+const gradeConverter = {
+  toFirestore: (grade) => {
+    return {
+      id: grade.id,
+      judge: grade.judge,
+      project: grade.project,
+      score: grade.score,
+      round: grade.round,
+    };
+  },
+  fromFirestore: (snapshot, options) => {
+    const data = snapshot.data(options);
+    return new Grade(data.id, data.judge, data.project, data.score, data.round);
   },
 };

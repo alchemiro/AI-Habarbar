@@ -5,19 +5,17 @@ function redirectProjectWithParams(id) {
 const checkLoggedIn = () => {
   const user = localStorage.getItem("CurrentUser");
 
-  if (!user) {
-    bailout();
-    return true;
-  } else return false;
+  return typeof user == (Judge || Student || Guest);
 };
 
 function checkIfAdmin() {
-  checkLoggedIn();
+  if (!checkLoggedIn()) return bailout();
   if (localStorage.getItem("CurrentUser") != "admin") {
     bailout();
   }
 }
-
+//pages that need admin permission:
+//
 function bailout() {
   const url = "../../frontend/html/index.html";
   window.location.href = url;
@@ -91,15 +89,73 @@ const ProjectLoaded = async () => {
     //   else if(loginIsJudge) show grading
   }
 
-  async function uploadGrade(grade) {
-    console.log("hello");
-    await projectCollection.doc(id).set({ grades: [grade] }, { merge: true });
+  async function uploadGrade(grade, project, judge, round) {
+    //judge sets grade, if they haven't yet, create new document, otherwise replace their old one
+    // console.log("hello");
+    const gradesQuery = gradeCollection
+      .withConverter(gradeConverter)
+      .where("judge", "==", judge)
+      .where("project", "==", project)
+      .where("round", "==", round);
+    await gradesQuery.get().then((snapshot) => {
+      if (snapshot.empty) {
+        //if no current judge grade, make a new admin grade
+        gradeCollection.add({ temp: "temp" }).then((docRef) => {
+          gradeCollection
+            .doc(docRef.id)
+            .withConverter(gradeConverter)
+            .set(new Grade(docRef.id, judge, project, grade, round));
+        });
+        // console.log("empty and done");
+      } else {
+        snapshot.forEach((doc) => {
+          //otherwise replace it
+          // console.log(doc.data());
+          gradeCollection
+            .doc(doc.id)
+            .withConverter(gradeConverter)
+            .set(new Grade(doc.id, judge, project, grade, round));
+        });
+        // console.log("not empty and done");
+      }
+    });
+  }
+
+  async function adminGrade(grade, project) {
+    //add admin grade (round = 0, judge = "admin")
+    // const grade;
+    const gradesQuery = gradeCollection
+      .withConverter(gradeConverter)
+      .where("project", "==", project);
+    // console.log("doing");
+    await gradesQuery.get().then((snapshot) => {
+      if (snapshot.empty) {
+        //if no current admin grade, make a new admin grade
+        gradeCollection.add({ temp: "temp" }).then((docRef) => {
+          gradeCollection
+            .doc(docRef.id)
+            .withConverter(gradeConverter)
+            .set(new Grade(docRef.id, "admin", project, grade, 0));
+        });
+        // console.log("empty and done");
+      } else {
+        snapshot.forEach((doc) => {
+          //otherwise replace it
+          // console.log(doc.data());
+          gradeCollection
+            .doc(doc.id)
+            .withConverter(gradeConverter)
+            .set(new Grade(doc.id, "admin", project, grade, 0));
+        });
+        // console.log("not empty and done");
+      }
+    });
   }
 
   getProject(id);
 
   btn.addEventListener("click", () => {
-    uploadGrade(parseInt(input.value));
+    adminGrade(parseInt(input.value), id);
   });
 };
 

@@ -12,6 +12,7 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const db = app.firestore();
 
+const gradeCollection = db.collection("grades");
 const studentCollection = db.collection("students");
 const projectCollection = db.collection("projects");
 const guestCollection = db.collection("guests");
@@ -20,30 +21,24 @@ const judgeCollection = db.collection("judges");
 class Project {
   #name;
   #id;
-  #grades;
   #likes;
   #summary;
   #img;
   #category;
-  #round;
 
   constructor(
     id,
     name = " ",
-    grade = [],
     likes = 0,
     summary = " ",
     img = " ",
-    round = 0,
     category = " "
   ) {
     this.#id = id;
     this.#name = name;
-    this.#grades = grade;
     this.#likes = likes;
     this.#summary = summary;
     this.#img = img;
-    this.#round = round;
     this.#category = category;
   }
 
@@ -53,16 +48,6 @@ class Project {
   get id() {
     return this.#id;
   }
-  get grade() {
-    let sum = 0;
-    for (let i = 0; i < this.#grades.length; i++) {
-      sum += this.#grades[i];
-    }
-    return sum / this.#grades.length;
-  }
-  get grades() {
-    return this.#grades;
-  }
   get likes() {
     return this.#likes;
   }
@@ -71,9 +56,6 @@ class Project {
   }
   get img() {
     return this.#img;
-  }
-  get round() {
-    return this.#round;
   }
   get category() {
     return this.#category;
@@ -85,9 +67,6 @@ class Project {
   set id(newparam) {
     this.#id = newparam;
   }
-  set grades(newparam) {
-    this.#grades = newparam;
-  }
   set likes(newparam) {
     this.#likes = newparam;
   }
@@ -96,9 +75,6 @@ class Project {
   }
   set img(newparam) {
     this.#img = newparam;
-  }
-  set round(newparam) {
-    this.#round = newparam;
   }
   set category(newparam) {
     this.#category = newparam;
@@ -275,6 +251,45 @@ class Student extends Guest {
     return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Project ID: ${this.project}, Amount of Likes: ${this.amount}`;
   }
 }
+
+class Grade {
+  id;
+  #judge;
+  #project;
+  #score;
+  #round;
+  constructor(id, judge, project, score, round) {
+    this.id = id;
+    this.#judge = judge;
+    this.#project = project;
+    this.#score = score;
+    this.#round = round;
+  }
+  get judge() {
+    return this.#judge;
+  }
+  get project() {
+    return this.#project;
+  }
+  get score() {
+    return this.#score;
+  }
+  get round() {
+    return this.#round;
+  }
+  set judge(value) {
+    this.#judge = value;
+  }
+  set project(value) {
+    this.#judge = value;
+  }
+  set score(value) {
+    this.#judge = value;
+  }
+  set round(value) {
+    this.#judge = value;
+  }
+}
 const getDocumentFirebase = async function (collection, keystring, converter) {
   // keystring = "1";
   // console.log("before proj get");
@@ -329,6 +344,12 @@ const getDocument = async function (object) {
     );
     console.log(data.toString());
     return Promise.resolve(data);
+  } else if (object instanceof Grade) {
+    const data = getDocumentFirebase(
+      gradeCollection,
+      object.id,
+      gradeConverter
+    );
   } else {
     return Promise.reject("Unknown object type");
   }
