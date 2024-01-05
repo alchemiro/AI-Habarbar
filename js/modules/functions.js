@@ -2,6 +2,21 @@ function redirectProjectWithParams(id) {
   const url = "../../frontend/html/project.html";
   window.location.href = `${url}?id=${id}`;
 }
+const checkLoggedIn = () => {
+  const user = localStorage.getItem("CurrentUser");
+
+  if (!user) {
+    bailout();
+    return true;
+  } else return false;
+};
+
+function checkIfAdmin() {
+  checkLoggedIn();
+  if (localStorage.getItem("CurrentUser") != "admin") {
+    bailout();
+  }
+}
 
 function bailout() {
   const url = "../../frontend/html/index.html";
@@ -104,13 +119,6 @@ const AdminLoaded = async () => {
 
   const GuestTable = document.getElementById("GuestBody");
   const GuestRows = GuestTable.getElementsByTagName("tr");
-
-  function checkIfAdmin() {
-    checkLoggedIn();
-    if (localStorage.getItem("CurrentUser") != "admin") {
-      bailout();
-    }
-  }
 
   async function FindStudentsByProject(project) {
     const studentsQuery = studentCollection.where("project", "==", project.id);
@@ -297,13 +305,4 @@ const LoginLoaded = async () => {
 
     checkExist(usernameValue, passwordValue);
   });
-};
-
-const checkLoggedIn = () => {
-  const user = localStorage.getItem("CurrentUser");
-
-  if (!user) {
-    bailout();
-    return true;
-  } else return false;
 };
