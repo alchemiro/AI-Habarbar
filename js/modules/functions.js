@@ -303,26 +303,28 @@ const AdminLoaded = async () => {
       .withConverter(studentConverter)
       .get()
       .then((queryResult) => {
-        queryResult.forEach((doc) => {
+          queryResult.forEach((doc) => {
           list.push(doc.data());
         });
       });
     return list;
-  }
+    }
 
-  async function FindGradesByProject(project) {
-    const gradesQuery = gradeCollection.where("project", "==", project.id);
-    const list = [];
-    await gradesQuery
-      .withConverter(gradeConverter)
-      .get()
-      .then((result) => {
-        result.forEach((doc) => {
-          console.log(doc.data());
-          list.push(doc.data());
-        });
-      });
-    return list;
+  
+    async function FindGradesByProject(project) {
+        i = 0;
+        console.log("i am here!");
+          const gradesQuery = gradeCollection.where("project", "==", project.id);
+          const list = [];
+          await gradesQuery
+              .withConverter(gradeConverter)
+              .get()
+              .then((queryResult) => {
+                  queryResult.forEach((doc) => {
+                      list.push(doc.data());
+                  });
+              });
+          return list;
   }
 
   async function getAllProjects() {
@@ -360,7 +362,7 @@ const AdminLoaded = async () => {
       
       await FindGradesByProject(project).then((document) => {
         document.forEach((grade) => {
-          grade.textContent += grade.score + ",";
+            grade.textContent += grade.score + ",";
         });
       });
 
