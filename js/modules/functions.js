@@ -1,37 +1,98 @@
-
 let projects = [];
-function redirectProjectWithParams(id) {
-  const url = "../../frontend/html/project.html";
+function redirectWithParams(id, key) {
+  const url = `../../frontend/html/${key}.html`;
   window.location.href = `${url}?id=${id}`;
 }
 function searchProjects(what) {
-    for (const project in projects) {
-        const values = Object.values(projects[project]);
-        for (const value of values) {
-            if (value.includes(what)) {
-                console.log(`Found '${what}' in project '${project}'`);
-                return true;
-            }
-        }
+  for (const project in projects) {
+    const values = Object.values(projects[project]);
+    for (const value of values) {
+      if (value.includes(what)) {
+        console.log(`Found '${what}' in project '${project}'`);
+        return true;
+      }
     }
-    console.log(`'${what}' not found in any project`);
-    return false;
+  }
+  console.log(`'${what}' not found in any project`);
+  return false;
 }
+const isAdmin = localStorage.getItem("UserType") === "admin";
+const isJudge = localStorage.getItem("UserType") === "judge";
+const isGuest = localStorage.getItem("UserType") === "guest";
+const isStudent = localStorage.getItem("UserType") === "student";
 
-const checkLoggedIn = () => {
-  const user = localStorage.getItem("CurrentUser");
-  return typeof user == (Judge || Student || Guest);
-};
+const isLoggedIn = !(!isJudge && !isGuest && !isStudent && !isAdmin);
 
-function navigator() {
+function navigate() {
   const head = document.getElementById("sidebar");
-  head.innerHTML = `
-        <a href="./index.html">Home</a>
-        <a href="./login.html">Login</a>
-        <a href="./MyPage.html">My page</a>
-        <a href="./projectInput.html">Set and Get</a>
-        <a href="./admin.html">Admin Dashboard</a>
-        <a href="./apge.html">Excel Converter</a>`;
+  head.innerHTML = "";
+
+  const login = document.createElement("a");
+  login.href = "./login.html";
+  login.textContent = "Sign In";
+
+  const lo = document.createElement("a");
+  lo.textContent = "Sign Out";
+  lo.href = "./index.html";
+  lo.addEventListener("click", () => {
+    logout();
+  });
+
+  const index = document.createElement("a");
+  index.href = "./index.html";
+  index.textContent = "Home";
+
+  const profile = document.createElement("a");
+  profile.textContent = "Profile";
+  console.log(localStorage.getItem("CurrentUser"));
+  if (isStudent || isJudge) {
+    profile.addEventListener("click", () => {
+      redirectWithParams(
+        localStorage.getItem("CurrentUser"),
+        localStorage.getItem("UserType")
+      );
+    });
+  } else if (isAdmin) {
+    profile.textContent = "Admin Dashboard";
+    profile.href = "./admin.html";
+  }
+
+  const input = document.createElement("a");
+  input.href = "./projectInput.html";
+  input.textContent = "Project Input";
+
+  head.appendChild(index);
+  // if (isLoggedIn){head.appendChild(lo)};
+  // else {head.appendChild(login)};
+  console.log(isLoggedIn);
+  if (isLoggedIn) {
+    // console.log("I am signed in");
+    head.appendChild(lo);
+  } else {
+    // console.log("I am not signed in");
+
+    head.appendChild(login);
+  }
+
+  if (isLoggedIn && !isGuest) {
+    // console.log("I am signed in but not a guest");
+
+    head.appendChild(profile);
+  }
+
+  if (isAdmin) {
+    // console.log("I am signed in as admin");
+
+    head.appendChild(input);
+  }
+
+  // head.innerHTML = `
+  //       <a href="./index.html">Home</a>
+  //       <a href="./login.html">Login</a>
+  //       <a href="./MyPage.html">My page</a>
+  //       <a href="./projectInput.html">Set and Get</a>
+  //       <a href="./admin.html">Admin Dashboard</a>
+  //       <a href="./apge.html">Excel Converter</a>`;
 
   const openButton = document.getElementById("openSidebar");
   openButton.addEventListener("click", toggleSidebar);
@@ -63,10 +124,7 @@ function navigator() {
   });
 }
 function checkIfAdmin() {
-  if (!checkLoggedIn()) return bailout();
-  if (localStorage.getItem("CurrentUser") != "admin") {
-    bailout();
-  }
+  if (!isAdmin) return bailout();
 }
 //pages that need admin permission:
 function bailout() {
@@ -75,7 +133,7 @@ function bailout() {
 }
 
 const indexLoaded = async () => {
-  navigator();
+  navigate();
   const addBtn = document.getElementById("addProject");
   const gridrow = document.getElementById("gallery-container-row");
   const input = document.getElementById("projectInputID");
@@ -104,7 +162,7 @@ const indexLoaded = async () => {
         `;
 
       cardDiv.addEventListener("click", () => {
-        redirectProjectWithParams(project.id);
+        redirectWithParams(project.id, "project");
       });
       gridrow.appendChild(cardDiv);
     });
@@ -112,15 +170,15 @@ const indexLoaded = async () => {
 
   await getGallery();
 
-  console.log(projects);
+  // console.log(projects);
 };
 
 const ProjectLoaded = async () => {
-    navigator();
+  navigate();
   const urlParams = new URLSearchParams(window.location.search);
   const nameDiv = document.getElementById("nametag");
   const sumDiv = document.getElementById("summarytag");
-  const iddiv = document.getElementById("idtag");
+  // const iddiv = document.getElementById("idtag");
   const gradeDiv = document.getElementById("gradeDiv");
   const btn = document.getElementById("gradeButton");
   const input = document.getElementById("gradeInput");
@@ -129,8 +187,7 @@ const ProjectLoaded = async () => {
 
   const user = localStorage.getItem("CurrentUser");
   const type = localStorage.getItem("UserType");
-  console.log(type);
-  if (typeof user == Judge || localStorage.getItem("CurrentUser") == "admin") {
+  if (isJudge || isAdmin) {
     gradeDiv.style.visibility = "visible";
   } else {
     gradeDiv.style.visibility = "hidden";
@@ -146,20 +203,19 @@ const ProjectLoaded = async () => {
 
     sumDiv.textContent = p.summary;
 
-    iddiv.textContent = id;
+    // iddiv.textContent = id;
 
     //   if(loginIsGuest) show likes
     //   else if(loginIsJudge) show grading
   }
 
-  async function uploadGrade(grade, project, judge, round) {
+  async function uploadGrade(grade, project, judge) {
     //judge sets grade, if they haven't yet, create new document, otherwise replace their old one
     // console.log("hello");
     const gradesQuery = gradeCollection
       .withConverter(gradeConverter)
       .where("judge", "==", judge)
-      .where("project", "==", project)
-      .where("round", "==", round);
+      .where("project", "==", project);
     await gradesQuery.get().then((snapshot) => {
       if (snapshot.empty) {
         //if no current judge grade, make a new admin grade
@@ -167,7 +223,7 @@ const ProjectLoaded = async () => {
           gradeCollection
             .doc(docRef.id)
             .withConverter(gradeConverter)
-            .set(new Grade(docRef.id, judge, project, grade, round));
+            .set(new Grade(docRef.id, judge, project, grade));
         });
         // console.log("empty and done");
       } else {
@@ -177,7 +233,7 @@ const ProjectLoaded = async () => {
           gradeCollection
             .doc(doc.id)
             .withConverter(gradeConverter)
-            .set(new Grade(doc.id, judge, project, grade, round));
+            .set(new Grade(doc.id, judge, project, grade));
         });
         // console.log("not empty and done");
       }
@@ -218,12 +274,12 @@ const ProjectLoaded = async () => {
   getProject(id);
 
   btn.addEventListener("click", () => {
-    adminGrade(parseInt(input.value), id);
+    uploadGrade(parseInt(input.value), id, localStorage.getItem("CurrentUser"));
   });
 };
 
 const AdminLoaded = async () => {
-    navigator();
+  navigate();
   checkIfAdmin();
 
   const div = document.getElementById("holdstuff");
@@ -256,6 +312,26 @@ const AdminLoaded = async () => {
     return list;
   }
 
+  async function FindGradesByProject(project) {
+    const gradesQuery = gradeCollection.where("project", "==", project.id);
+    console.log(project.id);
+    const list = [];
+    // console.log("before query");
+    await gradesQuery
+      .withConverter(gradeConverter)
+      .get()
+      .then((result) => {
+        console.log(result);
+        result.forEach((doc) => {
+          console.log(doc.data());
+          list.push(doc.data());
+        });
+      });
+    // console.log("after query");
+
+    return list;
+  }
+
   async function getAllProjects() {
     const projectsRef = await projectCollection
       .withConverter(projectConverter)
@@ -278,6 +354,7 @@ const AdminLoaded = async () => {
 
       const students = document.createElement("td");
       students.textContent = "";
+
       await FindStudentsByProject(project).then((document) => {
         document.forEach((student) => {
           students.textContent += student.name + ", ";
@@ -286,7 +363,12 @@ const AdminLoaded = async () => {
       });
 
       const grade = document.createElement("td");
-      grade.textContent = "10";
+      grade.textContent = "";
+      await FindGradesByProject(project).then((document) => {
+        document.forEach((grade) => {
+          grade.textContent += `${grade.score},`;
+        });
+      });
 
       row.appendChild(header);
       row.appendChild(name);
@@ -356,8 +438,12 @@ const AdminLoaded = async () => {
   getAll();
 };
 
+function logout() {
+  localStorage.setItem("CurrentUser", "logout");
+  localStorage.setItem("UserType", "logout");
+}
 const LoginLoaded = async () => {
-  navigator();
+  navigate();
   async function checkGuests(id, password) {
     const querySnapshot = await guestCollection
       .where("id", "==", id)
@@ -368,7 +454,7 @@ const LoginLoaded = async () => {
     if (querySnapshot.empty) {
       return null; // No user found
     } else {
-      localStorage.setItem("UserType", "Guest");
+      localStorage.setItem("UserType", "guest");
 
       return querySnapshot.docs[0].data(); // Return user data from the first match
     }
@@ -384,7 +470,7 @@ const LoginLoaded = async () => {
     if (querySnapshot.empty) {
       return null; // No user found
     } else {
-      localStorage.setItem("UserType", "Judge");
+      localStorage.setItem("UserType", "judge");
 
       return querySnapshot.docs[0].data(); // Return user data from the first match
     }
@@ -400,7 +486,7 @@ const LoginLoaded = async () => {
     if (querySnapshot.empty) {
       return null; // No user found
     } else {
-      localStorage.setItem("UserType", "Student");
+      localStorage.setItem("UserType", "student");
       return querySnapshot.docs[0].data(); // Return user data from the first match
     }
   }
@@ -409,6 +495,7 @@ const LoginLoaded = async () => {
     if (id === "admin" && password === "admin") {
       console.log("Admin login detected");
       localStorage.setItem("CurrentUser", "admin");
+      localStorage.setItem("UserType", "admin");
     } else {
       const user =
         (await checkGuests(id, password)) ||
@@ -417,7 +504,7 @@ const LoginLoaded = async () => {
 
       if (user) {
         console.log("User found:", user.toString());
-        localStorage.setItem("CurrentUser", user);
+        localStorage.setItem("CurrentUser", user.id);
       } else {
         console.log("User not found");
       }
@@ -434,5 +521,5 @@ const LoginLoaded = async () => {
 };
 
 const MyPageLoaded = async () => {
-    navigator();
+  navigate();
 };

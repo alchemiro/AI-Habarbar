@@ -257,13 +257,13 @@ class Grade {
   #judge;
   #project;
   #score;
-  #round;
-  constructor(id, judge, project, score, round) {
+  // #round;
+  constructor(id, judge, project, score) {
     this.id = id;
     this.#judge = judge;
     this.#project = project;
     this.#score = score;
-    this.#round = round;
+    // this.#round = round;
   }
   get judge() {
     return this.#judge;
@@ -274,9 +274,9 @@ class Grade {
   get score() {
     return this.#score;
   }
-  get round() {
-    return this.#round;
-  }
+  // get round() {
+  //   return this.#round;
+  // }
   set judge(value) {
     this.#judge = value;
   }
@@ -286,9 +286,9 @@ class Grade {
   set score(value) {
     this.#judge = value;
   }
-  set round(value) {
-    this.#judge = value;
-  }
+  // set round(value) {
+  //   this.#judge = value;
+  // }
 }
 const getDocumentFirebase = async function (collection, keystring, converter) {
   // keystring = "1";

@@ -84,11 +84,11 @@ const gradeConverter = {
       judge: grade.judge,
       project: grade.project,
       score: grade.score,
-      round: grade.round,
+      // round: grade.round,
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Grade(data.id, data.judge, data.project, data.score, data.round);
+    return new Grade(data.id, data.judge, data.project, data.score);
   },
 };
