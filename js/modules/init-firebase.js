@@ -349,7 +349,9 @@ const getDocument = async function (object) {
       gradeCollection,
       object.id,
       gradeConverter
-    );
+      );
+      console.log(data.toString());
+      return Promise.resolve(data);
   } else {
     return Promise.reject("Unknown object type");
   }

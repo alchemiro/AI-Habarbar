@@ -11,6 +11,9 @@ console.log("got judge collect");
 const studentCollection = db.collection("students");
 console.log("got student collect");
 
+const studentCollection = db.collection("grades");
+console.log("got grades collect");
+
 window.getCollectionType = () => {
   console.log("hello!");
 };

@@ -298,7 +298,6 @@ const AdminLoaded = async () => {
 
   async function FindStudentsByProject(project) {
     const studentsQuery = studentCollection.where("project", "==", project.id);
-    // console.log("before query");
     const list = [];
     await studentsQuery
       .withConverter(studentConverter)
@@ -308,27 +307,21 @@ const AdminLoaded = async () => {
           list.push(doc.data());
         });
       });
-    // console.log("after query");
     return list;
   }
 
   async function FindGradesByProject(project) {
     const gradesQuery = gradeCollection.where("project", "==", project.id);
-    console.log(project.id);
     const list = [];
-    // console.log("before query");
     await gradesQuery
       .withConverter(gradeConverter)
       .get()
       .then((result) => {
-        console.log(result);
         result.forEach((doc) => {
           console.log(doc.data());
           list.push(doc.data());
         });
       });
-    // console.log("after query");
-
     return list;
   }
 
@@ -339,8 +332,8 @@ const AdminLoaded = async () => {
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
     projectsRefMapped.forEach(async (project) => {
-      project.name = project.name == " " ? "." : project.name;
-      project.summary = project.summary == " " ? "." : project.summary;
+      project.name = project.name == " " ? "none" : project.name;
+      project.summary = project.summary == " " ? "N/A" : project.summary;
       const row = document.createElement("tr");
 
       const header = document.createElement("th");
@@ -353,20 +346,21 @@ const AdminLoaded = async () => {
       summary.textContent = project.summary;
 
       const students = document.createElement("td");
-      students.textContent = "";
+        students.textContent = "";
+
+        const grade = document.createElement("td");
+        grade.textContent = "";
 
       await FindStudentsByProject(project).then((document) => {
         document.forEach((student) => {
           students.textContent += student.name + ", ";
         });
-        // console.log("click");
       });
 
-      const grade = document.createElement("td");
-      grade.textContent = "";
+      
       await FindGradesByProject(project).then((document) => {
         document.forEach((grade) => {
-          grade.textContent += `${grade.score},`;
+          grade.textContent += grade.score + ",";
         });
       });
 
@@ -405,7 +399,7 @@ const AdminLoaded = async () => {
     const guestsRef = await guestCollection.withConverter(guestConverter).get();
     const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
     guestRefMapped.forEach((guest) => {
-      guest.name = guest.name == " " ? "." : guest.name;
+      guest.name = guest.name == " " ? "none" : guest.name;
       GuestTable.innerHTML += `<tr>
                     <th scope="row">${guest.id}</th>
                     <td>${guest.name}</td>
@@ -512,7 +506,6 @@ const LoginLoaded = async () => {
   }
 
   document.getElementById("logBTN").addEventListener("click", () => {
-    console.log("heeeeeeee");
     const usernameValue = document.getElementById("username").value;
     const passwordValue = document.getElementById("password").value;
 
