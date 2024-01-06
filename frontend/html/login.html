@@ -18,11 +18,6 @@
 <body onload="LoginLoaded()">
     <header>
         <nav class="navbar" id="navigation">
-            <a href="#" class="nav-link nav-home" onclick="controlSidebar()">
-                <i class="fa-solid fa-bars fa-flip-horizontal nav-icon nav-logo"
-                   id="wheel"></i>
-                <span class="nav-logotext nav-icon" id="wheeltext">naut</span>
-            </a>
             <ul class="navlist">
                 <li class="nav-item">
                     <a href="#" class="nav-link nav-text">
@@ -37,16 +32,13 @@
                 </li>
             </ul>
         </nav>
-
-        <div id="mySidebar" class="sidebar">
-            <a href="./index.html">Home</a>
-            <a href="./login.html">Login</a>
-            <a href="./project.html">My Projects</a>
-            <a href="./projectInput.html">Set and Get</a>
-            <a href="./admin.html">Admin Dashboard</a>
-            <a href="./apge.html">Excel Converter</a>
-        </div>
     </header>
+
+    <div class="sidebar" id="sidebar">
+        
+    </div>
+
+    <button class="btn btn-primary" id="openSidebar" onclick="navigator()">Open Sidebar</button>
 
     <div class="container">
         <div class="row justify-content-center">

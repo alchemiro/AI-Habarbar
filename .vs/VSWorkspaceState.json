@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\frontend",
+    "\\frontend\\css",
+    "\\frontend\\html"
   ],
-  "SelectedNode": "\\C:\\Users\\fainn\\Source\\Repos\\AI-Habarbar",
+  "SelectedNode": "\\frontend\\html\\login.html",
   "PreviewInSolutionExplorer": false
 }

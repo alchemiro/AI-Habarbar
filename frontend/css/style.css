@@ -44,9 +44,37 @@ img {
   max-height: auto;
 }
 
-/* 
-project {
-  width: 100%;
-  background-color: bisque;
-  display: flex;
-} */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index: 1000; /* Ensure it's above other content */
+}
+
+    .sidebar a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+/* Style for the button to open the sidebar */
+#openSidebar {
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    z-index: 1001; /* Ensure it's above the sidebar */
+    transition: 0.5s; /* Add transition for smoother movement */
+}
