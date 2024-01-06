@@ -1,7 +1,23 @@
+
+let projects = [];
 function redirectProjectWithParams(id) {
   const url = "../../frontend/html/project.html";
   window.location.href = `${url}?id=${id}`;
 }
+function searchProjects(what) {
+    for (const project in projects) {
+        const values = Object.values(projects[project]);
+        for (const value of values) {
+            if (value.includes(what)) {
+                console.log(`Found '${what}' in project '${project}'`);
+                return true;
+            }
+        }
+    }
+    console.log(`'${what}' not found in any project`);
+    return false;
+}
+
 const checkLoggedIn = () => {
   const user = localStorage.getItem("CurrentUser");
   return typeof user == (Judge || Student || Guest);
@@ -12,7 +28,7 @@ function navigator() {
   head.innerHTML = `
         <a href="./index.html">Home</a>
         <a href="./login.html">Login</a>
-        <a href="./project.html">My Projects</a>
+        <a href="./MyPage.html">My page</a>
         <a href="./projectInput.html">Set and Get</a>
         <a href="./admin.html">Admin Dashboard</a>
         <a href="./apge.html">Excel Converter</a>`;
@@ -59,11 +75,10 @@ function bailout() {
 }
 
 const indexLoaded = async () => {
-  //   navigator();
+  navigator();
   const addBtn = document.getElementById("addProject");
   const gridrow = document.getElementById("gallery-container-row");
   const input = document.getElementById("projectInputID");
-  let projects = [];
 
   async function getGallery() {
     const projectsRef = await projectCollection
@@ -101,6 +116,7 @@ const indexLoaded = async () => {
 };
 
 const ProjectLoaded = async () => {
+    navigator();
   const urlParams = new URLSearchParams(window.location.search);
   const nameDiv = document.getElementById("nametag");
   const sumDiv = document.getElementById("summarytag");
@@ -207,6 +223,7 @@ const ProjectLoaded = async () => {
 };
 
 const AdminLoaded = async () => {
+    navigator();
   checkIfAdmin();
 
   const div = document.getElementById("holdstuff");
@@ -414,4 +431,8 @@ const LoginLoaded = async () => {
 
     checkExist(usernameValue, passwordValue);
   });
+};
+
+const MyPageLoaded = async () => {
+    navigator();
 };

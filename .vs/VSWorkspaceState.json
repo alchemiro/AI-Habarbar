@@ -3,8 +3,10 @@
     "",
     "\\frontend",
     "\\frontend\\css",
-    "\\frontend\\html"
+    "\\frontend\\html",
+    "\\js",
+    "\\js\\modules"
   ],
-  "SelectedNode": "\\frontend\\html\\login.html",
+  "SelectedNode": "\\js\\modules\\converters.js",
   "PreviewInSolutionExplorer": false
 }

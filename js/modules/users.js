@@ -183,21 +183,17 @@ class Project {
   //set and get done
   #name;
   #id;
-  #grades;
   #likes;
   #summary;
   #img;
   #category;
-  #round;
 
   constructor(
     id,
     name = " ",
-    grade = [],
     likes = 0,
     summary = " ",
     img = " ",
-    round = 0,
     category = " "
   ) {
     this.#id = id;
@@ -206,38 +202,19 @@ class Project {
       var projTemplate = dblayer.getAll(this).then(() => {
         console.log("Object found on db, taking data");
         this.#name = projTemplate.name;
-        this.#grades = projTemplate.grades;
         this.#likes = projTemplate.likes;
         this.#summary = projTemplate.summary;
         this.#img = projTemplate.img;
-        this.#round = projTemplate.round;
         this.#category = projTemplate.category;
       });
     } else {
       console.log("Object not found on database, using local data");
       this.#name = name;
-      this.#grades = grade;
       this.#likes = likes;
       this.#summary = summary;
       this.#img = img;
-      this.#round = round;
       this.#category = category;
     }
-  }
-
-  AddGrade(Grade) {
-    this.#grades.push(Grade);
-    dblayer.updateParameter(this, "grades", this.#grades);
-  }
-
-  RemoveGrade(Grade) {
-    this.#grades.splice(this.#grades.indexOf(Grade), 1);
-    dblayer.updateParameter(this, "grades", this.#grades);
-  }
-
-  ChangeGrade(OldGrade, NewGrade) {
-    this.RemoveGrade(OldGrade);
-    this.AddGrade(NewGrade);
   }
 
   AddLike() {
@@ -248,5 +225,8 @@ class Project {
   RemoveLike() {
     this.#likes--;
     dblayer.updateParameter(this, "likes", this.#likes);
-  }
+    }
+    GetProj() {
+        return [this.#id, this.#name, this.#likes, this.#summery, this.#img, this.#category];
+    }
 }
