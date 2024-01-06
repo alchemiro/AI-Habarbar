@@ -516,5 +516,36 @@ const LoginLoaded = async () => {
 };
 
 const MyPageLoaded = async () => {
-  navigate();
+    navigate();
+    const gridrow = document.getElementById("judge-container-row");
+    async function GetProjectToGrade() {
+        const projectsRef = await projectCollection
+            .withConverter(projectConverter)
+            .get();
+        const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
+
+        projectsRefMapped.forEach((project) => {
+            project.name = project.name == " " ? "." : project.name;
+            project.summary = project.summary == " " ? "." : project.summary;
+
+            const cardDiv = document.createElement("div");
+            cardDiv.classList.add("card");
+            cardDiv.style = "width: 18rem;";
+            cardDiv.innerHTML = `
+        <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
+        <div class="card-body"> 
+            <h5 class="card-title">${project.name}</h5>
+            <p class="card-text">${project.summary}</p>
+            <div class="card-footer">${project.likes}</div>
+        </div>
+        `;
+
+            cardDiv.addEventListener("click", () => {
+                redirectWithParams(project.id, "project");
+            });
+            gridrow.appendChild(cardDiv);
+        });
+    }
+
+    await GetProjectToGrade();
 };
