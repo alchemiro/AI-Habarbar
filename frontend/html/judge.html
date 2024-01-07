@@ -32,67 +32,57 @@
 
     <main>
       <h1 id="name">judge name</h1>
-      <div
-        class="container text-center"
-        style="height: 75vh; overflow-y: auto; background-color: #aaaaaa"
-      >
-        <div class="row">
-          <div class="col align-self-start">
-            <div
-              class="btn-group"
-              role="group"
-              aria-label="Basic radio toggle button group"
-            >
-              <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradio1"
-                autocomplete="off"
-                checked
-              />
-              <label class="btn btn-primary" for="btnradio1">Round 1</label>
+      <div class="container text-center"
+           style="height: 75vh; overflow-y: auto; background-color: #aaaaaa">
+          <div class="row">
+              <div class="col align-self-start">
+                  <div class="btn-group"
+                       role="group"
+                       aria-label="Basic radio toggle button group">
+                      <input type="radio"
+                             class="btn-check"
+                             name="btnradio"
+                             id="btnradio1"
+                             autocomplete="off"
+                             checked />
+                      <label class="btn btn-primary" for="btnradio1">Round 1</label>
 
-              <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradio2"
-                autocomplete="off"
-              />
-              <label class="btn btn-primary" for="btnradio2">Round 2</label>
+                      <input type="radio"
+                             class="btn-check"
+                             name="btnradio"
+                             id="btnradio2"
+                             autocomplete="off" />
+                      <label class="btn btn-primary" for="btnradio2">Round 2</label>
 
-              <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradio3"
-                autocomplete="off"
-              />
-              <label class="btn btn-primary" for="btnradio3">Round 3</label>
-            </div>
+                      <input type="radio"
+                             class="btn-check"
+                             name="btnradio"
+                             id="btnradio3"
+                             autocomplete="off" />
+                      <label class="btn btn-primary" for="btnradio3">Round 3</label>
+                  </div>
+              </div>
+              <div class="col">
+                  <h2>Projects to check</h2>
+              </div>
+              <div class="col align-self-end">
+                  <button class="btn btn-primary">add projects to Round</button>
+              </div>
           </div>
-          <div class="col">
-            <h2>Projects to check</h2>
+          <div class="col-1">
+              <div class="form-check">
+                  <input class="form-check-input"
+                         type="checkbox"
+                         value=""
+                         id="flexCheckChecked"
+                         checked />
+                  <label class="form-check-label" for="flexCheckChecked">
+                      show graded projects
+                  </label>
+              </div>
           </div>
-          <div class="col align-self-end">
-            <button class="btn btn-primary">add projects to Round</button>
-          </div>
-        </div>
-        <div class="col-1">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="flexCheckChecked"
-              checked
-            />
-            <label class="form-check-label" for="flexCheckChecked">
-              show graded projects
-            </label>
-          </div>
-        </div>
+          <div class="row" id="judge-container-row">
+              <!--
         <div class="container text-center"
              id="Judge-Project"
              style="height: 56vh; overflow-y: auto; background-color: #999999">
@@ -101,8 +91,8 @@
 
                 </div>
             </div>
-        </div>
-    </main>
+        </div> -->
+</main>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
