@@ -19,10 +19,14 @@
     ></script>
   </head>
   <body onload="MyPageLoaded()">
-    <div class="sidebar" id="sidebar"></div>
+      <header>
+          <div class="sidebar" id="sidebar"></div>
 
-    <i class="fa-solid fa-bars nav-icon" id="openSidebar" onclick="navigate()">
-    </i>
+          <i class="fa-solid fa-bars nav-icon"
+             id="openSidebar"
+             onclick="navigate()">
+          </i>
+      </header>
 
     <script src="../../js/modules/converters.js"></script>
 
@@ -47,7 +51,7 @@
                 autocomplete="off"
                 checked
               />
-              <label class="btn btn-primary" for="btnradio1">Radio 1</label>
+              <label class="btn btn-primary" for="btnradio1">Round 1</label>
 
               <input
                 type="radio"
@@ -56,7 +60,7 @@
                 id="btnradio2"
                 autocomplete="off"
               />
-              <label class="btn btn-primary" for="btnradio2">Radio 2</label>
+              <label class="btn btn-primary" for="btnradio2">Round 2</label>
 
               <input
                 type="radio"
@@ -65,14 +69,14 @@
                 id="btnradio3"
                 autocomplete="off"
               />
-              <label class="btn btn-primary" for="btnradio3">Radio 3</label>
+              <label class="btn btn-primary" for="btnradio3">Round 3</label>
             </div>
           </div>
           <div class="col">
             <h2>Projects to check</h2>
           </div>
           <div class="col align-self-end">
-            <button class="btn btn-primary">add</button>
+            <button class="btn btn-primary">add projects to Round</button>
           </div>
         </div>
         <div class="col-1">
@@ -89,14 +93,15 @@
             </label>
           </div>
         </div>
-        <div class="row" id="judge-container-row">
-          <div
-            class="container text-center"
-            id="Judge-Project"
-            style="overflow-y: auto; background-color: #999999"
-          ></div>
+        <div class="container text-center"
+             id="Judge-Project"
+             style="height: 56vh; overflow-y: auto; background-color: #999999">
+
+            <div class="row" id="judge-container-row">
+
+                </div>
+            </div>
         </div>
-      </div>
     </main>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>

@@ -230,3 +230,39 @@ class Project {
         return [this.#id, this.#name, this.#likes, this.#summery, this.#img, this.#category];
     }
 }
+
+class Grade {
+    id;
+    #judge;
+    #project;
+    #score;
+    // #round;
+    constructor(id, judge, project, score) {
+        this.id = id;
+        this.#judge = judge;
+        this.#project = project;
+        this.#score = score;
+        // this.#round = round;
+    }
+    get judge() {
+        return this.#judge;
+    }
+    get project() {
+        return this.#project;
+    }
+    get score() {
+        return this.#score;
+    }
+    // get round() {
+    //   return this.#round;
+    // }
+    set judge(value) {
+        this.#judge = value;
+    }
+    set project(value) {
+        this.#judge = value;
+    }
+    set score(value) {
+        this.#judge = value;
+    }
+}

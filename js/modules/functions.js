@@ -298,7 +298,6 @@ const AdminLoaded = async () => {
 
   async function FindStudentsByProject(project) {
     const studentsQuery = studentCollection.where("project", "==", project.id);
-    // console.log("before query");
     const list = [];
     await studentsQuery
       .withConverter(studentConverter)
@@ -308,7 +307,6 @@ const AdminLoaded = async () => {
           list.push(doc.data());
         });
       });
-    // console.log("after query");
     return list;
   }
 
@@ -344,8 +342,8 @@ const AdminLoaded = async () => {
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
     projectsRefMapped.forEach(async (project) => {
-      project.name = project.name == " " ? "." : project.name;
-      project.summary = project.summary == " " ? "." : project.summary;
+      project.name = project.name == " " ? "none" : project.name;
+      project.summary = project.summary == " " ? "N/A" : project.summary;
       const row = document.createElement("tr");
 
       const header = document.createElement("th");
@@ -360,11 +358,13 @@ const AdminLoaded = async () => {
       const students = document.createElement("td");
       students.textContent = "";
 
+      const grade = document.createElement("td");
+      grade.textContent = "";
+
       await FindStudentsByProject(project).then((document) => {
         document.forEach((student) => {
           students.textContent += student.name + ", ";
         });
-        // console.log("click");
       });
 
       const gradeRow = document.createElement("td");
@@ -412,7 +412,7 @@ const AdminLoaded = async () => {
     const guestsRef = await guestCollection.withConverter(guestConverter).get();
     const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
     guestRefMapped.forEach((guest) => {
-      guest.name = guest.name == " " ? "." : guest.name;
+      guest.name = guest.name == " " ? "none" : guest.name;
       GuestTable.innerHTML += `<tr>
                     <th scope="row">${guest.id}</th>
                     <td>${guest.name}</td>
@@ -519,7 +519,6 @@ const LoginLoaded = async () => {
   }
 
   document.getElementById("logBTN").addEventListener("click", () => {
-    console.log("heeeeeeee");
     const usernameValue = document.getElementById("username").value;
     const passwordValue = document.getElementById("password").value;
 
@@ -529,4 +528,35 @@ const LoginLoaded = async () => {
 
 const MyPageLoaded = async () => {
   navigate();
+  const gridrow = document.getElementById("judge-container-row");
+  async function GetProjectToGrade() {
+    const projectsRef = await projectCollection
+      .withConverter(projectConverter)
+      .get();
+    const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
+
+    projectsRefMapped.forEach((project) => {
+      project.name = project.name == " " ? "." : project.name;
+      project.summary = project.summary == " " ? "." : project.summary;
+
+      const cardDiv = document.createElement("div");
+      cardDiv.classList.add("card");
+      cardDiv.style = "width: 18rem;";
+      cardDiv.innerHTML = `
+        <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
+        <div class="card-body"> 
+            <h5 class="card-title">${project.name}</h5>
+            <p class="card-text">${project.summary}</p>
+            <div class="card-footer">${project.likes}</div>
+        </div>
+        `;
+
+      cardDiv.addEventListener("click", () => {
+        redirectWithParams(project.id, "project");
+      });
+      gridrow.appendChild(cardDiv);
+    });
+  }
+
+  await GetProjectToGrade();
 };

@@ -342,7 +342,7 @@ const getDocument = async function (object) {
       object.id,
       guestConverter
     );
-    console.log(data.toString());
+    // console.log(data.toString());
     return Promise.resolve(data);
   } else if (object instanceof Grade) {
     const data = getDocumentFirebase(
@@ -350,6 +350,7 @@ const getDocument = async function (object) {
       object.id,
       gradeConverter
     );
+    console.log(data.toString());
     return Promise.resolve(data);
   } else {
     return Promise.reject("Unknown object type");
