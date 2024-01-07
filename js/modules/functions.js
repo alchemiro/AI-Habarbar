@@ -313,15 +313,20 @@ const AdminLoaded = async () => {
   }
 
   async function FindGradesByProject(project) {
-    const gradesQuery = gradeCollection.where("project", "==", project.id);
-    console.log(project.id);
+    // console.log(project.id);
+    const gradesQuery = gradeCollection.where(
+      "project",
+      "==",
+      project.id.toString()
+    );
+    // console.log(project.id);
     const list = [];
     // console.log("before query");
     await gradesQuery
       .withConverter(gradeConverter)
       .get()
       .then((result) => {
-        console.log(result);
+        console.log(result.empty);
         result.forEach((doc) => {
           console.log(doc.data());
           list.push(doc.data());
@@ -362,18 +367,20 @@ const AdminLoaded = async () => {
         // console.log("click");
       });
 
-      const grade = document.createElement("td");
-      grade.textContent = "";
+      const gradeRow = document.createElement("td");
+      gradeRow.textContent = "";
       await FindGradesByProject(project).then((document) => {
         document.forEach((grade) => {
-          grade.textContent += `${grade.score},`;
+          // console.log(grade);
+          gradeRow.textContent += `${grade.score},`;
         });
+        console.log(gradeRow.textContent);
       });
 
       row.appendChild(header);
       row.appendChild(name);
       row.appendChild(students);
-      row.appendChild(grade);
+      row.appendChild(gradeRow);
       row.appendChild(summary);
       ProjectTable.appendChild(row);
       // ProjectTable.innerHTML += `<tr onclick="FindStudentsByProject(project)">

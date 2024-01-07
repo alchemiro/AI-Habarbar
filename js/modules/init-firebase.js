@@ -318,7 +318,7 @@ const getDocument = async function (object) {
       object.id,
       projectConverter
     );
-    console.log(data.toString());
+    // console.log(data.toString());
     return Promise.resolve(data);
   } else if (object instanceof Student) {
     const data = getDocumentFirebase(
@@ -326,7 +326,7 @@ const getDocument = async function (object) {
       object.id,
       studentConverter
     );
-    console.log(data.toString());
+    // console.log(data.toString());
     return Promise.resolve(data);
   } else if (object instanceof Judge) {
     const data = getDocumentFirebase(
@@ -334,7 +334,7 @@ const getDocument = async function (object) {
       object.id,
       judgeConverter
     );
-    console.log(data.toString());
+    // console.log(data.toString());
     return Promise.resolve(data);
   } else if (object instanceof Guest) {
     const data = getDocumentFirebase(
@@ -350,6 +350,7 @@ const getDocument = async function (object) {
       object.id,
       gradeConverter
     );
+    return Promise.resolve(data);
   } else {
     return Promise.reject("Unknown object type");
   }
