@@ -42,17 +42,20 @@ function navigate() {
   index.href = "./index.html";
   index.textContent = "Home";
 
-  const profile = document.createElement("a");
-  profile.textContent = "Profile";
+    const profile = document.createElement("a");
+  profile.href = "./login.html"
+    profile.textContent = "Profile";
   console.log(localStorage.getItem("CurrentUser"));
   if (isStudent || isJudge) {
-    profile.addEventListener("click", () => {
+      profile.addEventListener("click", () => {
+          profile.href = '#';
       redirectWithParams(
         localStorage.getItem("CurrentUser"),
         localStorage.getItem("UserType")
       );
     });
   } else if (isAdmin) {
+
     profile.textContent = "Admin Dashboard";
     profile.href = "./admin.html";
   }
@@ -502,7 +505,8 @@ const LoginLoaded = async () => {
     if (id === "admin" && password === "admin") {
       console.log("Admin login detected");
       localStorage.setItem("CurrentUser", "admin");
-      localStorage.setItem("UserType", "admin");
+        localStorage.setItem("UserType", "admin");
+        return Promise.resolve(true);
     } else {
       const user =
         (await checkGuests(id, password)) ||
@@ -511,18 +515,38 @@ const LoginLoaded = async () => {
 
       if (user) {
         console.log("User found:", user.toString());
-        localStorage.setItem("CurrentUser", user.id);
+          localStorage.setItem("CurrentUser", user.id);
+          return Promise.resolve(true);
       } else {
-        console.log("User not found");
+          console.log("User not found");
+          return Promise.resolve(false);
       }
-    }
+      }
+
+      
   }
 
-  document.getElementById("logBTN").addEventListener("click", () => {
-    const usernameValue = document.getElementById("username").value;
-    const passwordValue = document.getElementById("password").value;
-
-    checkExist(usernameValue, passwordValue);
+    document.getElementById("logBTN").addEventListener("click", () => {
+        console.log("I AM HERE");
+        const usernameValue = document.getElementById("username").value;
+        const passwordValue = document.getElementById("password").value;
+        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
+        const appendAlert = (message, type) => {
+            const wrapper = document.createElement('div')
+            wrapper.innerHTML = [
+              `<div class="alert ${type}" role="alert">`,
+              `   <div>${message}</div>`,
+              '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('')
+            alertPlaceholder.append(wrapper)
+        }
+        checkExist(usernameValue, passwordValue).then((result) => {
+            if (result) { window.location.href = "../../frontend/html/index.html" }
+            else { appendAlert('NO SUCH USER EXIST!', 'alert-danger d-flex align-items-center alert-dismissible') }
+        })
+      
+    
   });
 };
 
