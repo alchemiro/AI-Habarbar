@@ -148,8 +148,8 @@ const indexLoaded = async () => {
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
     projectsRefMapped.forEach((project) => {
-      project.name = project.name == " " ? "." : project.name;
-      project.summary = project.summary == " " ? "." : project.summary;
+      project.name = project.name == " " ? "N/A" : project.name;
+      project.summary = project.summary == " " ? "NONE" : project.summary;
       projects.push(project);
 
       const cardDiv = document.createElement("div");
@@ -553,20 +553,22 @@ const LoginLoaded = async () => {
 const MyPageLoaded = async () => {
   navigate();
   const gridrow = document.getElementById("judge-container-row");
-  async function GetProjectToGrade() {
-    const projectsRef = await projectCollection
-      .withConverter(projectConverter)
-      .get();
-    const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
-    projectsRefMapped.forEach((project) => {
-      project.name = project.name == " " ? "." : project.name;
-      project.summary = project.summary == " " ? "." : project.summary;
+    async function GetProjectToGrade() {
+          const projectsRef = await projectCollection
+              .withConverter(projectConverter)
+              .get();
+          const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
-      const cardDiv = document.createElement("div");
-      cardDiv.classList.add("card");
-      cardDiv.style = "width: 18rem;";
-      cardDiv.innerHTML = `
+          projectsRefMapped.forEach((project) => {
+              project.name = project.name == " " ? "N/A" : project.name;
+              project.summary = project.summary == " " ? "NONE" : project.summary;
+              projects.push(project);
+
+              const cardDiv = document.createElement("div");
+              cardDiv.classList.add("card");
+              cardDiv.style = "width: 18rem;";
+              cardDiv.innerHTML = `
         <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
         <div class="card-body"> 
             <h5 class="card-title">${project.name}</h5>
@@ -575,11 +577,11 @@ const MyPageLoaded = async () => {
         </div>
         `;
 
-      cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
-      });
-      gridrow.appendChild(cardDiv);
-    });
+              cardDiv.addEventListener("click", () => {
+                  redirectWithParams(project.id, "project");
+              });
+              gridrow.appendChild(cardDiv);
+          });
   }
 
   await GetProjectToGrade();
