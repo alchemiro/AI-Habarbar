@@ -91,6 +91,19 @@ class Project {
       " End of Project."
     );
   }
+
+  get color() {
+    switch (this.#category) {
+      case "Electronics":
+        return "#4062BB";
+      case "ICT":
+        return "#D4AF37";
+      case "Robotics":
+        return "#FD151B";
+      default:
+        return "#000000";
+    }
+  }
 }
 class User {
   #id;

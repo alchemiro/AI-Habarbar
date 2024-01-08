@@ -42,20 +42,19 @@ function navigate() {
   index.href = "./index.html";
   index.textContent = "Home";
 
-    const profile = document.createElement("a");
-  profile.href = "./login.html"
-    profile.textContent = "Profile";
+  const profile = document.createElement("a");
+  profile.href = "./login.html";
+  profile.textContent = "Profile";
   console.log(localStorage.getItem("CurrentUser"));
   if (isStudent || isJudge) {
-      profile.addEventListener("click", () => {
-          profile.href = '#';
+    profile.addEventListener("click", () => {
+      profile.href = "#";
       redirectWithParams(
         localStorage.getItem("CurrentUser"),
         localStorage.getItem("UserType")
       );
     });
   } else if (isAdmin) {
-
     profile.textContent = "Admin Dashboard";
     profile.href = "./admin.html";
   }
@@ -139,7 +138,6 @@ const indexLoaded = async () => {
   navigate();
   const addBtn = document.getElementById("addProject");
   const gridrow = document.getElementById("gallery-container-row");
-  const input = document.getElementById("projectInputID");
 
   async function getGallery() {
     const projectsRef = await projectCollection
@@ -157,10 +155,11 @@ const indexLoaded = async () => {
       cardDiv.style = "width: 18rem;";
       cardDiv.innerHTML = `
         <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
-        <div class="card-body"> 
-            <h5 class="card-title">${project.name}</h5>
-            <p class="card-text">${project.summary}</p>
-            <div class="card-footer">${project.likes}</div>
+        <div style="background-color:${project.color}"class="card-body"> 
+            <h5 class="card-title">Name: ${project.name}</h5>
+            <p class="card-text">Summary: ${project.summary}</p>
+            <p class="card-text">ID: ${project.id}</p>
+            <div class="card-footer">Likes: ${project.likes}</div>
         </div>
         `;
 
@@ -329,7 +328,7 @@ const AdminLoaded = async () => {
       .then((result) => {
         console.log(result.empty);
         result.forEach((doc) => {
-          console.log(doc.data());
+          // console.log(doc.data());
           list.push(doc.data());
         });
       });
@@ -351,18 +350,23 @@ const AdminLoaded = async () => {
 
       const header = document.createElement("th");
       header.textContent = project.id;
+      header.style.backgroundColor = project.color;
 
       const name = document.createElement("td");
       name.textContent = project.name;
+      name.style.backgroundColor = project.color;
+
+      const categ = document.createElement("td");
+      categ.textContent = project.category;
+      categ.style.backgroundColor = project.color;
 
       const summary = document.createElement("td");
       summary.textContent = project.summary;
+      summary.style.backgroundColor = project.color;
 
       const students = document.createElement("td");
       students.textContent = "";
-
-      const grade = document.createElement("td");
-      grade.textContent = "";
+      students.style.backgroundColor = project.color;
 
       await FindStudentsByProject(project).then((document) => {
         document.forEach((student) => {
@@ -372,19 +376,24 @@ const AdminLoaded = async () => {
 
       const gradeRow = document.createElement("td");
       gradeRow.textContent = "";
+      gradeRow.style.backgroundColor = project.color;
       await FindGradesByProject(project).then((document) => {
         document.forEach((grade) => {
           // console.log(grade);
           gradeRow.textContent += `${grade.score},`;
         });
-        console.log(gradeRow.textContent);
+        // console.log(gradeRow.textContent);
       });
 
       row.appendChild(header);
       row.appendChild(name);
+      row.appendChild(categ);
       row.appendChild(students);
       row.appendChild(gradeRow);
       row.appendChild(summary);
+      row.addEventListener("click", () => {
+        redirectWithParams(project.id, "project");
+      });
       ProjectTable.appendChild(row);
       // ProjectTable.innerHTML += `<tr onclick="FindStudentsByProject(project)">
       //               <th scope="row">${project.id}</th>
@@ -505,8 +514,8 @@ const LoginLoaded = async () => {
     if (id === "admin" && password === "admin") {
       console.log("Admin login detected");
       localStorage.setItem("CurrentUser", "admin");
-        localStorage.setItem("UserType", "admin");
-        return Promise.resolve(true);
+      localStorage.setItem("UserType", "admin");
+      return Promise.resolve(true);
     } else {
       const user =
         (await checkGuests(id, password)) ||
@@ -515,38 +524,40 @@ const LoginLoaded = async () => {
 
       if (user) {
         console.log("User found:", user.toString());
-          localStorage.setItem("CurrentUser", user.id);
-          return Promise.resolve(true);
+        localStorage.setItem("CurrentUser", user.id);
+        return Promise.resolve(true);
       } else {
-          console.log("User not found");
-          return Promise.resolve(false);
+        console.log("User not found");
+        return Promise.resolve(false);
       }
-      }
-
-      
+    }
   }
 
-    document.getElementById("logBTN").addEventListener("click", () => {
-        console.log("I AM HERE");
-        const usernameValue = document.getElementById("username").value;
-        const passwordValue = document.getElementById("password").value;
-        const alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-        const appendAlert = (message, type) => {
-            const wrapper = document.createElement('div')
-            wrapper.innerHTML = [
-              `<div class="alert ${type}" role="alert">`,
-              `   <div>${message}</div>`,
-              '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-                '</div>'
-            ].join('')
-            alertPlaceholder.append(wrapper)
-        }
-        checkExist(usernameValue, passwordValue).then((result) => {
-            if (result) { window.location.href = "../../frontend/html/index.html" }
-            else { appendAlert('NO SUCH USER EXIST!', 'alert-danger d-flex align-items-center alert-dismissible') }
-        })
-      
-    
+  document.getElementById("logBTN").addEventListener("click", () => {
+    console.log("I AM HERE");
+    const usernameValue = document.getElementById("username").value;
+    const passwordValue = document.getElementById("password").value;
+    const alertPlaceholder = document.getElementById("liveAlertPlaceholder");
+    const appendAlert = (message, type) => {
+      const wrapper = document.createElement("div");
+      wrapper.innerHTML = [
+        `<div class="alert ${type}" role="alert">`,
+        `   <div>${message}</div>`,
+        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+        "</div>",
+      ].join("");
+      alertPlaceholder.append(wrapper);
+    };
+    checkExist(usernameValue, passwordValue).then((result) => {
+      if (result) {
+        window.location.href = "../../frontend/html/index.html";
+      } else {
+        appendAlert(
+          "NO SUCH USER EXIST!",
+          "alert-danger d-flex align-items-center alert-dismissible"
+        );
+      }
+    });
   });
 };
 
@@ -554,21 +565,21 @@ const MyPageLoaded = async () => {
   navigate();
   const gridrow = document.getElementById("judge-container-row");
 
-    async function GetProjectToGrade() {
-          const projectsRef = await projectCollection
-              .withConverter(projectConverter)
-              .get();
-          const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
+  async function GetProjectToGrade() {
+    const projectsRef = await projectCollection
+      .withConverter(projectConverter)
+      .get();
+    const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
-          projectsRefMapped.forEach((project) => {
-              project.name = project.name == " " ? "N/A" : project.name;
-              project.summary = project.summary == " " ? "NONE" : project.summary;
-              projects.push(project);
+    projectsRefMapped.forEach((project) => {
+      project.name = project.name == " " ? "N/A" : project.name;
+      project.summary = project.summary == " " ? "NONE" : project.summary;
+      projects.push(project);
 
-              const cardDiv = document.createElement("div");
-              cardDiv.classList.add("card");
-              cardDiv.style = "width: 18rem;";
-              cardDiv.innerHTML = `
+      const cardDiv = document.createElement("div");
+      cardDiv.classList.add("card");
+      cardDiv.style = "width: 18rem;";
+      cardDiv.innerHTML = `
         <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
         <div class="card-body"> 
             <h5 class="card-title">${project.name}</h5>
@@ -577,11 +588,11 @@ const MyPageLoaded = async () => {
         </div>
         `;
 
-              cardDiv.addEventListener("click", () => {
-                  redirectWithParams(project.id, "project");
-              });
-              gridrow.appendChild(cardDiv);
-          });
+      cardDiv.addEventListener("click", () => {
+        redirectWithParams(project.id, "project");
+      });
+      gridrow.appendChild(cardDiv);
+    });
   }
 
   await GetProjectToGrade();

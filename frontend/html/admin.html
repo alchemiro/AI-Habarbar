@@ -19,14 +19,16 @@
     ></script>
   </head>
   <body onload="AdminLoaded()">
-      <header>
-          <div class="sidebar" id="sidebar"></div>
+    <header>
+      <div class="sidebar" id="sidebar"></div>
 
-          <i class="fa-solid fa-bars nav-icon"
-             id="openSidebar"
-             onclick="navigate()">
-          </i>
-      </header>
+      <i
+        class="fa-solid fa-bars nav-icon"
+        id="openSidebar"
+        onclick="navigate()"
+      >
+      </i>
+    </header>
     <div class="container text-center" style="height: 23vh; overflow-y: auto">
       <table class="table table-hover" id="ProjectTable">
         <thead>
@@ -36,9 +38,10 @@
               <button class="btn btn-primary btn-sm" onclick="">Add</button>
             </th>
             <th scope="col">Name</th>
-            <th scope="col">students</th>
+            <th scope="col">Category</th>
+            <th scope="col">Students</th>
             <th scope="col">Grades</th>
-            <th scope="col">summmery</th>
+            <th scope="col">Summary</th>
           </tr>
         </thead>
         <tbody id="ProjectBody"></tbody>
