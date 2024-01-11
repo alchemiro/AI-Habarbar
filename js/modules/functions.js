@@ -388,8 +388,6 @@ const AdminLoaded = async () => {
       gradeRow.style.backgroundColor = project.color;
       await FindGradesByProject(project).then((document) => {
         document.forEach(async (grade) => {
-          // console.log(grade);
-          // const studentsQuery = studentCollection.where("project", "==", project.id);
           await judgeCollection
             .doc(grade.judge)
             .withConverter(judgeConverter)
@@ -397,10 +395,9 @@ const AdminLoaded = async () => {
             .then((doc) => {
               // console.log(doc.data());
               gradeRow.textContent += `${doc.data().name}:`;
-            });
-          gradeRow.textContent += `${grade.score},`;
+            }); //find judge associated with this grade
+          gradeRow.textContent += `${grade.score},`; //only after that, add the grade
         });
-        // console.log(gradeRow.textContent);
       });
 
       row.appendChild(header);
