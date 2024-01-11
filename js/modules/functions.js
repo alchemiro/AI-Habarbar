@@ -16,6 +16,22 @@ async function FindStudentsByProject(project) {
     });
   return list;
 }
+
+async function FindJudgeByGrade(grade) {
+  // console.log(grade.judge);
+  let str = "";
+  await judgeCollection
+    .doc(`${grade.judge}`)
+    .withConverter(judgeConverter)
+    .get()
+    .then((doc) => {
+      // console.log(doc.data());
+      const judge = doc.data();
+      // console.log(judge.name);
+      str += judge.name;
+    }); //find judge associated with this grade
+  return str;
+}
 function searchProjects(what) {
   for (const project in projects) {
     const values = Object.values(projects[project]);
@@ -388,15 +404,11 @@ const AdminLoaded = async () => {
       gradeRow.style.backgroundColor = project.color;
       await FindGradesByProject(project).then((document) => {
         document.forEach(async (grade) => {
-          await judgeCollection
-            .doc(grade.judge)
-            .withConverter(judgeConverter)
-            .get()
-            .then((doc) => {
-              // console.log(doc.data());
-              gradeRow.textContent += `${doc.data().name}:`;
-            }); //find judge associated with this grade
-          gradeRow.textContent += `${grade.score},`; //only after that, add the grade
+          await FindJudgeByGrade(grade).then((jName) => {
+            console.log(jName);
+            gradeRow.textContent += jName + ":";
+          });
+          gradeRow.textContent += grade.score; //only after that, add the grade
         });
       });
 

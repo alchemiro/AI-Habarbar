@@ -312,7 +312,7 @@ const getDocumentFirebase = async function (collection, keystring, converter) {
       // console.log("Found!");
       // console.log(document.data().toString());
       const data = document.data();
-      console.log(data.toString());
+      // console.log(data.toString());
       return data; // var proj = document.data();
       // console.log(proj.toString());
     } else {
