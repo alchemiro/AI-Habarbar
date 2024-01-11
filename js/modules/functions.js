@@ -3,6 +3,19 @@ function redirectWithParams(id, key) {
   const url = `../../frontend/html/${key}.html`;
   window.location.href = `${url}?id=${id}`;
 }
+async function FindStudentsByProject(project) {
+  const studentsQuery = studentCollection.where("project", "==", project.id);
+  const list = [];
+  await studentsQuery
+    .withConverter(studentConverter)
+    .get()
+    .then((queryResult) => {
+      queryResult.forEach((doc) => {
+        list.push(doc.data());
+      });
+    });
+  return list;
+}
 function searchProjects(what) {
   for (const project in projects) {
     const values = Object.values(projects[project]);
@@ -181,6 +194,8 @@ const ProjectLoaded = async () => {
   const nameDiv = document.getElementById("nametag");
   const sumDiv = document.getElementById("summarytag");
   // const iddiv = document.getElementById("idtag");
+  const imgObject = document.getElementById("projectImg");
+  const studentList = document.getElementById("studentList");
   const gradeDiv = document.getElementById("gradeDiv");
   const btn = document.getElementById("gradeButton");
   const input = document.getElementById("gradeInput");
@@ -200,10 +215,18 @@ const ProjectLoaded = async () => {
 
   async function getProject(id) {
     const p = await getDocument(new Project(id));
+    await FindStudentsByProject(p).then((doc) => {
+      doc.forEach((student) => {
+        const li = document.createElement("li");
+        li.textContent = `${student.id} - ${student.name}`;
 
+        studentList.appendChild(li);
+      });
+    });
     nameDiv.textContent = p.name;
 
     sumDiv.textContent = p.summary;
+    imgObject.src = p.img;
 
     // iddiv.textContent = id;
 
@@ -298,20 +321,6 @@ const AdminLoaded = async () => {
   const GuestTable = document.getElementById("GuestBody");
   const GuestRows = GuestTable.getElementsByTagName("tr");
 
-  async function FindStudentsByProject(project) {
-    const studentsQuery = studentCollection.where("project", "==", project.id);
-    const list = [];
-    await studentsQuery
-      .withConverter(studentConverter)
-      .get()
-      .then((queryResult) => {
-        queryResult.forEach((doc) => {
-          list.push(doc.data());
-        });
-      });
-    return list;
-  }
-
   async function FindGradesByProject(project) {
     // console.log(project.id);
     const gradesQuery = gradeCollection.where(
@@ -378,8 +387,17 @@ const AdminLoaded = async () => {
       gradeRow.textContent = "";
       gradeRow.style.backgroundColor = project.color;
       await FindGradesByProject(project).then((document) => {
-        document.forEach((grade) => {
+        document.forEach(async (grade) => {
           // console.log(grade);
+          // const studentsQuery = studentCollection.where("project", "==", project.id);
+          await judgeCollection
+            .doc(grade.judge)
+            .withConverter(judgeConverter)
+            .get()
+            .then((doc) => {
+              // console.log(doc.data());
+              gradeRow.textContent += `${doc.data().name}:`;
+            });
           gradeRow.textContent += `${grade.score},`;
         });
         // console.log(gradeRow.textContent);
