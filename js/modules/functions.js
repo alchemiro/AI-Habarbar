@@ -1,6 +1,6 @@
 let projects = [];
 function redirectWithParams(id, key) {
-  const url = `../../frontend/html/${key}.html`;
+  const url = `../../public/html/${key}.html`;
   window.location.href = `${url}?id=${id}`;
 }
 async function FindStudentsByProject(project) {
@@ -159,7 +159,7 @@ function checkIfAdmin() {
 }
 //pages that need admin permission:
 function bailout() {
-  const url = "../../frontend/html/index.html";
+  const url = "../../public/html/index.html";
   window.location.href = url;
 }
 
@@ -577,7 +577,7 @@ const LoginLoaded = async () => {
     };
     checkExist(usernameValue, passwordValue).then((result) => {
       if (result) {
-        window.location.href = "../../frontend/html/index.html";
+        window.location.href = "../../public/html/index.html";
       } else {
         appendAlert(
           "NO SUCH USER EXIST!",
