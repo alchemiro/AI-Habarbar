@@ -1,6 +1,6 @@
 let projects = [];
 function redirectWithParams(id, key) {
-  const url = `../../public/html/${key}.html`;
+  const url = `./${key}.html`;
   window.location.href = `${url}?id=${id}`;
 }
 async function FindStudentsByProject(project) {
@@ -561,7 +561,7 @@ const LoginLoaded = async () => {
   }
 
   document.getElementById("logBTN").addEventListener("click", () => {
-    console.log("I AM HERE");
+    // console.log("I AM HERE");
     const usernameValue = document.getElementById("username").value;
     const passwordValue = document.getElementById("password").value;
     const alertPlaceholder = document.getElementById("liveAlertPlaceholder");
@@ -577,7 +577,7 @@ const LoginLoaded = async () => {
     };
     checkExist(usernameValue, passwordValue).then((result) => {
       if (result) {
-        window.location.href = "../../public/html/index.html";
+        window.location.href = "./index.html";
       } else {
         appendAlert(
           "NO SUCH USER EXIST!",
