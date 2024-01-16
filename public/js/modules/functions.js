@@ -228,14 +228,15 @@ const ProjectLoaded = async () => {
 
   const id = urlParams.get("id");
   // console.log(id);
-
+  let isOwnerStudent = false;
   async function getProject(id) {
     const p = await getDocument(new Project(id));
     await FindStudentsByProject(p).then((doc) => {
       doc.forEach((student) => {
         const li = document.createElement("li");
         li.textContent = `${student.id} - ${student.name}`;
-
+        if (student.id == localStorage.getItem("CurrentUser"))
+          isOwnerStudent = true;
         studentList.appendChild(li);
       });
     });
@@ -275,37 +276,6 @@ const ProjectLoaded = async () => {
             .doc(doc.id)
             .withConverter(gradeConverter)
             .set(new Grade(doc.id, judge, project, grade));
-        });
-        // console.log("not empty and done");
-      }
-    });
-  }
-
-  async function adminGrade(grade, project) {
-    //add admin grade (round = 0, judge = "admin")
-    // const grade;
-    const gradesQuery = gradeCollection
-      .withConverter(gradeConverter)
-      .where("project", "==", project);
-    // console.log("doing");
-    await gradesQuery.get().then((snapshot) => {
-      if (snapshot.empty) {
-        //if no current admin grade, make a new admin grade
-        gradeCollection.add({ temp: "temp" }).then((docRef) => {
-          gradeCollection
-            .doc(docRef.id)
-            .withConverter(gradeConverter)
-            .set(new Grade(docRef.id, "admin", project, grade, 0));
-        });
-        // console.log("empty and done");
-      } else {
-        snapshot.forEach((doc) => {
-          //otherwise replace it
-          // console.log(doc.data());
-          gradeCollection
-            .doc(doc.id)
-            .withConverter(gradeConverter)
-            .set(new Grade(doc.id, "admin", project, grade, 0));
         });
         // console.log("not empty and done");
       }
