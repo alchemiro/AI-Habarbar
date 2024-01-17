@@ -3,6 +3,7 @@ function redirectWithParams(id, key) {
   const url = `./${key}.html`;
   window.location.href = `${url}?id=${id}`;
 }
+
 async function FindStudentsByProject(project) {
   const studentsQuery = studentCollection.where("project", "==", project.id);
   const list = [];
@@ -159,7 +160,7 @@ function checkIfAdmin() {
 }
 //pages that need admin permission:
 function bailout() {
-  const url = "../../public/html/index.html";
+  const url = "../public/index.html";
   window.location.href = url;
 }
 
@@ -173,7 +174,8 @@ const indexLoaded = async () => {
       .withConverter(projectConverter)
       .get();
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
-
+    console.log(JSON.stringify(projectsRefMapped));
+    console.log(projectsRefMapped.toString());
     projectsRefMapped.forEach((project) => {
       project.name = project.name == " " ? "N/A" : project.name;
       project.summary = project.summary == " " ? "NONE" : project.summary;
@@ -296,6 +298,7 @@ const AdminLoaded = async () => {
   const div = document.getElementById("holdstuff");
 
   const ProjectTable = document.getElementById("ProjectBody");
+  const projectTableExport = document.getElementById("ProjectTable");
   const ProjectRows = ProjectTable.getElementsByTagName("tr");
 
   const StudentTable = document.getElementById("StudentBody");
