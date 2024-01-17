@@ -147,28 +147,28 @@
         var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
         return dl
           ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
-          : XLSX.writeFile(wb, fn || "MySheetName." + (type || "xlsx"));
+          : XLSX.writeFile(wb, fn || "projects." + (type || "xlsx"));
       }
       function ExportJudgeToExcel(type, fn, dl) {
         var elt = document.getElementById("JudgeTable");
         var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
         return dl
           ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
-          : XLSX.writeFile(wb, fn || "MySheetName." + (type || "xlsx"));
+          : XLSX.writeFile(wb, fn || "judges." + (type || "xlsx"));
       }
       function ExportStudentToExcel(type, fn, dl) {
         var elt = document.getElementById("StudentsTable");
         var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
         return dl
           ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
-          : XLSX.writeFile(wb, fn || "MySheetName." + (type || "xlsx"));
+          : XLSX.writeFile(wb, fn || "students." + (type || "xlsx"));
       }
       function ExportGuestToExcel(type, fn, dl) {
         var elt = document.getElementById("GuestTable");
         var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
         return dl
           ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
-          : XLSX.writeFile(wb, fn || "MySheetName." + (type || "xlsx"));
+          : XLSX.writeFile(wb, fn || "guests." + (type || "xlsx"));
       }
     </script>
   </body>
