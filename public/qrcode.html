@@ -1,38 +1,33 @@
-<script src="html5-qrcode.min.js"></script>
-<style>
-  .result {
-    background-color: green;
-    color: #fff;
-    padding: 20px;
-  }
-  .row {
-    display: flex;
-  }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Camera in browsers</title>
 
-<div class="row">
-  <div class="col">
-    <div style="width: 500px" id="reader"></div>
-  </div>
-  <div class="col" style="padding: 30px">
-    <h4>SCAN RESULT</h4>
-    <div id="result">Result Here</div>
-  </div>
-</div>
+    <!-- imports the webpage's stylesheet -->
+    <link rel="stylesheet" href="./css/qrcode.css" />
 
-<script type="text/javascript">
-  function onScanSuccess(qrCodeMessage) {
-    document.getElementById("result").innerHTML =
-      '<span class="result">' + qrCodeMessage + "</span>";
-  }
+    <!-- imports the webpage's javascript file -->
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <h1>Demo - Native camera in browsers</h1>
 
-  function onScanError(errorMessage) {
-    //handle scan error
-  }
+    <!-- The `label` is attached to the hidden file input -->
+    <label for="cameraFileInput">
+      <span class="btn">Open camera</span>
 
-  var html5QrcodeScanner = new Html5QrcodeScanner("reader", {
-    fps: 10,
-    qrbox: 250,
-  });
-  html5QrcodeScanner.render(onScanSuccess, onScanError);
-</script>
+      <!-- The hidden file `input` for opening the native camera -->
+      <input
+        id="cameraFileInput"
+        type="file"
+        accept="image/*"
+        capture="environment"
+      />
+    </label>
+
+    <!-- displays the picture uploaded from the native camera -->
+    <img alt="Picture from camera" id="pictureFromCamera" />
+  </body>
+</html>
