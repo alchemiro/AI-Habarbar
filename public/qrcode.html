@@ -3,31 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Camera in browsers</title>
-
-    <!-- imports the webpage's stylesheet -->
     <link rel="stylesheet" href="./css/qrcode.css" />
-
-    <!-- imports the webpage's javascript file -->
-    <script src="script.js" defer></script>
+    <title>QR Code Scanner / Reader</title>
   </head>
+
   <body>
-    <h1>Demo - Native camera in browsers</h1>
-
-    <!-- The `label` is attached to the hidden file input -->
-    <label for="cameraFileInput">
-      <span class="btn">Open camera</span>
-
-      <!-- The hidden file `input` for opening the native camera -->
-      <input
-        id="cameraFileInput"
-        type="file"
-        accept="image/*"
-        capture="environment"
-      />
-    </label>
-
-    <!-- displays the picture uploaded from the native camera -->
-    <img alt="Picture from camera" id="pictureFromCamera" />
+    <div class="container">
+      <h1>Scan QR Codes</h1>
+      <div class="section">
+        <div id="my-qr-reader"></div>
+      </div>
+    </div>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script src="./js/qr.js"></script>
   </body>
 </html>
