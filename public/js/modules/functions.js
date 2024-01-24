@@ -4,6 +4,17 @@ function redirectWithParams(id, key) {
   window.location.href = `${url}?id=${id}`;
 }
 
+async function createQRByPage() {
+  return new QRCode("qr-code", {
+    text: window.location.href,
+    width: 256,
+    height: 256,
+    colorDark: "#000000",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+}
+
 async function FindStudentsByProject(project) {
   const studentsQuery = studentCollection.where("project", "==", project.id);
   const list = [];
