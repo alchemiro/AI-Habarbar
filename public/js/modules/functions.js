@@ -93,6 +93,10 @@ function navigate() {
   input.href = "./projectInput.html";
   input.textContent = "Project Input";
 
+  const qrcode = document.createElement("a");
+  qrcode.href = "./qrcode.html";
+  qrcode.textContent = "Scan QR";
+
   head.appendChild(index);
   // if (isLoggedIn){head.appendChild(lo)};
   // else {head.appendChild(login)};
@@ -118,13 +122,7 @@ function navigate() {
     head.appendChild(input);
   }
 
-  // head.innerHTML = `
-  //       <a href="./index.html">Home</a>
-  //       <a href="./login.html">Login</a>
-  //       <a href="./MyPage.html">My page</a>
-  //       <a href="./projectInput.html">Set and Get</a>
-  //       <a href="./admin.html">Admin Dashboard</a>
-  //       <a href="./apge.html">Excel Converter</a>`;
+  head.appendChild(qrcode);
 
   const openButton = document.getElementById("openSidebar");
   openButton.addEventListener("click", toggleSidebar);
