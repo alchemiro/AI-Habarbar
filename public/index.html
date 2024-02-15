@@ -11,7 +11,7 @@
       integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
       crossorigin="anonymous"
     />
-
+    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/carousel.css" />
     <script
@@ -20,6 +20,22 @@
     ></script>
   </head>
   <body onload="indexLoaded()">
+    <script>
+      window.addEventListener("load", () => {
+        registerSW();
+      });
+
+      // Register the Service Worker
+      async function registerSW() {
+        if ("serviceWorker" in navigator) {
+          try {
+            await navigator.serviceWorker.register("serviceworker.js");
+          } catch (e) {
+            console.log("SW registration failed");
+          }
+        }
+      }
+    </script>
     <header>
       <div class="sidebar" id="sidebar"></div>
 

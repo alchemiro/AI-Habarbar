@@ -99,9 +99,22 @@ class Project {
       case "ICT":
         return "#D4AF37";
       case "Robotics":
-        return "#FD151B";
+        return "#A33945";
       default:
         return "#000000";
+    }
+  }
+
+  get textColor() {
+    switch (this.#category) {
+      case "Electronics":
+        return "#fffff0";
+      case "ICT":
+        return "#121212";
+      case "Robotics":
+        return "#fffff0";
+      default:
+        return "#ffffff";
     }
   }
 }

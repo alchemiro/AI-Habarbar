@@ -196,10 +196,10 @@ const indexLoaded = async () => {
       cardDiv.innerHTML = `
         <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
         <div style="background-color:${project.color}"class="card-body"> 
-            <h5 class="card-title">Name: ${project.name}</h5>
-            <p class="card-text">Summary: ${project.summary}</p>
-            <p class="card-text">ID: ${project.id}</p>
-            <div class="card-footer">Likes: ${project.likes}</div>
+            <h3 class="card-title" style="color:${project.textColor}">Name: ${project.name}</h3>
+            <h3 class="card-title" style="color:${project.textColor}">ID: ${project.id}</h3>
+            <h5 class="card-text" style="color:${project.textColor}">Summary: ${project.summary}</h5>
+            <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>
         `;
 
@@ -357,22 +357,27 @@ const AdminLoaded = async () => {
 
       const header = document.createElement("th");
       header.textContent = project.id;
+      header.style.color = project.textColor;
       header.style.backgroundColor = project.color;
 
       const name = document.createElement("td");
       name.textContent = project.name;
+      name.style.color = project.textColor;
       name.style.backgroundColor = project.color;
 
       const categ = document.createElement("td");
       categ.textContent = project.category;
+      categ.style.color = project.textColor;
       categ.style.backgroundColor = project.color;
 
       const summary = document.createElement("td");
       summary.textContent = project.summary;
+      summary.style.color = project.textColor;
       summary.style.backgroundColor = project.color;
 
       const students = document.createElement("td");
       students.textContent = "";
+      students.style.color = project.textColor;
       students.style.backgroundColor = project.color;
 
       await FindStudentsByProject(project).then((document) => {
@@ -383,6 +388,7 @@ const AdminLoaded = async () => {
 
       const gradeRow = document.createElement("td");
       gradeRow.textContent = "";
+      gradeRow.style.color = project.textColor;
       gradeRow.style.backgroundColor = project.color;
       await FindGradesByProject(project).then((document) => {
         document.forEach(async (grade) => {
@@ -591,7 +597,7 @@ const MyPageLoaded = async () => {
       cardDiv.innerHTML = `
         <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
         <div class="card-body"> 
-            <h5 class="card-title">${project.name}</h5>
+            <h3 class="card-title">${project.name}</h3>
             <p class="card-text">${project.summary}</p>
             <div class="card-footer">${project.likes}</div>
         </div>
