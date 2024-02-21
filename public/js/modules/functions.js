@@ -1,4 +1,3 @@
-let projects = [];
 function redirectWithParams(id, key) {
   const url = `./${key}.html`;
   window.location.href = `${url}?id=${id}`;
@@ -44,18 +43,17 @@ async function FindJudgeByGrade(grade) {
     }); //find judge associated with this grade
   return str;
 }
-function searchProjects(what) {
+async function searchProjects(what = "") {
+  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projects = projectsRef.docs.map((doc) => doc.data());
   for (const project in projects) {
-    const values = Object.values(projects[project]);
-    for (const value of values) {
-      if (value.includes(what)) {
-        console.log(`Found '${what}' in project '${project}'`);
-        return true;
-      }
+    proj = projects[project].toString();
+    stu = (await FindStudentsByProject(projects[project])).toString();
+    if(proj.includes(what) || stu.includes(what)){
+      console.log(`hey! this is working! i got '${what}'`);
+      console.log(projects[project]);
     }
   }
-  console.log(`'${what}' not found in any project`);
-  return false;
 }
 const isAdmin = localStorage.getItem("UserType") === "admin";
 const isJudge = localStorage.getItem("UserType") === "judge";
@@ -183,12 +181,11 @@ const indexLoaded = async () => {
       .withConverter(projectConverter)
       .get();
     const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
-    console.log(JSON.stringify(projectsRefMapped));
-    console.log(projectsRefMapped.toString());
+    //console.log(JSON.stringify(projectsRefMapped));
+    //console.log(projectsRefMapped.toString());
     projectsRefMapped.forEach((project) => {
       project.name = project.name == " " ? "N/A" : project.name;
       project.summary = project.summary == " " ? "NONE" : project.summary;
-      projects.push(project);
 
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
@@ -208,6 +205,7 @@ const indexLoaded = async () => {
       });
       gridrow.appendChild(cardDiv);
     });
+    searchProjects("א")
   }
 
   await getGallery();
