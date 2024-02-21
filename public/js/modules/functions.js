@@ -54,7 +54,6 @@ async function searchProjects(what = "") {
     if(proj.includes(what) || stu.includes(what)){
       projects[project].name = projects[project].name == " " ? "N/A" : projects[project].name;
       projects[project].summary = projects[project].summary == " " ? "NONE" : projects[project].summary;
-
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
       cardDiv.style = "width: 18rem;";
@@ -65,11 +64,9 @@ async function searchProjects(what = "") {
             <h3 class="card-title" style="color:${projects[project].textColor}">ID: ${projects[project].id}</h3>
             <h5 class="card-text" style="color:${projects[project].textColor}">Summary: ${projects[project].summary}</h5>
             <div class="card-footer" style="color:${projects[project].textColor}">Likes: ${projects[project].likes}</div>
-        </div>
-        `;
-
+        </div>`;
       cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        redirectWithParams(projects[project].id, "project");
       });
       gridrow.appendChild(cardDiv);
     }
@@ -199,10 +196,6 @@ const indexLoaded = async () => {
   btn.addEventListener("click", () => {
     searchProjects(inp.value);
   });
-
-
-  
-
   // console.log(projects);
 };
 
