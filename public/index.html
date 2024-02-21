@@ -49,8 +49,21 @@
 
     <main>
       <div class="container text-center" style="height: 75vh; overflow-y: auto">
-        <button type="submit" id="serach">search</button>
-
+        <div class="input-group" id="search">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="SearchButton"
+          >
+            Search
+          </button>
+          <input
+            id="SearchInput"
+            type="text"
+            class="form-control"
+            placeholder="Search in projects"
+          />
+        </div>
         <div class="row" id="gallery-container-row"></div>
       </div>
     </main>
