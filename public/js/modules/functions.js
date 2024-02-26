@@ -74,7 +74,7 @@ function navigate() {
 
   const lo = document.createElement("a");
   lo.textContent = "Sign Out";
-  lo.href = "./index.html";
+  lo.href = "/public/index.html";
   lo.addEventListener("click", () => {
     logout();
   });
@@ -237,7 +237,10 @@ const ProjectLoaded = async () => {
     gradeDiv.style.visibility = "hidden";
   }
 
-  const id = urlParams.get("id");
+  var id = urlParams.get("id");
+  if (!id) window.location.href = "?id=100";
+  // console.log(urlParams);
+
   // console.log(id);
   let isOwnerStudent = false;
   async function getProject(id) {
@@ -427,12 +430,24 @@ const AdminLoaded = async () => {
     judgesRefMapped.forEach((judge) => {
       // console.log(judge.toString());
       //judge.name = judge.name == " " ? "." : judge.name;
-      JudgeTable.innerHTML += `<tr>
-                    <th scope="row">${judge.id}</th>
-                    <td>${judge.name}</td>
-                    <td>none!</td>
-                    <td>none!</td>
-                </tr>`;
+
+      const judgeRow = document.createElement("tr");
+
+      const judgeHeader = document.createElement("th");
+      judgeHeader.textContent = judge.id;
+      judgeHeader.scope = "row";
+
+      const judgeName = document.createElement("td");
+      judgeName.textContent = judge.name;
+
+      const judgeProjects = document.createElement("td");
+      judgeProjects.textContent = `[${judge.projects}]`;
+
+      judgeRow.appendChild(judgeHeader);
+      judgeRow.appendChild(judgeName);
+      judgeRow.appendChild(judgeProjects);
+
+      JudgeTable.appendChild(judgeRow);
     });
   }
   async function getAllGuests() {
@@ -459,7 +474,7 @@ const AdminLoaded = async () => {
       <th scope="row">${student.id}</th>
       <td>${student.name}</td>
       <td>${student.project}</td>
-      <td>${student.amount}</td>
+      <td>[${student.likes}]</td>
   </tr>`;
     });
   }
@@ -526,8 +541,16 @@ const LoginLoaded = async () => {
   }
 
   async function checkExist(id, password) {
-    if (id === "admin" && password === "admin") {
-      console.log("Admin login detected");
+    const adminFetch = await judgeCollection
+      .doc("admin")
+      .withConverter(judgeConverter)
+      .get()
+      .then((document) => {
+        return document.data();
+      });
+    // console.log(adminFetch);
+    if (password == adminFetch.pass && id == adminFetch.name) {
+      console.log("admin detected from firebase.");
       localStorage.setItem("CurrentUser", "admin");
       localStorage.setItem("UserType", "admin");
       return Promise.resolve(true);

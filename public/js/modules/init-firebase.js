@@ -137,13 +137,11 @@ class Guest extends User {
   #pass;
   #likes;
   name;
-  #amount;
 
-  constructor(ID, name = "", pass = "", amount = 0, likes = []) {
+  constructor(ID, name = "", pass = "", likes = []) {
     super(ID);
     this.#pass = pass;
     this.#likes = likes;
-    this.#amount = amount;
     this.name = name;
   }
 
@@ -158,10 +156,6 @@ class Guest extends User {
     return this.#pass;
   }
 
-  get amount() {
-    return this.#amount;
-  }
-
   // set name(newname){
   //     this.name = newname;
   // }
@@ -174,29 +168,10 @@ class Guest extends User {
     this.#likes = newlikes;
   }
 
-  set amount(newamount) {
-    this.#amount = newamount;
-  }
   set name(newName) {
     this.name = newName;
   }
 
-  addLike(ProjectID) {
-    if (this.AmountOfLikes < 20) {
-      this.#likes.push(ProjectID);
-      this.AmountOfLikes++;
-      let project = new Project(ProjectID);
-      project.AddLike();
-    }
-  }
-  RemoveLike(ProjectID) {
-    if (this.AmountOfLikes > 0) {
-      this.#likes.splice(this.#likes.indexOf(ProjectID), 1);
-      this.AmountOfLikes--;
-      let project = new Project(ProjectID);
-      project.RemoveLike();
-    }
-  }
   toString() {
     return `Guest ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}`;
   }
@@ -222,14 +197,8 @@ class Judge extends User {
     return this.#pass;
   }
 
-  get pullGuestProjects() {
+  get projects() {
     return this.#projects;
-  }
-
-  get Project() {
-    for (var i = 0; i < this.#projects.length; i++) {
-      // yield this.#Projects[i];
-    }
   }
 
   set name(newName) {
@@ -261,8 +230,8 @@ class Student extends Guest {
   //set and get done
   #project;
 
-  constructor(ID, name = "", pass = "", amount = 0, likes = [], project = "") {
-    super(ID, name, pass, amount, likes);
+  constructor(ID, name = "", pass = "", likes = [], project = "") {
+    super(ID, name, pass, likes);
     this.#project = project;
   }
 
@@ -274,7 +243,7 @@ class Student extends Guest {
     this.#project = project;
   }
   toString() {
-    return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Project ID: ${this.project}, Amount of Likes: ${this.amount}`;
+    return `Student ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Project ID: ${this.project}`;
   }
 }
 
@@ -380,5 +349,54 @@ const getDocument = async function (object) {
     return Promise.resolve(data);
   } else {
     return Promise.reject("Unknown object type");
+  }
+};
+
+const setDocumentFirebase = async function (collection, keystring, converter) {
+  // keystring = "1";
+  // console.log("before proj get");
+  var objectRef = collection.doc(keystring).withConverter(converter);
+  await objectRef.set(object);
+  return Promise.resolve();
+};
+
+const setDocument = async function (object) {
+  if (object instanceof Project) {
+    await setDocumentFirebase(
+      projectCollection,
+      object.id,
+      projectConverter
+    ).then(console.log("Sent project"));
+    return Promise.resolve();
+
+    // console.log(data.toString());
+  } else if (object instanceof Student) {
+    await setDocumentFirebase(
+      studentCollection,
+      object.id,
+      studentConverter
+    ).then(console.log("Sent student"));
+    return Promise.resolve();
+
+    // console.log(data.toString());
+  } else if (object instanceof Judge) {
+    await setDocumentFirebase(judgeCollection, object.id, judgeConverter).then(
+      console.log("Sent judge")
+    );
+    return Promise.resolve();
+
+    // console.log(data.toString());
+  } else if (object instanceof Guest) {
+    await setDocumentFirebase(guestCollection, object.id, guestConverter).then(
+      console.log("Sent guest")
+    );
+    return Promise.resolve();
+  } else if (object instanceof Grade) {
+    await setDocumentFirebase(gradeCollection, object.id, gradeConverter).then(
+      console.log("Sent grade")
+    );
+    return Promise.resolve();
+  } else {
+    return Promise.reject();
   }
 };
