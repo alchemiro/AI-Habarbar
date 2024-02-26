@@ -1,4 +1,3 @@
-let projects = [];
 function redirectWithParams(id, key) {
   const url = `./${key}.html`;
   window.location.href = `${url}?id=${id}`;
@@ -44,18 +43,34 @@ async function FindJudgeByGrade(grade) {
     }); //find judge associated with this grade
   return str;
 }
-function searchProjects(what) {
+async function searchProjects(what = "") {
+  const gridrow = document.getElementById("gallery-container-row");
+  gridrow.innerHTML = ``;
+  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projects = projectsRef.docs.map((doc) => doc.data());
   for (const project in projects) {
-    const values = Object.values(projects[project]);
-    for (const value of values) {
-      if (value.includes(what)) {
-        console.log(`Found '${what}' in project '${project}'`);
-        return true;
-      }
+    proj = projects[project].toString();
+    stu = (await FindStudentsByProject(projects[project])).toString();
+    if(proj.includes(what) || stu.includes(what)){
+      projects[project].name = projects[project].name == " " ? "N/A" : projects[project].name;
+      projects[project].summary = projects[project].summary == " " ? "NONE" : projects[project].summary;
+      const cardDiv = document.createElement("div");
+      cardDiv.classList.add("card");
+      cardDiv.style = "width: 18rem;";
+      cardDiv.innerHTML = `
+        <img src="${projects[project].img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
+        <div style="background-color:${projects[project].color}"class="card-body"> 
+            <h3 class="card-title" style="color:${projects[project].textColor}">Name: ${projects[project].name}</h3>
+            <h3 class="card-title" style="color:${projects[project].textColor}">ID: ${projects[project].id}</h3>
+            <h5 class="card-text" style="color:${projects[project].textColor}">Summary: ${projects[project].summary}</h5>
+            <div class="card-footer" style="color:${projects[project].textColor}">Likes: ${projects[project].likes}</div>
+        </div>`;
+      cardDiv.addEventListener("click", () => {
+        redirectWithParams(projects[project].id, "project");
+      });
+      gridrow.appendChild(cardDiv);
     }
   }
-  console.log(`'${what}' not found in any project`);
-  return false;
 }
 const isAdmin = localStorage.getItem("UserType") === "admin";
 const isJudge = localStorage.getItem("UserType") === "judge";
@@ -175,43 +190,12 @@ function bailout() {
 
 const indexLoaded = async () => {
   navigate();
-  const addBtn = document.getElementById("addProject");
-  const gridrow = document.getElementById("gallery-container-row");
-
-  async function getGallery() {
-    const projectsRef = await projectCollection
-      .withConverter(projectConverter)
-      .get();
-    const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
-    console.log(JSON.stringify(projectsRefMapped));
-    console.log(projectsRefMapped.toString());
-    projectsRefMapped.forEach((project) => {
-      project.name = project.name == " " ? "N/A" : project.name;
-      project.summary = project.summary == " " ? "NONE" : project.summary;
-      projects.push(project);
-
-      const cardDiv = document.createElement("div");
-      cardDiv.classList.add("card");
-      cardDiv.style = "width: 18rem;";
-      cardDiv.innerHTML = `
-        <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
-        <div style="background-color:${project.color}"class="card-body"> 
-            <h3 class="card-title" style="color:${project.textColor}">Name: ${project.name}</h3>
-            <h3 class="card-title" style="color:${project.textColor}">ID: ${project.id}</h3>
-            <h5 class="card-text" style="color:${project.textColor}">Summary: ${project.summary}</h5>
-            <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
-        </div>
-        `;
-
-      cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
-      });
-      gridrow.appendChild(cardDiv);
-    });
-  }
-
-  await getGallery();
-
+  const inp = document.getElementById("SearchInput");
+  const btn = document.getElementById("SearchButton");
+  searchProjects();
+  btn.addEventListener("click", () => {
+    searchProjects(inp.value);
+  });
   // console.log(projects);
 };
 
