@@ -46,14 +46,18 @@ async function FindJudgeByGrade(grade) {
 async function searchProjects(what = "") {
   const gridrow = document.getElementById("gallery-container-row");
   gridrow.innerHTML = ``;
-  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRef = await projectCollection
+    .withConverter(projectConverter)
+    .get();
   const projects = projectsRef.docs.map((doc) => doc.data());
   for (const project in projects) {
     proj = projects[project].toString();
     stu = (await FindStudentsByProject(projects[project])).toString();
-    if(proj.includes(what) || stu.includes(what)){
-      projects[project].name = projects[project].name == " " ? "N/A" : projects[project].name;
-      projects[project].summary = projects[project].summary == " " ? "NONE" : projects[project].summary;
+    if (proj.includes(what) || stu.includes(what)) {
+      projects[project].name =
+        projects[project].name == " " ? "N/A" : projects[project].name;
+      projects[project].summary =
+        projects[project].summary == " " ? "NONE" : projects[project].summary;
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
       cardDiv.style = "width: 18rem;";
@@ -79,106 +83,6 @@ const isStudent = localStorage.getItem("UserType") === "student";
 
 const isLoggedIn = !(!isJudge && !isGuest && !isStudent && !isAdmin);
 
-function navigate() {
-  const head = document.getElementById("sidebar");
-  head.innerHTML = "";
-
-  const login = document.createElement("a");
-  login.href = "./login.html";
-  login.textContent = "Sign In";
-
-  const lo = document.createElement("a");
-  lo.textContent = "Sign Out";
-  lo.href = "/public/index.html";
-  lo.addEventListener("click", () => {
-    logout();
-  });
-
-  const index = document.createElement("a");
-  index.href = "./index.html";
-  index.textContent = "Home";
-
-  const profile = document.createElement("a");
-  profile.href = "./login.html";
-  profile.textContent = "Profile";
-  console.log(localStorage.getItem("CurrentUser"));
-  if (isStudent || isJudge) {
-    profile.addEventListener("click", () => {
-      profile.href = "#";
-      redirectWithParams(
-        localStorage.getItem("CurrentUser"),
-        localStorage.getItem("UserType")
-      );
-    });
-  } else if (isAdmin) {
-    profile.textContent = "Admin Dashboard";
-    profile.href = "./admin.html";
-  }
-
-  const input = document.createElement("a");
-  input.href = "./projectInput.html";
-  input.textContent = "Project Input";
-
-  const qrcode = document.createElement("a");
-  qrcode.href = "./qrcode.html";
-  qrcode.textContent = "Scan QR";
-
-  head.appendChild(index);
-  // if (isLoggedIn){head.appendChild(lo)};
-  // else {head.appendChild(login)};
-  console.log(isLoggedIn);
-  if (isLoggedIn) {
-    // console.log("I am signed in");
-    head.appendChild(lo);
-  } else {
-    // console.log("I am not signed in");
-
-    head.appendChild(login);
-  }
-
-  if (isLoggedIn && !isGuest) {
-    // console.log("I am signed in but not a guest");
-
-    head.appendChild(profile);
-  }
-
-  if (isAdmin) {
-    // console.log("I am signed in as admin");
-
-    head.appendChild(input);
-  }
-
-  head.appendChild(qrcode);
-
-  const openButton = document.getElementById("openSidebar");
-  openButton.addEventListener("click", toggleSidebar);
-
-  function toggleSidebar() {
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarWidth = sidebar.style.width;
-
-    if (sidebarWidth === "" || sidebarWidth === "0px") {
-      sidebar.style.width = "250px";
-      openButton.style.left = "270px"; // Adjust button position
-    } else {
-      sidebar.style.width = "0";
-      openButton.style.left = "20px"; // Reset button position
-    }
-  }
-
-  window.addEventListener("click", function (event) {
-    const sidebarWidth = document.querySelector(".sidebar").style.width;
-    const openButton = document.getElementById("openSidebar");
-    if (
-      event.target !== openButton &&
-      sidebarWidth !== "0px" &&
-      !document.querySelector(".sidebar").contains(event.target)
-    ) {
-      document.querySelector(".sidebar").style.width = "0";
-      openButton.style.left = "20px"; // Reset button position
-    }
-  });
-}
 function checkIfAdmin() {
   if (!isAdmin) return bailout();
 }
@@ -546,7 +450,7 @@ const LoginLoaded = async () => {
 
       if (user) {
         console.log("User found:", user.toString());
-        localStorage.setItem("CurrentUser", user.id);
+        localStorage.setItem("CurrentUser", JSON.stringify(user.id));
         return Promise.resolve(true);
       } else {
         console.log("User not found");

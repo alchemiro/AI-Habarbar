@@ -24,6 +24,7 @@ const projectConverter = {
       summary: project.summary,
       img: project.img,
       category: project.category,
+      avg: project.avg,
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -34,7 +35,8 @@ const projectConverter = {
       data.likes,
       data.summary,
       data.img,
-      data.category
+      data.category,
+      data.avg
     );
   },
 };

@@ -25,6 +25,7 @@ class Project {
   #summary;
   #img;
   #category;
+  #avg;
 
   constructor(
     id,
@@ -32,7 +33,8 @@ class Project {
     likes = 0,
     summary = " ",
     img = " ",
-    category = " "
+    category = " ",
+    avg = 0
   ) {
     this.#id = id;
     this.#name = name;
@@ -40,6 +42,7 @@ class Project {
     this.#summary = summary;
     this.#img = img;
     this.#category = category;
+    this.#avg = avg;
   }
 
   get name() {
@@ -60,6 +63,9 @@ class Project {
   get category() {
     return this.#category;
   }
+  get avg() {
+    return this.#avg;
+  }
 
   set name(newparam) {
     this.#name = newparam;
@@ -78,6 +84,9 @@ class Project {
   }
   set category(newparam) {
     this.#category = newparam;
+  }
+  set avg(value) {
+    this.#avg = value;
   }
 
   toString() {
