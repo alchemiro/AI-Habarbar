@@ -50,13 +50,6 @@ async function searchProjects(what = "") {
   const projectsRef = await projectCollection.withConverter(projectConverter).get();
   const projects = projectsRef.docs.map((doc) => doc.data());
   for (const project in projects) {
-<<<<<<< Updated upstream
-    proj = projects[project].toString();
-    stu = (await FindStudentsByProject(projects[project])).toString();
-    if(proj.includes(what) || stu.includes(what)){
-      projects[project].name = projects[project].name == " " ? "N/A" : projects[project].name;
-      projects[project].summary = projects[project].summary == " " ? "NONE" : projects[project].summary;
-=======
     proj = projects[project].id.toString() + " " + projects[project].name.toString();
     stu = await FindStudentsByProject(projects[project]).then((list) =>{
       names = [];
@@ -71,7 +64,6 @@ async function searchProjects(what = "") {
         projects[project].name == " " ? "N/A" : projects[project].name;
       projects[project].summary =
         projects[project].summary == " " ? "NONE" : projects[project].summary;
->>>>>>> Stashed changes
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
       cardDiv.style = "width: 18rem;";
