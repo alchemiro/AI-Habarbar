@@ -29,96 +29,157 @@
       >
       </i>
     </header>
-    <div class="container text-center" style="height: 23vh; overflow-y: auto">
-      <table class="table table-hover" id="ProjectTable">
-        <thead>
-          <tr>
-            <th scope="col">ProjectID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Students</th>
-            <th scope="col">Grades</th>
-            <th scope="col">Summary</th>
-          </tr>
-        </thead>
-        <tbody id="ProjectBody"></tbody>
-      </table>
-      <button type="button" class="btn btn-primary btn-sm" onclick="">
-        Add Project
-      </button>
-      <button
-        type="button"
-        onclick="ExportProjectToExcel('xlsx')"
-        class="btn btn-primary btn-sm"
-      >
-        Export table to excel
-      </button>
-    </div>
-    <div class="container text-center" style="height: 23vh; overflow-y: auto">
-      <table class="table table-hover" id="JudgeTable">
-        <thead>
-          <tr>
-            <th scope="col">JudgeID</th>
-            <th scope="col">Name</th>
-            <th scope="col">Project to grade</th>
-            <th scope="col">Project graded</th>
-          </tr>
-        </thead>
-        <tbody id="JudgeBody"></tbody>
-      </table>
-      <button type="button" class="btn btn-primary btn-sm" onclick="">
-        Add Judge
-      </button>
-      <button
-        type="button"
-        id="JudgeToXL"
-        onclick="ExportJudgeToExcel('xlsx')"
-        class="btn btn-primary btn-sm"
-      >
-        Export table to excel
-      </button>
-    </div>
-    <div class="container text-center" style="height: 23vh; overflow-y: auto">
-      <table class="table table-hover" id="StudentsTable">
-        <thead>
-          <tr>
-            <th scope="col">StudentID</th>
-            <th scope="col">Name</th>
-            <th scope="col">project ID</th>
-            <th scope="col">Amount</th>
-          </tr>
-        </thead>
-        <tbody id="StudentBody"></tbody>
-      </table>
-      <button class="btn btn-primary btn-sm" onclick="">Add</button>
-      <button
-        type="button"
-        onclick="ExportStudentToExcel('xlsx')"
-        class="btn btn-primary btn-sm"
-      >
-        Export table to excel
-      </button>
-    </div>
-    <div class="container text-center" style="height: 23vh; overflow-y: auto">
-      <table class="table table-hover" id="GuestTable">
-        <thead>
-          <tr>
-            <th scope="col">GuestID</th>
-            <th scope="col">Name</th>
-            <th scope="col">amount of likes</th>
-            <th scope="col">Projects liked</th>
-          </tr>
-        </thead>
-        <tbody id="GuestBody"></tbody>
-      </table>
-      <button class="btn btn-primary btn-sm" onclick="">Add</button>
-      <button
-        type="button"
-        onclick="ExportGuestToExcel('xlsx')"
-        class="btn btn-primary btn-sm"
-      >
-        Export table to excel
-      </button>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link active"
+          id="project-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#project"
+          type="button"
+          role="tab"
+        >
+          Projects
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link"
+          id="judge-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#judge"
+          type="button"
+          role="tab"
+        >
+          Judges
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link"
+          id="student-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#student"
+          type="button"
+          role="tab"
+        >
+          Students
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link"
+          id="guest-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#guest"
+          type="button"
+          role="tab"
+        >
+          Guests
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="project" role="tabpanel">
+        <div class="container text-center mb-4">
+          <table class="table table-hover" id="ProjectTable">
+            <thead>
+              <tr>
+                <th scope="col">ProjectID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Students</th>
+                <th scope="col">Grades</th>
+                <th scope="col">Summary</th>
+              </tr>
+            </thead>
+            <tbody id="ProjectBody"></tbody>
+          </table>
+          <button type="button" class="btn btn-primary btn-sm" onclick="">
+            Add Project
+          </button>
+          <button
+            type="button"
+            onclick="ExportProjectToExcel('xlsx')"
+            class="btn btn-primary btn-sm"
+          >
+            Export table to excel
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="judge" role="tabpanel">
+        <div class="container text-center mb-4">
+          <table class="table table-hover" id="JudgeTable">
+            <thead>
+              <tr>
+                <th scope="col">JudgeID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Project to grade</th>
+                <th scope="col">Project graded</th>
+              </tr>
+            </thead>
+            <tbody id="JudgeBody"></tbody>
+          </table>
+          <button type="button" class="btn btn-primary btn-sm" onclick="">
+            Add Judge
+          </button>
+          <button
+            type="button"
+            id="JudgeToXL"
+            onclick="ExportJudgeToExcel('xlsx')"
+            class="btn btn-primary btn-sm"
+          >
+            Export table to excel
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="student" role="tabpanel">
+        <div class="container text-center mb-4">
+          <table class="table table-hover" id="StudentsTable">
+            <thead>
+              <tr>
+                <th scope="col">StudentID</th>
+                <th scope="col">Name</th>
+                <th scope="col">project ID</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody id="StudentBody"></tbody>
+          </table>
+          <button class="btn btn-primary btn-sm" onclick="">Add</button>
+          <button
+            type="button"
+            onclick="ExportStudentToExcel('xlsx')"
+            class="btn btn-primary btn-sm"
+          >
+            Export table to excel
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="guest" role="tabpanel">
+        <div class="container text-center mb-4">
+          <table class="table table-hover" id="GuestTable">
+            <thead>
+              <tr>
+                <th scope="col">GuestID</th>
+                <th scope="col">Name</th>
+                <th scope="col">amount of likes</th>
+                <th scope="col">Projects liked</th>
+              </tr>
+            </thead>
+            <tbody id="GuestBody"></tbody>
+          </table>
+          <button class="btn btn-primary btn-sm" onclick="">Add</button>
+          <button
+            type="button"
+            onclick="ExportGuestToExcel('xlsx')"
+            class="btn btn-primary btn-sm"
+          >
+            Export table to excel
+          </button>
+        </div>
+      </div>
     </div>
 
     <script
@@ -130,7 +191,6 @@
     <script src="./js/modules/converters.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="./js/modules/init-firebase.js"></script>
     <script src="./js/modules/functions.js"></script>

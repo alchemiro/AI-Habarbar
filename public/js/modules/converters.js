@@ -6,19 +6,12 @@ const studentConverter = {
       pass: student.pass,
       likes: student.likes,
       project: student.project,
-      amount: student.amount,
     };
   },
+  // ID, name = "", pass = "", likes = [], project = ""
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Student(
-      data.id,
-      data.name,
-      data.pass,
-      data.amount,
-      data.likes,
-      data.project
-    );
+    return new Student(data.id, data.name, data.pass, data.likes, data.project);
   },
 };
 
@@ -31,6 +24,7 @@ const projectConverter = {
       summary: project.summary,
       img: project.img,
       category: project.category,
+      avg: project.avg,
     };
   },
   fromFirestore: (snapshot, options) => {
@@ -41,7 +35,8 @@ const projectConverter = {
       data.likes,
       data.summary,
       data.img,
-      data.category
+      data.category,
+      data.avg
     );
   },
 };
@@ -66,14 +61,13 @@ const guestConverter = {
     return {
       id: guest.id,
       name: guest.name,
-      password: guest.pass,
-      amount: guest.amount,
+      pass: guest.pass,
       likes: guest.likes,
     };
   },
   fromFirestore: (snapshot, options) => {
     const data = snapshot.data(options);
-    return new Guest(data.id, data.name, data.pass, data.amount, data.likes);
+    return new Guest(data.id, data.name, data.pass, data.likes);
   },
 };
 

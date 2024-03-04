@@ -89,106 +89,6 @@ const isStudent = localStorage.getItem("UserType") === "student";
 
 const isLoggedIn = !(!isJudge && !isGuest && !isStudent && !isAdmin);
 
-function navigate() {
-  const head = document.getElementById("sidebar");
-  head.innerHTML = "";
-
-  const login = document.createElement("a");
-  login.href = "./login.html";
-  login.textContent = "Sign In";
-
-  const lo = document.createElement("a");
-  lo.textContent = "Sign Out";
-  lo.href = "./index.html";
-  lo.addEventListener("click", () => {
-    logout();
-  });
-
-  const index = document.createElement("a");
-  index.href = "./index.html";
-  index.textContent = "Home";
-
-  const profile = document.createElement("a");
-  profile.href = "./login.html";
-  profile.textContent = "Profile";
-  console.log(localStorage.getItem("CurrentUser"));
-  if (isStudent || isJudge) {
-    profile.addEventListener("click", () => {
-      profile.href = "#";
-      redirectWithParams(
-        localStorage.getItem("CurrentUser"),
-        localStorage.getItem("UserType")
-      );
-    });
-  } else if (isAdmin) {
-    profile.textContent = "Admin Dashboard";
-    profile.href = "./admin.html";
-  }
-
-  const input = document.createElement("a");
-  input.href = "./projectInput.html";
-  input.textContent = "Project Input";
-
-  const qrcode = document.createElement("a");
-  qrcode.href = "./qrcode.html";
-  qrcode.textContent = "Scan QR";
-
-  head.appendChild(index);
-  // if (isLoggedIn){head.appendChild(lo)};
-  // else {head.appendChild(login)};
-  console.log(isLoggedIn);
-  if (isLoggedIn) {
-    // console.log("I am signed in");
-    head.appendChild(lo);
-  } else {
-    // console.log("I am not signed in");
-
-    head.appendChild(login);
-  }
-
-  if (isLoggedIn && !isGuest) {
-    // console.log("I am signed in but not a guest");
-
-    head.appendChild(profile);
-  }
-
-  if (isAdmin) {
-    // console.log("I am signed in as admin");
-
-    head.appendChild(input);
-  }
-
-  head.appendChild(qrcode);
-
-  const openButton = document.getElementById("openSidebar");
-  openButton.addEventListener("click", toggleSidebar);
-
-  function toggleSidebar() {
-    const sidebar = document.querySelector(".sidebar");
-    const sidebarWidth = sidebar.style.width;
-
-    if (sidebarWidth === "" || sidebarWidth === "0px") {
-      sidebar.style.width = "250px";
-      openButton.style.left = "270px"; // Adjust button position
-    } else {
-      sidebar.style.width = "0";
-      openButton.style.left = "20px"; // Reset button position
-    }
-  }
-
-  window.addEventListener("click", function (event) {
-    const sidebarWidth = document.querySelector(".sidebar").style.width;
-    const openButton = document.getElementById("openSidebar");
-    if (
-      event.target !== openButton &&
-      sidebarWidth !== "0px" &&
-      !document.querySelector(".sidebar").contains(event.target)
-    ) {
-      document.querySelector(".sidebar").style.width = "0";
-      openButton.style.left = "20px"; // Reset button position
-    }
-  });
-}
 function checkIfAdmin() {
   if (!isAdmin) return bailout();
 }
@@ -231,7 +131,10 @@ const ProjectLoaded = async () => {
     gradeDiv.style.visibility = "hidden";
   }
 
-  const id = urlParams.get("id");
+  var id = urlParams.get("id");
+  if (!id) window.location.href = "?id=100";
+  // console.log(urlParams);
+
   // console.log(id);
   let isOwnerStudent = false;
   async function getProject(id) {
@@ -421,12 +324,24 @@ const AdminLoaded = async () => {
     judgesRefMapped.forEach((judge) => {
       // console.log(judge.toString());
       //judge.name = judge.name == " " ? "." : judge.name;
-      JudgeTable.innerHTML += `<tr>
-                    <th scope="row">${judge.id}</th>
-                    <td>${judge.name}</td>
-                    <td>none!</td>
-                    <td>none!</td>
-                </tr>`;
+
+      const judgeRow = document.createElement("tr");
+
+      const judgeHeader = document.createElement("th");
+      judgeHeader.textContent = judge.id;
+      judgeHeader.scope = "row";
+
+      const judgeName = document.createElement("td");
+      judgeName.textContent = judge.name;
+
+      const judgeProjects = document.createElement("td");
+      judgeProjects.textContent = `[${judge.projects}]`;
+
+      judgeRow.appendChild(judgeHeader);
+      judgeRow.appendChild(judgeName);
+      judgeRow.appendChild(judgeProjects);
+
+      JudgeTable.appendChild(judgeRow);
     });
   }
   async function getAllGuests() {
@@ -453,7 +368,7 @@ const AdminLoaded = async () => {
       <th scope="row">${student.id}</th>
       <td>${student.name}</td>
       <td>${student.project}</td>
-      <td>${student.amount}</td>
+      <td>[${student.likes}]</td>
   </tr>`;
     });
   }
@@ -520,8 +435,16 @@ const LoginLoaded = async () => {
   }
 
   async function checkExist(id, password) {
-    if (id === "admin" && password === "admin") {
-      console.log("Admin login detected");
+    const adminFetch = await judgeCollection
+      .doc("admin")
+      .withConverter(judgeConverter)
+      .get()
+      .then((document) => {
+        return document.data();
+      });
+    // console.log(adminFetch);
+    if (password == adminFetch.pass && id == adminFetch.name) {
+      console.log("admin detected from firebase.");
       localStorage.setItem("CurrentUser", "admin");
       localStorage.setItem("UserType", "admin");
       return Promise.resolve(true);
@@ -533,7 +456,7 @@ const LoginLoaded = async () => {
 
       if (user) {
         console.log("User found:", user.toString());
-        localStorage.setItem("CurrentUser", user.id);
+        localStorage.setItem("CurrentUser", JSON.stringify(user.id));
         return Promise.resolve(true);
       } else {
         console.log("User not found");
