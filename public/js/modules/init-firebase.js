@@ -188,18 +188,18 @@ class Guest extends User {
 
 class Judge extends User {
   //set and get done
-  name;
+  #name;
   #pass;
   #projects;
 
   constructor(ID, name = "", pass = "", projects = []) {
     super(ID);
     this.#pass = pass;
-    this.name = name;
+    this.#name = name;
     this.#projects = projects;
   }
   get name() {
-    return this.name;
+    return this.#name;
   }
 
   get pass() {
@@ -211,7 +211,7 @@ class Judge extends User {
   }
 
   set name(newName) {
-    this.name = newName;
+    this.#name = newName;
   }
 
   set pass(newpass) {

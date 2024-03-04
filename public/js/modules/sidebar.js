@@ -52,13 +52,15 @@ function navigate() {
   profile.href = "/public/login.html";
   profile.textContent = "Profile";
   // console.log(localStorage.getItem("CurrentUser"));
-  if (isStudent || isJudge) {
+  if (isAStudent || isAJudge) {
     profile.addEventListener("click", () => {
       profile.href = "#";
-      redirectWithParams(
-        localStorage.getItem("CurrentUser"),
-        localStorage.getItem("UserType")
-      );
+      if (isAStudent) {
+        profile.href = "/public/profiles/student.html";
+      }
+      if (isAJudge) {
+        profile.href = "/public/profiles/judge.html";
+      }
     });
   } else if (isAdmin) {
     profile.textContent = "Admin Dashboard";

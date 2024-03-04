@@ -2,7 +2,7 @@ const nameDiv = document.getElementById("nametag");
 const studentList = document.getElementById("studentList");
 const sumDiv = document.getElementById("summarytag");
 const imgObject = document.getElementById("projectImg");
-const btn = document.getElementById("gradeButton");
+const judgeBtn = document.getElementById("gradeButton");
 const input = document.getElementById("gradeInput");
 const thisJudgeGrade = document.getElementById("CurrentJudgeGrade");
 
@@ -13,11 +13,8 @@ const isStudent = localStorage.getItem("UserType") === "student";
 
 const user_id = JSON.parse(localStorage.getItem("CurrentUser"));
 
-function bailout() {
-  window.location.href = "../../index.html";
-}
 function checkIfJudge() {
-  if (!isJudge) return bailout();
+  if (!isJudge) return judge_bailout();
 }
 
 async function getProject(id, nameDiv, sumDiv, imgObject, studentList) {
@@ -49,7 +46,10 @@ function judge_bailout() {
 
 const urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get("id");
-console.log(id);
+// console.log(id);
+if (!id) {
+  window.location.href = window.location.href + "?id=100";
+}
 
 async function find_students_project_in_judge(project) {
   const studentsQuery = studentCollection.where("project", "==", project.id);
@@ -80,7 +80,7 @@ async function find_project_profile_grade(id) {
     .withConverter(gradeConverter)
     .get()
     .then((result) => {
-      //   console.log(`🚀 ~ .then ~ result:`, result.empty);
+      console.log(`🚀 ~ .then ~ result:`, result.empty);
 
       result.forEach((doc) => {
         console.log(doc.data());
@@ -108,7 +108,7 @@ async function uploadGrade(score, project, judge) {
           .set(new Grade(docRef.id, judge, project, score));
         // console.log("hello 2");
       });
-      // console.log("empty and done");
+      console.log("empty and done");
     } else {
       snapshot.forEach((doc) => {
         //otherwise replace it
@@ -122,6 +122,7 @@ async function uploadGrade(score, project, judge) {
       console.log("not empty and done");
     }
   });
+  return Promise.resolve(true);
 }
 
 async function project_judge_load() {
@@ -131,9 +132,13 @@ async function project_judge_load() {
 
   await getProject(id, nameDiv, sumDiv, imgObject, studentList);
 
-  btn.addEventListener("click", () => {
+  judgeBtn.addEventListener("click", async () => {
     console.log("test");
-    uploadGrade(parseInt(input.value), id, user_id);
-    window.location.reload();
+    await uploadGrade(parseInt(input.value), id, user_id).then((worked) => {
+      if (worked) {
+        window.location.reload();
+      }
+    });
+    // window.location.href = window.location.href;
   });
 }
