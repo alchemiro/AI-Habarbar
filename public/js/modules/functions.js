@@ -47,40 +47,40 @@ async function searchProjects(what = "") {
   console.log(what);
   const gridrow = document.getElementById("gallery-container-row");
   gridrow.innerHTML = ``;
-  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRef = await projectCollection
+    .withConverter(projectConverter)
+    .get();
   const projects = projectsRef.docs.map((doc) => doc.data());
-  for (const project in projects) {
-    proj = projects[project].id.toString() + " " + projects[project].name.toString();
-    stu = await FindStudentsByProject(projects[project]).then((list) =>{
+  projects.forEach(async (project) => {
+    proj = project.id.toString() + " " + project.name.toString();
+    stu = await FindStudentsByProject(project).then((list) => {
       names = [];
       list.forEach((stu) => {
-        names.push(stu.name)
+        names.push(stu.name);
       });
       return names.toString();
     });
-    
+
     if (proj.includes(what) || stu.includes(what)) {
-      projects[project].name =
-        projects[project].name == " " ? "N/A" : projects[project].name;
-      projects[project].summary =
-        projects[project].summary == " " ? "NONE" : projects[project].summary;
+      project.name = project.name == " " ? "N/A" : project.name;
+      project.summary = project.summary == " " ? "NONE" : project.summary;
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
       cardDiv.style = "width: 18rem;";
       cardDiv.innerHTML = `
-        <img src="${projects[project].img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
-        <div style="background-color:${projects[project].color}"class="card-body"> 
-            <h3 class="card-title" style="color:${projects[project].textColor}">Name: ${projects[project].name}</h3>
-            <h3 class="card-title" style="color:${projects[project].textColor}">ID: ${projects[project].id}</h3>
-            <h5 class="card-text" style="color:${projects[project].textColor}">Summary: ${projects[project].summary}</h5>
-            <div class="card-footer" style="color:${projects[project].textColor}">Likes: ${projects[project].likes}</div>
+        <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
+        <div style="background-color:${project.color}"class="card-body"> 
+            <h3 class="card-title" style="color:${project.textColor}">Name: ${project.name}</h3>
+            <h3 class="card-title" style="color:${project.textColor}">ID: ${project.id}</h3>
+            <h5 class="card-text" style="color:${project.textColor}">Summary: ${project.summary}</h5>
+            <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>`;
       cardDiv.addEventListener("click", () => {
-        redirectWithParams(projects[project].id, "project");
+        redirectWithParams(project.id, "project");
       });
       gridrow.appendChild(cardDiv);
     }
-  }
+  });
 }
 const isAdmin = localStorage.getItem("UserType") === "admin";
 const isJudge = localStorage.getItem("UserType") === "judge";
