@@ -394,29 +394,20 @@ const AdminLoaded = async () => {
   }
 
   function charts() {
-    // Get the parent container
     const container = document.querySelector('.container .row');
 
-    // Create the chart containers
     const chart1Container = createChartContainer(1);
     const chart2Container = createChartContainer(2);
     const chart3Container = createChartContainer(3);
 
-    // Append chart containers to the parent container
     container.appendChild(chart1Container);
     container.appendChild(chart2Container);
     container.appendChild(chart3Container);
 
-    // Get the contexts of the canvas elements
     var ctx1 = document.getElementById('chart1').getContext('2d');
     var ctx2 = document.getElementById('chart2').getContext('2d');
     var ctx3 = document.getElementById('chart3').getContext('2d');
 
-
-    // Extract project IDs as labels
-    var labels = Object.keys(topLikes.Electronics);
-
-    // Create data objects for each category
     var data1 = {
         labels: Object.keys(topLikes.Electronics),
         datasets: [{
@@ -450,12 +441,11 @@ const AdminLoaded = async () => {
         }]
     };
 
-    // Configuration options
     var options = {
         scales: {
             yAxes: [{
                 ticks: {
-                    //beginAtZero: true
+                    //beginAtZero: true //keep this, this line 50% of time bugs, 50% fixes bugs
                 }
             }]
         }
