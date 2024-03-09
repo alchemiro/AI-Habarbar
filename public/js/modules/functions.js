@@ -29,22 +29,18 @@ async function FindStudentsByProject(project) {
 }
 
 async function FindJudgeByGrade(grade) {
-  // console.log(grade.judge);
   let str = "";
   await judgeCollection
     .doc(`${grade.judge}`)
     .withConverter(judgeConverter)
     .get()
     .then((doc) => {
-      // console.log(doc.data());
       const judge = doc.data();
-      // console.log(judge.name);
       str += judge.name;
     }); //find judge associated with this grade
   return str;
 }
 async function searchProjects(what = "") {
-  console.log(what);
   const gridrow = document.getElementById("gallery-container-row");
   gridrow.innerHTML = ``;
   const projectsRef = await projectCollection
@@ -87,6 +83,7 @@ const isJudge = localStorage.getItem("UserType") === "judge";
 const isGuest = localStorage.getItem("UserType") === "guest";
 const isStudent = localStorage.getItem("UserType") === "student";
 
+
 const isLoggedIn = !(!isJudge && !isGuest && !isStudent && !isAdmin);
 
 function checkIfAdmin() {
@@ -106,7 +103,6 @@ const indexLoaded = async () => {
   btn.addEventListener("click", () => {
     searchProjects(inp.value);
   });
-  // console.log(projects);
 };
 
 const ProjectLoaded = async () => {
@@ -121,8 +117,6 @@ const ProjectLoaded = async () => {
   const btn = document.getElementById("gradeButton");
   const input = document.getElementById("gradeInput");
 
-  // console.log(urlParams.toString());
-
   const user = localStorage.getItem("CurrentUser");
   const type = localStorage.getItem("UserType");
   if (isJudge || isAdmin) {
@@ -133,9 +127,6 @@ const ProjectLoaded = async () => {
 
   var id = urlParams.get("id");
   if (!id) window.location.href = "?id=100";
-  // console.log(urlParams);
-
-  // console.log(id);
   let isOwnerStudent = false;
   async function getProject(id) {
     const p = await getDocument(new Project(id));
@@ -161,7 +152,6 @@ const ProjectLoaded = async () => {
 
   async function uploadGrade(grade, project, judge) {
     //judge sets grade, if they haven't yet, create new document, otherwise replace their old one
-    // console.log("hello");
     const gradesQuery = gradeCollection
       .withConverter(gradeConverter)
       .where("judge", "==", judge)
@@ -175,17 +165,14 @@ const ProjectLoaded = async () => {
             .withConverter(gradeConverter)
             .set(new Grade(docRef.id, judge, project, grade));
         });
-        // console.log("empty and done");
       } else {
         snapshot.forEach((doc) => {
           //otherwise replace it
-          // console.log(doc.data());
           gradeCollection
             .doc(doc.id)
             .withConverter(gradeConverter)
             .set(new Grade(doc.id, judge, project, grade));
         });
-        // console.log("not empty and done");
       }
     });
   }
@@ -197,7 +184,9 @@ const ProjectLoaded = async () => {
   });
 };
 
+
 const AdminLoaded = async () => {
+
   navigate();
   checkIfAdmin();
 
@@ -217,26 +206,20 @@ const AdminLoaded = async () => {
   const GuestRows = GuestTable.getElementsByTagName("tr");
 
   async function FindGradesByProject(project) {
-    // console.log(project.id);
     const gradesQuery = gradeCollection.where(
       "project",
       "==",
       project.id.toString()
     );
-    // console.log(project.id);
     const list = [];
-    // console.log("before query");
     await gradesQuery
       .withConverter(gradeConverter)
       .get()
       .then((result) => {
-        console.log(result.empty);
         result.forEach((doc) => {
-          // console.log(doc.data());
           list.push(doc.data());
         });
       });
-    // console.log("after query");
 
     return list;
   }
@@ -290,7 +273,6 @@ const AdminLoaded = async () => {
       await FindGradesByProject(project).then((document) => {
         document.forEach(async (grade) => {
           await FindJudgeByGrade(grade).then((jName) => {
-            console.log(jName);
             gradeRow.textContent += jName + ":";
           });
           gradeRow.textContent += grade.score; //only after that, add the grade
@@ -307,14 +289,6 @@ const AdminLoaded = async () => {
         redirectWithParams(project.id, "project");
       });
       ProjectTable.appendChild(row);
-      // ProjectTable.innerHTML += `<tr onclick="FindStudentsByProject(project)">
-      //               <th scope="row">${project.id}</th>
-      //               <td>${project.name}</td>
-      //               <td>student name</td>
-      //               <td>100</td>
-      //               <td>${project.summary}</td>
-      //           </tr>`;
-      // console.log("projectssssss");
     });
   }
   async function getAllJudges() {
@@ -322,7 +296,6 @@ const AdminLoaded = async () => {
     const judgesRefMapped = judgesRef.docs.map((doc) => doc.data());
 
     judgesRefMapped.forEach((judge) => {
-      // console.log(judge.toString());
       //judge.name = judge.name == " " ? "." : judge.name;
 
       const judgeRow = document.createElement("tr");
@@ -363,7 +336,6 @@ const AdminLoaded = async () => {
       .get();
     const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
     studentRefMapped.forEach((student) => {
-      // console.log(student);
       StudentTable.innerHTML += `<tr>
       <th scope="row">${student.id}</th>
       <td>${student.name}</td>
@@ -380,66 +352,48 @@ const AdminLoaded = async () => {
   }
   getAll();
 
+
+  var topLikes = {
+    Electronics: {},
+    ICT: {},
+    Mechatronics: {}
+};
+
+  async function MostLikes(topLikes) {
+    const projectsRef = await projectCollection
+        .withConverter(projectConverter)
+        .get();
+    const projects = projectsRef.docs.map((doc) => doc.data());
+    projects.forEach(async (project) => {
+        const currentTop = topLikes[project.category];
+        const projectId = project.id.toString();
+        const projectLikes = parseInt(project.likes);
+        // Check if the project ID exists in the currentTop object
+        if (!currentTop.hasOwnProperty(projectId) || currentTop[projectId] < projectLikes) {
+            currentTop[projectId] = projectLikes;
+            const sortedTop = Object.fromEntries(Object.entries(currentTop).sort((a, b) => b[1] - a[1]));
+            // Slice to keep only top 5 projects
+            const slicedTop = Object.fromEntries(Object.entries(sortedTop).slice(0, 5));
+            topLikes[project.category] = slicedTop;
+        }
+    });
+    return topLikes;
+  }
+
+
+  topLikes = await MostLikes(topLikes);
+
+
   function createChartContainer(id) {
     const container = document.createElement('div');
     container.classList.add('col-xl-4', 'col-lg-6', 'col-md-8', 'mt-5');
     const canvas = document.createElement('canvas');
     canvas.id = 'chart' + id;
-    const button = document.createElement('button');
-    button.id = 'incrementButton' + id;
-    button.classList.add('btn', 'btn-primary', 'mt-3');
-    button.textContent = 'Increment Value';
     container.appendChild(canvas);
-    container.appendChild(button);
     return container;
-}
+  }
 
-function charts() {
-    // Data for the charts
-    var data1 = {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
-        datasets: [{
-            label: 'Chart 1',
-            data: [12, 23, 3, 5, 2, 3],
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    var data2 = {
-        labels: ["A", "B", "C", "D", "E"],
-        datasets: [{
-            label: 'Chart 2',
-            data: [20, 10, 15, 25, 30],
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    var data3 = {
-        labels: ["One", "Two", "Three", "Four", "Five"],
-        datasets: [{
-            label: 'Chart 3',
-            data: [8, 12, 21, 18, 10],
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    };
-
-    // Configuration options
-    var options = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    };
-
+  function charts() {
     // Get the parent container
     const container = document.querySelector('.container .row');
 
@@ -457,6 +411,55 @@ function charts() {
     var ctx1 = document.getElementById('chart1').getContext('2d');
     var ctx2 = document.getElementById('chart2').getContext('2d');
     var ctx3 = document.getElementById('chart3').getContext('2d');
+
+
+    // Extract project IDs as labels
+    var labels = Object.keys(topLikes.Electronics);
+
+    // Create data objects for each category
+    var data1 = {
+        labels: Object.keys(topLikes.Electronics),
+        datasets: [{
+            label: 'Electronics',
+            data: Object.values(topLikes.Electronics),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    var data2 = {
+        labels: Object.keys(topLikes.ICT),
+        datasets: [{
+            label: 'ICT',
+            data: Object.values(topLikes.ICT),
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    var data3 = {
+        labels: Object.keys(topLikes.Mechatronics),
+        datasets: [{
+            label: 'Mechatronics',
+            data: Object.values(topLikes.Mechatronics),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Configuration options
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    //beginAtZero: true
+                }
+            }]
+        }
+    };
 
     // Create the charts
     var chart1 = new Chart(ctx1, {
@@ -476,31 +479,9 @@ function charts() {
         data: data3,
         options: options
     });
-
-    // Button functionality to increment the value of one of the bars in Chart 1
-    document.getElementById('incrementButton1').addEventListener('click', function () {
-        // Increment the value of a randomly selected bar in Chart 1
-        var randomIndex = Math.floor(Math.random() * data1.datasets[0].data.length);
-        console.log(data1.datasets[0].data[randomIndex]++);
-        chart1.update();
-    });
-
-    // Button functionality to increment the value of one of the bars in Chart 2
-    document.getElementById('incrementButton2').addEventListener('click', function () {
-        // Increment the value of a randomly selected bar in Chart 2
-        var randomIndex = Math.floor(Math.random() * data2.datasets[0].data.length);
-        console.log(data2.datasets[0].data[randomIndex]++);
-        chart2.update();
-    });
-
-    // Button functionality to increment the value of one of the bars in Chart 3
-    document.getElementById('incrementButton3').addEventListener('click', function () {
-        // Increment the value of a randomly selected bar in Chart 3
-        var randomIndex = Math.floor(Math.random() * data3.datasets[0].data.length);
-        console.log(data3.datasets[0].data[randomIndex]++);
-        chart3.update();
-    });
 }
+
+
 
 
   charts();
