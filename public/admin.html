@@ -79,6 +79,18 @@
           Guests
         </button>
       </li>
+      <li class="nav-item" role="presentation">
+        <button
+          class="nav-link"
+          id="graphs-tab"
+          data-bs-toggle="tab"
+          data-bs-target="#graphs"
+          type="button"
+          role="tab"
+        >
+          Graphs
+        </button>
+      </li>
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="project" role="tabpanel">
@@ -179,6 +191,38 @@
             Export table to excel
           </button>
         </div>
+      </div>
+      <div class="tab-pane fade" id="graphs" role="tabpanel">
+        <div class="container">
+          <div class="row justify-content-center">
+          </div>
+          <div class="row mt-5">
+              <div class="col-md-8">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th scope="col">Data</th>
+                              <th scope="col">Value</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td>Sample 1</td>
+                              <td>10</td>
+                          </tr>
+                          <tr>
+                              <td>Sample 2</td>
+                              <td>20</td>
+                          </tr>
+                          <tr>
+                              <td>Sample 3</td>
+                              <td>30</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
       </div>
     </div>
 

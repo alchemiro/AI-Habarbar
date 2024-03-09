@@ -379,6 +379,131 @@ const AdminLoaded = async () => {
     getAllStudents();
   }
   getAll();
+
+  function createChartContainer(id) {
+    const container = document.createElement('div');
+    container.classList.add('col-xl-4', 'col-lg-6', 'col-md-8', 'mt-5');
+    const canvas = document.createElement('canvas');
+    canvas.id = 'chart' + id;
+    const button = document.createElement('button');
+    button.id = 'incrementButton' + id;
+    button.classList.add('btn', 'btn-primary', 'mt-3');
+    button.textContent = 'Increment Value';
+    container.appendChild(canvas);
+    container.appendChild(button);
+    return container;
+}
+
+function charts() {
+    // Data for the charts
+    var data1 = {
+        labels: ["Red", "Blue", "Yellow", "Green", "Purple"],
+        datasets: [{
+            label: 'Chart 1',
+            data: [12, 23, 3, 5, 2, 3],
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    var data2 = {
+        labels: ["A", "B", "C", "D", "E"],
+        datasets: [{
+            label: 'Chart 2',
+            data: [20, 10, 15, 25, 30],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    var data3 = {
+        labels: ["One", "Two", "Three", "Four", "Five"],
+        datasets: [{
+            label: 'Chart 3',
+            data: [8, 12, 21, 18, 10],
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1
+        }]
+    };
+
+    // Configuration options
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // Get the parent container
+    const container = document.querySelector('.container .row');
+
+    // Create the chart containers
+    const chart1Container = createChartContainer(1);
+    const chart2Container = createChartContainer(2);
+    const chart3Container = createChartContainer(3);
+
+    // Append chart containers to the parent container
+    container.appendChild(chart1Container);
+    container.appendChild(chart2Container);
+    container.appendChild(chart3Container);
+
+    // Get the contexts of the canvas elements
+    var ctx1 = document.getElementById('chart1').getContext('2d');
+    var ctx2 = document.getElementById('chart2').getContext('2d');
+    var ctx3 = document.getElementById('chart3').getContext('2d');
+
+    // Create the charts
+    var chart1 = new Chart(ctx1, {
+        type: 'bar',
+        data: data1,
+        options: options
+    });
+
+    var chart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: data2,
+        options: options
+    });
+
+    var chart3 = new Chart(ctx3, {
+        type: 'bar',
+        data: data3,
+        options: options
+    });
+
+    // Button functionality to increment the value of one of the bars in Chart 1
+    document.getElementById('incrementButton1').addEventListener('click', function () {
+        // Increment the value of a randomly selected bar in Chart 1
+        var randomIndex = Math.floor(Math.random() * data1.datasets[0].data.length);
+        console.log(data1.datasets[0].data[randomIndex]++);
+        chart1.update();
+    });
+
+    // Button functionality to increment the value of one of the bars in Chart 2
+    document.getElementById('incrementButton2').addEventListener('click', function () {
+        // Increment the value of a randomly selected bar in Chart 2
+        var randomIndex = Math.floor(Math.random() * data2.datasets[0].data.length);
+        console.log(data2.datasets[0].data[randomIndex]++);
+        chart2.update();
+    });
+
+    // Button functionality to increment the value of one of the bars in Chart 3
+    document.getElementById('incrementButton3').addEventListener('click', function () {
+        // Increment the value of a randomly selected bar in Chart 3
+        var randomIndex = Math.floor(Math.random() * data3.datasets[0].data.length);
+        console.log(data3.datasets[0].data[randomIndex]++);
+        chart3.update();
+    });
+}
+
+
+  charts();
 };
 
 function logout() {
