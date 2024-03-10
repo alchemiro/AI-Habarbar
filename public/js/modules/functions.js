@@ -205,6 +205,21 @@ const AdminLoaded = async () => {
   const GuestTable = document.getElementById("GuestBody");
   const GuestRows = GuestTable.getElementsByTagName("tr");
 
+  const GradeTable = document.getElementById("judgesGraded");
+  const GradeRows = document.getElementById("gradesTable");
+
+  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
+
+  const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
+  const judgesRefMapped = judgesRef.docs.map((doc) => doc.data());
+
+  const guestsRef = await guestCollection.withConverter(guestConverter).get();
+  const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
+
+  const studentsRef = await studentCollection.withConverter(studentConverter).get();
+  const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
+
   async function FindGradesByProject(project) {
     const gradesQuery = gradeCollection.where(
       "project",
@@ -225,11 +240,6 @@ const AdminLoaded = async () => {
   }
 
   async function getAllProjects() {
-    const projectsRef = await projectCollection
-      .withConverter(projectConverter)
-      .get();
-    const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
-
     projectsRefMapped.forEach(async (project) => {
       project.name = project.name == " " ? "none" : project.name;
       project.summary = project.summary == " " ? "N/A" : project.summary;
@@ -292,9 +302,6 @@ const AdminLoaded = async () => {
     });
   }
   async function getAllJudges() {
-    const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
-    const judgesRefMapped = judgesRef.docs.map((doc) => doc.data());
-
     judgesRefMapped.forEach((judge) => {
       //judge.name = judge.name == " " ? "." : judge.name;
 
@@ -318,8 +325,6 @@ const AdminLoaded = async () => {
     });
   }
   async function getAllGuests() {
-    const guestsRef = await guestCollection.withConverter(guestConverter).get();
-    const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
     guestRefMapped.forEach((guest) => {
       guest.name = guest.name == " " ? "none" : guest.name;
       GuestTable.innerHTML += `<tr>
@@ -331,10 +336,7 @@ const AdminLoaded = async () => {
     });
   }
   async function getAllStudents() {
-    const studentsRef = await studentCollection
-      .withConverter(studentConverter)
-      .get();
-    const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
+
     studentRefMapped.forEach((student) => {
       StudentTable.innerHTML += `<tr>
       <th scope="row">${student.id}</th>
@@ -359,31 +361,20 @@ const AdminLoaded = async () => {
     Mechatronics: {}
 };
 
-  async function MostLikes(topLikes) {
-    const projectsRef = await projectCollection
-        .withConverter(projectConverter)
-        .get();
-    const projects = projectsRef.docs.map((doc) => doc.data());
-    projects.forEach(async (project) => {
-        const currentTop = topLikes[project.category];
-        const projectId = project.id.toString();
-        const projectLikes = parseInt(project.likes);
-        // Check if the project ID exists in the currentTop object
-        if (!currentTop.hasOwnProperty(projectId) || currentTop[projectId] < projectLikes) {
-            currentTop[projectId] = projectLikes;
-            const sortedTop = Object.fromEntries(Object.entries(currentTop).sort((a, b) => b[1] - a[1]));
-            // Slice to keep only top 5 projects
-            const slicedTop = Object.fromEntries(Object.entries(sortedTop).slice(0, 5));
-            topLikes[project.category] = slicedTop;
-        }
+  function MostLikes(topLikes) {
+    projectsRefMapped.forEach( (project) => {
+        const currentTop = topLikes[project.category];  
+        currentTop[project.id.toString()] = parseInt(project.likes);
+        const entries = Object.entries(currentTop);
+        entries.sort((a, b) => b[1] - a[1]);
+        // Slice to keep only top 5 projects
+        const slicedTop = entries.slice(0, 5);
+        topLikes[project.category] = Object.fromEntries(slicedTop);
+        
     });
     return topLikes;
   }
-
-
-  topLikes = await MostLikes(topLikes);
-
-
+  topLikes = MostLikes(topLikes);
   function createChartContainer(id) {
     const container = document.createElement('div');
     container.classList.add('col-xl-4', 'col-lg-6', 'col-md-8', 'mt-5');
@@ -470,10 +461,12 @@ const AdminLoaded = async () => {
         options: options
     });
 }
-
-
-
-
+  function gradesTable(){
+    judgesRefMapped.forEach((judge) => {
+      GradeTable.innerHTML += `<th scope="col">${judge.name}</th>`
+    });
+  }
+  gradesTable();
   charts();
 };
 
