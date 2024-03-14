@@ -48,8 +48,8 @@ async function searchProjects(what = "") {
     .get();
   const projects = projectsRef.docs.map((doc) => doc.data());
   projects.forEach(async (project) => {
-    proj = project.id.toString() + " " + project.name.toString();
-    stu = await FindStudentsByProject(project).then((list) => {
+    let proj = project.id + " " + project.name;
+    let stu = await FindStudentsByProject(project).then((list) => {
       names = [];
       list.forEach((stu) => {
         names.push(stu.name);
@@ -82,7 +82,6 @@ const isAdmin = localStorage.getItem("UserType") === "admin";
 const isJudge = localStorage.getItem("UserType") === "judge";
 const isGuest = localStorage.getItem("UserType") === "guest";
 const isStudent = localStorage.getItem("UserType") === "student";
-
 
 const isLoggedIn = !(!isJudge && !isGuest && !isStudent && !isAdmin);
 
@@ -184,9 +183,7 @@ const ProjectLoaded = async () => {
   });
 };
 
-
 const AdminLoaded = async () => {
-
   navigate();
   checkIfAdmin();
 
@@ -208,7 +205,9 @@ const AdminLoaded = async () => {
   const GradeTable = document.getElementById("judgesGraded");
   const GradeRows = document.getElementById("gradesTable");
 
-  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRef = await projectCollection
+    .withConverter(projectConverter)
+    .get();
   const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
   const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
@@ -217,7 +216,9 @@ const AdminLoaded = async () => {
   const guestsRef = await guestCollection.withConverter(guestConverter).get();
   const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
 
-  const studentsRef = await studentCollection.withConverter(studentConverter).get();
+  const studentsRef = await studentCollection
+    .withConverter(studentConverter)
+    .get();
   const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
 
   async function FindGradesByProject(project) {
@@ -336,7 +337,6 @@ const AdminLoaded = async () => {
     });
   }
   async function getAllStudents() {
-
     studentRefMapped.forEach((student) => {
       StudentTable.innerHTML += `<tr>
       <th scope="row">${student.id}</th>
@@ -354,38 +354,36 @@ const AdminLoaded = async () => {
   }
   getAll();
 
-
   var topLikes = {
     Electronics: {},
     ICT: {},
-    Mechatronics: {}
-};
+    Mechatronics: {},
+  };
 
   function MostLikes(topLikes) {
-    projectsRefMapped.forEach( (project) => {
-        const currentTop = topLikes[project.category];  
-        currentTop[project.id.toString()] = parseInt(project.likes);
-        const entries = Object.entries(currentTop);
-        entries.sort((a, b) => b[1] - a[1]);
-        // Slice to keep only top 5 projects
-        const slicedTop = entries.slice(0, 5);
-        topLikes[project.category] = Object.fromEntries(slicedTop);
-        
+    projectsRefMapped.forEach((project) => {
+      const currentTop = topLikes[project.category];
+      currentTop[project.id.toString()] = parseInt(project.likes);
+      const entries = Object.entries(currentTop);
+      entries.sort((a, b) => b[1] - a[1]);
+      // Slice to keep only top 5 projects
+      const slicedTop = entries.slice(0, 5);
+      topLikes[project.category] = Object.fromEntries(slicedTop);
     });
     return topLikes;
   }
   topLikes = MostLikes(topLikes);
   function createChartContainer(id) {
-    const container = document.createElement('div');
-    container.classList.add('col-xl-4', 'col-lg-6', 'col-md-8', 'mt-5');
-    const canvas = document.createElement('canvas');
-    canvas.id = 'chart' + id;
+    const container = document.createElement("div");
+    container.classList.add("col-xl-4", "col-lg-6", "col-md-8", "mt-5");
+    const canvas = document.createElement("canvas");
+    canvas.id = "chart" + id;
     container.appendChild(canvas);
     return container;
   }
 
   function charts() {
-    const container = document.querySelector('.container .row');
+    const container = document.querySelector(".container .row");
 
     const chart1Container = createChartContainer(1);
     const chart2Container = createChartContainer(2);
@@ -395,75 +393,83 @@ const AdminLoaded = async () => {
     container.appendChild(chart2Container);
     container.appendChild(chart3Container);
 
-    var ctx1 = document.getElementById('chart1').getContext('2d');
-    var ctx2 = document.getElementById('chart2').getContext('2d');
-    var ctx3 = document.getElementById('chart3').getContext('2d');
+    var ctx1 = document.getElementById("chart1").getContext("2d");
+    var ctx2 = document.getElementById("chart2").getContext("2d");
+    var ctx3 = document.getElementById("chart3").getContext("2d");
 
     var data1 = {
-        labels: Object.keys(topLikes.Electronics),
-        datasets: [{
-            label: 'Electronics',
-            data: Object.values(topLikes.Electronics),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            borderWidth: 1
-        }]
+      labels: Object.keys(topLikes.Electronics),
+      datasets: [
+        {
+          label: "Electronics",
+          data: Object.values(topLikes.Electronics),
+          backgroundColor: "rgba(255, 99, 132, 0.2)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          borderWidth: 1,
+        },
+      ],
     };
 
     var data2 = {
-        labels: Object.keys(topLikes.ICT),
-        datasets: [{
-            label: 'ICT',
-            data: Object.values(topLikes.ICT),
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
+      labels: Object.keys(topLikes.ICT),
+      datasets: [
+        {
+          label: "ICT",
+          data: Object.values(topLikes.ICT),
+          backgroundColor: "rgba(54, 162, 235, 0.2)",
+          borderColor: "rgba(54, 162, 235, 1)",
+          borderWidth: 1,
+        },
+      ],
     };
 
     var data3 = {
-        labels: Object.keys(topLikes.Mechatronics),
-        datasets: [{
-            label: 'Mechatronics',
-            data: Object.values(topLikes.Mechatronics),
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
+      labels: Object.keys(topLikes.Mechatronics),
+      datasets: [
+        {
+          label: "Mechatronics",
+          data: Object.values(topLikes.Mechatronics),
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+      ],
     };
 
     var options = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    //beginAtZero: true //keep this, this line 50% of time bugs, 50% fixes bugs
-                }
-            }]
-        }
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              //beginAtZero: true //keep this, this line 50% of time bugs, 50% fixes bugs
+            },
+          },
+        ],
+      },
     };
 
     // Create the charts
     var chart1 = new Chart(ctx1, {
-        type: 'bar',
-        data: data1,
-        options: options
+      type: "bar",
+      data: data1,
+      options: options,
     });
 
     var chart2 = new Chart(ctx2, {
-        type: 'bar',
-        data: data2,
-        options: options
+      type: "bar",
+      data: data2,
+      options: options,
     });
 
     var chart3 = new Chart(ctx3, {
-        type: 'bar',
-        data: data3,
-        options: options
+      type: "bar",
+      data: data3,
+      options: options,
     });
-}
-  function gradesTable(){
+  }
+  function gradesTable() {
     judgesRefMapped.forEach((judge) => {
-      GradeTable.innerHTML += `<th scope="col">${judge.name}</th>`
+      GradeTable.innerHTML += `<th scope="col">${judge.name}</th>`;
     });
   }
   gradesTable();
