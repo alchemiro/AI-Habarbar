@@ -41,6 +41,8 @@ async function FindJudgeByGrade(grade) {
   return str;
 }
 async function searchProjects(what = "") {
+  console.log(what);
+  var proj = "";
   const gridrow = document.getElementById("gallery-container-row");
   gridrow.innerHTML = ``;
   const projectsRef = await projectCollection
@@ -56,7 +58,7 @@ async function searchProjects(what = "") {
       });
       return names.toString();
     });
-
+    console.log(`searching : ${what} inside of ${proj} or ${stu} \n`);
     if (proj.includes(what) || stu.includes(what)) {
       project.name = project.name == " " ? "N/A" : project.name;
       project.summary = project.summary == " " ? "NONE" : project.summary;
@@ -77,6 +79,8 @@ async function searchProjects(what = "") {
       gridrow.appendChild(cardDiv);
     }
   });
+
+  console.log("done searching");
 }
 const isAdmin = localStorage.getItem("UserType") === "admin";
 const isJudge = localStorage.getItem("UserType") === "judge";
@@ -468,10 +472,39 @@ const AdminLoaded = async () => {
     });
   }
   function gradesTable() {
+    var i = 0;
+    var judgeDict = {};
+    var order = [];
     judgesRefMapped.forEach((judge) => {
       GradeTable.innerHTML += `<th scope="col">${judge.name}</th>`;
+      judgeDict[judge.name] = i;
+      i++;
+    });
+
+    projectsRefMapped.forEach(async (project) => {
+      const row = document.createElement("tr");
+      const header = document.createElement("th");
+      header.textContent = project.id;
+      header.style.color = project.textColor;
+      header.style.backgroundColor = project.color;
+      row.append(header);
+
+      const l = await FindGradesByProject(project);
+      l.forEach((grade) => {
+        order.splice(judgeDict[grade.judge.name], 0, grade);
+      });
+
+      order.forEach((grade) => {
+        const score = document.createElement("td");
+        score.textContent = grade.score;
+        row.append(score);
+      });
+
+      GradeRows.append(row);
+      order = [];
     });
   }
+
   gradesTable();
   charts();
 };
