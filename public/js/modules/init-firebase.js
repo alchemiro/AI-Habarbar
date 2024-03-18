@@ -18,6 +18,66 @@ const projectCollection = db.collection("projects");
 const guestCollection = db.collection("guests");
 const judgeCollection = db.collection("judges");
 
+
+class User {
+  #id;
+  constructor(ID = -1) {
+    this.#id = ID;
+  }
+
+  get id() {
+    return this.#id;
+  }
+
+  set id(ID) {
+    this.#id = ID;
+  }
+}
+
+class Guest extends User {
+  //set and get done
+  #pass;
+  #likes;
+  name;
+
+  constructor(ID, name = "", pass = "", likes = []) {
+    super(ID);
+    this.#pass = pass;
+    this.#likes = likes;
+    this.name = name;
+  }
+
+  get name() {
+    return this.name;
+  }
+  get likes() {
+    return this.#likes;
+  }
+
+  get pass() {
+    return this.#pass;
+  }
+
+  // set name(newname){
+  //     this.name = newname;
+  // }
+
+  set pass(newpass) {
+    this.#pass = newpass;
+  }
+
+  set likes(newlikes) {
+    this.#likes = newlikes;
+  }
+
+  set name(newName) {
+    this.name = newName;
+  }
+
+  toString() {
+    return `Guest ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}`;
+  }
+}
 class Project {
   #name;
   #id;
@@ -127,65 +187,6 @@ class Project {
     }
   }
 }
-class User {
-  #id;
-  constructor(ID = -1) {
-    this.#id = ID;
-  }
-
-  get id() {
-    return this.#id;
-  }
-
-  set id(ID) {
-    this.#id = ID;
-  }
-}
-class Guest extends User {
-  //set and get done
-  #pass;
-  #likes;
-  name;
-
-  constructor(ID, name = "", pass = "", likes = []) {
-    super(ID);
-    this.#pass = pass;
-    this.#likes = likes;
-    this.name = name;
-  }
-
-  get name() {
-    return this.name;
-  }
-  get likes() {
-    return this.#likes;
-  }
-
-  get pass() {
-    return this.#pass;
-  }
-
-  // set name(newname){
-  //     this.name = newname;
-  // }
-
-  set pass(newpass) {
-    this.#pass = newpass;
-  }
-
-  set likes(newlikes) {
-    this.#likes = newlikes;
-  }
-
-  set name(newName) {
-    this.name = newName;
-  }
-
-  toString() {
-    return `Guest ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}`;
-  }
-}
-
 class Judge extends User {
   //set and get done
   #name;
@@ -234,7 +235,6 @@ class Judge extends User {
     return `Judge ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.projects}`;
   }
 }
-
 class Student extends Guest {
   //set and get done
   #project;

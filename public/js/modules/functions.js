@@ -50,7 +50,26 @@ async function searchProjects(what = "") {
     .get();
   const projects = projectsRef.docs.map((doc) => doc.data());
   projects.forEach(async (project) => {
-    let proj = project.id + " " + project.name;
+    if (what == project.id){
+      project.name = project.name == " " ? "N/A" : project.name;
+      project.summary = project.summary == " " ? "NONE" : project.summary;
+      const cardDiv = document.createElement("div");
+      cardDiv.classList.add("card");
+      cardDiv.style = "width: 18rem;";
+      cardDiv.innerHTML = `
+        <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
+        <div style="background-color:${project.color}"class="card-body"> 
+            <h3 class="card-title" style="color:${project.textColor}">Name: ${project.name}</h3>
+            <h3 class="card-title" style="color:${project.textColor}">ID: ${project.id}</h3>
+            <h5 class="card-text" style="color:${project.textColor}">Summary: ${project.summary}</h5>
+            <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
+        </div>`;
+      cardDiv.addEventListener("click", () => {
+        redirectWithParams(project.id, "project");
+      });
+      gridrow.appendChild(cardDiv);
+      return true;
+    }
     let stu = await FindStudentsByProject(project).then((list) => {
       names = [];
       list.forEach((stu) => {
@@ -58,8 +77,7 @@ async function searchProjects(what = "") {
       });
       return names.toString();
     });
-    console.log(`searching : ${what} inside of ${proj} or ${stu} \n`);
-    if (proj.includes(what) || stu.includes(what)) {
+    if (project.name.includes(what) || stu.includes(what)) {
       project.name = project.name == " " ? "N/A" : project.name;
       project.summary = project.summary == " " ? "NONE" : project.summary;
       const cardDiv = document.createElement("div");
