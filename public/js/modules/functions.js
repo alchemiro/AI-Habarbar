@@ -227,9 +227,7 @@ const AdminLoaded = async () => {
   const GradeTable = document.getElementById("judgesGraded");
   const GradeRows = document.getElementById("gradesTable");
 
-  const projectsRef = await projectCollection
-    .withConverter(projectConverter)
-    .get();
+  const projectsRef = await projectCollection.withConverter(projectConverter).get();
   const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
   const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
@@ -238,21 +236,13 @@ const AdminLoaded = async () => {
   const guestsRef = await guestCollection.withConverter(guestConverter).get();
   const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
 
-  const studentsRef = await studentCollection
-    .withConverter(studentConverter)
-    .get();
+  const studentsRef = await studentCollection.withConverter(studentConverter).get();
   const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
 
   async function FindGradesByProject(project) {
-    const gradesQuery = gradeCollection.where(
-      "project",
-      "==",
-      project.id.toString()
-    );
+    const gradesQuery = gradeCollection.where("project","==",project.id.toString());
     const list = [];
-    await gradesQuery
-      .withConverter(gradeConverter)
-      .get()
+    await gradesQuery.withConverter(gradeConverter).get()
       .then((result) => {
         result.forEach((doc) => {
           list.push(doc.data());
@@ -501,10 +491,9 @@ const AdminLoaded = async () => {
 
     projectsRefMapped.forEach(async (project) => {
       const row = document.createElement("tr");
-      const header = document.createElement("th");
+
+      const header = document.createElement("td");
       header.textContent = project.id;
-      header.style.color = project.textColor;
-      header.style.backgroundColor = project.color;
       row.append(header);
 
       const l = await FindGradesByProject(project);
@@ -525,6 +514,8 @@ const AdminLoaded = async () => {
 
   gradesTable();
   charts();
+
+
 };
 
 function logout() {
