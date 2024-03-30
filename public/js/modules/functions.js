@@ -65,7 +65,18 @@ async function searchProjects(what = "") {
             <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>`;
       cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
       });
       gridrow.appendChild(cardDiv);
       return true;
@@ -92,7 +103,18 @@ async function searchProjects(what = "") {
             <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>`;
       cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
       });
       gridrow.appendChild(cardDiv);
     }
@@ -309,7 +331,18 @@ const AdminLoaded = async () => {
       row.appendChild(gradeRow);
       row.appendChild(summary);
       row.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
       });
       ProjectTable.appendChild(row);
     });
@@ -663,7 +696,18 @@ const MyPageLoaded = async () => {
         `;
 
       cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
       });
       gridrow.appendChild(cardDiv);
     });

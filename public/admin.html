@@ -268,23 +268,25 @@
           : XLSX.writeFile(wb, fn || "guests." + (type || "xlsx"));
       }
       function addNew(what){
-        switch(what.toLowerCase()) {
+        switch(what) {
         case 'project':
-          window.open("../add_new/addProject.html", "Popup", "width=400,height=400");
+          window.open("add_new/addProject.html", "Popup", "width=400,height=400");
+
           break;
         case 'judge':
-          window.open("../add_new/addJudge.html", "Popup", "width=400,height=400");
+          window.open("add_new/addJudge.html", "Popup", "width=400,height=400");
           break;
         case 'student':
-          window.open("../add_new/addStudent.html", "Popup", "width=400,height=400");
+          window.open("add_new/addStudent.html", "Popup", "width=400,height=400");
             break;
         case 'guest':
-          window.open("../add_new/addGuest.html", "Popup", "width=400,height=400");
+          window.open("add_new/addGuest.html", "Popup", "width=400,height=400");
             break;
         default:
-            console.log('looks like a typo, try again');
-            break;
+          window.open("404.html", "Popup", "width=400,height=400");
+          break;
     }
+    getAll();
       }
     </script>
   </body>
