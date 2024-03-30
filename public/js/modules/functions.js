@@ -374,13 +374,18 @@ const AdminLoaded = async () => {
 
   function MostLikes(topLikes) {
     projectsRefMapped.forEach((project) => {
-      const currentTop = topLikes[project.category];
-      currentTop[project.id.toString()] = parseInt(project.likes);
-      const entries = Object.entries(currentTop);
-      entries.sort((a, b) => b[1] - a[1]);
-      // Slice to keep only top 5 projects
-      const slicedTop = entries.slice(0, 5);
-      topLikes[project.category] = Object.fromEntries(slicedTop);
+      console.log(project.category);
+      if(Object.keys(topLikes).includes(project.category)){
+        const currentTop = topLikes[project.category];
+        console.log(parseInt(project.likes) + "i am here");
+        currentTop[project.id.toString()] = parseInt(project.likes);
+        const entries = Object.entries(currentTop);
+        entries.sort((a, b) => b[1] - a[1]);
+        // Slice to keep only top 5 projects
+        const slicedTop = entries.slice(0, 5);
+        topLikes[project.category] = Object.fromEntries(slicedTop);
+      }
+      
     });
     return topLikes;
   }
