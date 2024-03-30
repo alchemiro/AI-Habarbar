@@ -31,7 +31,7 @@
       </i>
     </header>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <ul class="nav nav-tabs bg-body-tertiary" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
         <button
           class="nav-link active"
@@ -96,7 +96,17 @@
     </ul>
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade" id="project" role="tabpanel">
-        <div class="container text-center mb-4">
+        <div class="container text-center mb-4" style = "width: 100%;" style="margin-inline-end: 1%;">
+          <button type="button" class="btn btn-primary btn-sm" onclick="addNew('project')">
+            Add Project
+          </button>
+          <button
+            type="button"
+            onclick="ExportProjectToExcel('xlsx')"
+            class="btn btn-primary btn-sm"
+          >
+            Export table to excel
+          </button>
           <table class="table table-hover" id="ProjectTable">
             <thead>
               <tr>
@@ -110,32 +120,12 @@
             </thead>
             <tbody id="ProjectBody"></tbody>
           </table>
-          <button type="button" class="btn btn-primary btn-sm" onclick="">
-            Add Project
-          </button>
-          <button
-            type="button"
-            onclick="ExportProjectToExcel('xlsx')"
-            class="btn btn-primary btn-sm"
-          >
-            Export table to excel
-          </button>
         </div>
       </div>
       <div class="tab-pane fade" id="judge" role="tabpanel">
-        <div class="container text-center mb-4">
-          <table class="table table-hover" id="JudgeTable">
-            <thead>
-              <tr>
-                <th scope="col">JudgeID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Project to grade</th>
-                <th scope="col">Project graded</th>
-              </tr>
-            </thead>
-            <tbody id="JudgeBody"></tbody>
-          </table>
-          <button type="button" class="btn btn-primary btn-sm" onclick="">
+        <div class="container text-center mb-4" style = "width: 100%;">
+
+          <button type="button" class="btn btn-primary btn-sm" onclick="addNew('judge')">
             Add Judge
           </button>
           <button
@@ -146,10 +136,30 @@
           >
             Export table to excel
           </button>
+          <table class="table table-hover" id="JudgeTable" >
+            <thead>
+              <tr>
+                <th scope="col">JudgeID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Project to grade</th>
+                <th scope="col">Project graded</th>
+              </tr>
+            </thead>
+            <tbody id="JudgeBody" ></tbody>
+          </table>
         </div>
       </div>
       <div class="tab-pane fade" id="student" role="tabpanel">
-        <div class="container text-center mb-4">
+        <div class="container text-center mb-4" style = "width: 100%;">
+          
+          <button class="btn btn-primary btn-sm" onclick="addNew('student')">Add</button>
+          <button
+            type="button"
+            onclick="ExportStudentToExcel('xlsx')"
+            class="btn btn-primary btn-sm"
+          >
+            Export table to excel
+          </button>
           <table class="table table-hover" id="StudentsTable">
             <thead>
               <tr>
@@ -161,18 +171,19 @@
             </thead>
             <tbody id="StudentBody"></tbody>
           </table>
-          <button class="btn btn-primary btn-sm" onclick="">Add</button>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="guest" role="tabpanel">
+        <div class="container text-center mb-4" style = "width: 100%;">
+          
+          <button class="btn btn-primary btn-sm" onclick="addNew('guest')">Add</button>
           <button
             type="button"
-            onclick="ExportStudentToExcel('xlsx')"
+            onclick="ExportGuestToExcel('xlsx')"
             class="btn btn-primary btn-sm"
           >
             Export table to excel
           </button>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="guest" role="tabpanel">
-        <div class="container text-center mb-4">
           <table class="table table-hover" id="GuestTable">
             <thead>
               <tr>
@@ -184,18 +195,10 @@
             </thead>
             <tbody id="GuestBody"></tbody>
           </table>
-          <button class="btn btn-primary btn-sm" onclick="">Add</button>
-          <button
-            type="button"
-            onclick="ExportGuestToExcel('xlsx')"
-            class="btn btn-primary btn-sm"
-          >
-            Export table to excel
-          </button>
         </div>
       </div>
       <div class="tab-pane fade show active" id="graphs" role="tabpanel">
-        <div class="container text-center mb-4">
+        <div class="container text-center mb-4" style = "width: 100%;">
           <div class="row justify-content-center">
           </div>
           <div class="row mt-5">
@@ -263,6 +266,27 @@
         return dl
           ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
           : XLSX.writeFile(wb, fn || "guests." + (type || "xlsx"));
+      }
+      function addNew(what){
+        switch(what) {
+        case 'project':
+          window.open("add_new/addProject.html", "Popup", "width=400,height=500");
+
+          break;
+        case 'judge':
+          window.open("add_new/addJudge.html", "Popup", "width=400,height=500");
+          break;
+        case 'student':
+          window.open("add_new/addStudent.html", "Popup", "width=400,height=500");
+            break;
+        case 'guest':
+          window.open("add_new/addGuest.html", "Popup", "width=400,height=500");
+            break;
+        default:
+          window.open("404.html", "Popup", "width=400,height=500");
+          break;
+    }
+    getAll();
       }
     </script>
   </body>

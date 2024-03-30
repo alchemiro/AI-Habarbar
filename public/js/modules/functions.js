@@ -28,6 +28,7 @@ async function FindStudentsByProject(project) {
   return list;
 }
 
+
 async function FindJudgeByGrade(grade) {
   let str = "";
   await judgeCollection
@@ -50,16 +51,7 @@ async function searchProjects(what = "") {
     .get();
   const projects = projectsRef.docs.map((doc) => doc.data());
   projects.forEach(async (project) => {
-    let proj = project.id + " " + project.name;
-    let stu = await FindStudentsByProject(project).then((list) => {
-      names = [];
-      list.forEach((stu) => {
-        names.push(stu.name);
-      });
-      return names.toString();
-    });
-    console.log(`searching : ${what} inside of ${proj} or ${stu} \n`);
-    if (proj.includes(what) || stu.includes(what)) {
+    if (what == project.id){
       project.name = project.name == " " ? "N/A" : project.name;
       project.summary = project.summary == " " ? "NONE" : project.summary;
       const cardDiv = document.createElement("div");
@@ -74,7 +66,56 @@ async function searchProjects(what = "") {
             <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>`;
       cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
+      });
+      gridrow.appendChild(cardDiv);
+      return true;
+    }
+    let stu = await FindStudentsByProject(project).then((list) => {
+      names = [];
+      list.forEach((stu) => {
+        names.push(stu.name);
+      });
+      return names.toString();
+    });
+    if (project.name.includes(what) || stu.includes(what)) {
+      project.name = project.name == " " ? "N/A" : project.name;
+      project.summary = project.summary == " " ? "NONE" : project.summary;
+      const cardDiv = document.createElement("div");
+      cardDiv.classList.add("card");
+      cardDiv.style = "width: 18rem;";
+      cardDiv.innerHTML = `
+        <img src="${project.img}" class="img-thumbnail" style="width: 18rem; height: 18rem;" alt=".">
+        <div style="background-color:${project.color}"class="card-body"> 
+            <h3 class="card-title" style="color:${project.textColor}">Name: ${project.name}</h3>
+            <h3 class="card-title" style="color:${project.textColor}">ID: ${project.id}</h3>
+            <h5 class="card-text" style="color:${project.textColor}">Summary: ${project.summary}</h5>
+            <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
+        </div>`;
+      cardDiv.addEventListener("click", () => {
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
       });
       gridrow.appendChild(cardDiv);
     }
@@ -209,9 +250,7 @@ const AdminLoaded = async () => {
   const GradeTable = document.getElementById("judgesGraded");
   const GradeRows = document.getElementById("gradesTable");
 
-  const projectsRef = await projectCollection
-    .withConverter(projectConverter)
-    .get();
+  const projectsRef = await projectCollection.withConverter(projectConverter).get();
   const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
   const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
@@ -220,21 +259,13 @@ const AdminLoaded = async () => {
   const guestsRef = await guestCollection.withConverter(guestConverter).get();
   const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
 
-  const studentsRef = await studentCollection
-    .withConverter(studentConverter)
-    .get();
+  const studentsRef = await studentCollection.withConverter(studentConverter).get();
   const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
 
   async function FindGradesByProject(project) {
-    const gradesQuery = gradeCollection.where(
-      "project",
-      "==",
-      project.id.toString()
-    );
+    const gradesQuery = gradeCollection.where("project","==",project.id.toString());
     const list = [];
-    await gradesQuery
-      .withConverter(gradeConverter)
-      .get()
+    await gradesQuery.withConverter(gradeConverter).get()
       .then((result) => {
         result.forEach((doc) => {
           list.push(doc.data());
@@ -301,7 +332,18 @@ const AdminLoaded = async () => {
       row.appendChild(gradeRow);
       row.appendChild(summary);
       row.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
       });
       ProjectTable.appendChild(row);
     });
@@ -366,13 +408,18 @@ const AdminLoaded = async () => {
 
   function MostLikes(topLikes) {
     projectsRefMapped.forEach((project) => {
-      const currentTop = topLikes[project.category];
-      currentTop[project.id.toString()] = parseInt(project.likes);
-      const entries = Object.entries(currentTop);
-      entries.sort((a, b) => b[1] - a[1]);
-      // Slice to keep only top 5 projects
-      const slicedTop = entries.slice(0, 5);
-      topLikes[project.category] = Object.fromEntries(slicedTop);
+      console.log(project.category);
+      if(Object.keys(topLikes).includes(project.category)){
+        const currentTop = topLikes[project.category];
+        console.log(parseInt(project.likes) + "i am here");
+        currentTop[project.id.toString()] = parseInt(project.likes);
+        const entries = Object.entries(currentTop);
+        entries.sort((a, b) => b[1] - a[1]);
+        // Slice to keep only top 5 projects
+        const slicedTop = entries.slice(0, 5);
+        topLikes[project.category] = Object.fromEntries(slicedTop);
+      }
+      
     });
     return topLikes;
   }
@@ -483,10 +530,9 @@ const AdminLoaded = async () => {
 
     projectsRefMapped.forEach(async (project) => {
       const row = document.createElement("tr");
-      const header = document.createElement("th");
+
+      const header = document.createElement("td");
       header.textContent = project.id;
-      header.style.color = project.textColor;
-      header.style.backgroundColor = project.color;
       row.append(header);
 
       const l = await FindGradesByProject(project);
@@ -507,6 +553,8 @@ const AdminLoaded = async () => {
 
   gradesTable();
   charts();
+
+
 };
 
 function logout() {
@@ -649,7 +697,18 @@ const MyPageLoaded = async () => {
         `;
 
       cardDiv.addEventListener("click", () => {
-        redirectWithParams(project.id, "project");
+        if(isAdmin){
+          redirectWithParams(project.id, "projects/project-admin");
+        }
+        else if(isJudge){
+          redirectWithParams(project.id, "projects/project-judge");
+        }
+        else if(isStudent){
+          redirectWithParams(project.id, "projects/project-student");
+        }
+        else{
+          redirectWithParams(project.id, "projects/project");
+        }
       });
       gridrow.appendChild(cardDiv);
     });
@@ -657,3 +716,21 @@ const MyPageLoaded = async () => {
 
   await GetProjectToGrade();
 };
+
+
+async function CheckProjects() {
+  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
+
+  const container = document.getElementById("SetProjects");
+
+  projectsRefMapped.forEach((project) => {
+      container.innerHTML += `
+      <div class="col">
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="${project.id}" id="project${project.id}" onchange="onCheck(this)">
+              <label class="form-check-label" for="project${project.id}">${project.name}</label>
+          </div>
+      </div>`;
+  });
+}
