@@ -28,6 +28,7 @@ async function FindStudentsByProject(project) {
   return list;
 }
 
+
 async function FindJudgeByGrade(grade) {
   let str = "";
   await judgeCollection
@@ -715,3 +716,21 @@ const MyPageLoaded = async () => {
 
   await GetProjectToGrade();
 };
+
+
+async function CheckProjects() {
+  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
+
+  const container = document.getElementById("SetProjects");
+
+  projectsRefMapped.forEach((project) => {
+      container.innerHTML += `
+      <div class="col">
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="${project.id}" id="project${project.id}" onchange="onCheck(this)">
+              <label class="form-check-label" for="project${project.id}">${project.name}</label>
+          </div>
+      </div>`;
+  });
+}
