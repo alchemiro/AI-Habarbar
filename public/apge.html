@@ -30,11 +30,89 @@
       >
       </i>
     </header>
-    <h1>Excel to JSON Converter</h1>
-    <label for="excelFile">File</label>
-    <input type="file" id="excelFile" accept=".xlsx" />
-    <button id="convertButton" type="button">Convert to JSON</button>
-    <div id="jsonResult"></div>
+    <div class="container text-center" style="height: 75vh; overflow-y: auto">
+      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link active"
+            id="pills-home-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-project"
+            type="button"
+            role="tab"
+          >
+            Projects
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="pills-profile-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-student"
+            type="button"
+            role="tab"
+          >
+            Students
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button
+            class="nav-link"
+            id="pills-contact-tab"
+            data-bs-toggle="pill"
+            data-bs-target="#pills-judge"
+            type="button"
+            role="tab"
+          >
+            Judges
+          </button>
+        </li>
+      </ul>
+      <div class="tab-content" id="pills-tabContent">
+        <div
+          class="tab-pane fade show active"
+          id="pills-project"
+          role="tabpanel"
+        >
+          <label for="excelFileProject">File:</label>
+          <input type="file" id="excelFileProject" accept=".xlsx" />
+          <button
+            id="convertProjects"
+            class="btn btn-primary btn-sm"
+            type="button"
+            onclick="sendProjectsToFirebase()"
+          >
+            Send Projects
+          </button>
+        </div>
+        <div class="tab-pane fade" id="pills-student" role="tabpanel">
+          <label for="excelFileStudent">File:</label>
+          <input type="file" id="excelFileStudent" accept=".xlsx" />
+          <button
+            id="convertStudents"
+            class="btn btn-primary btn-sm"
+            type="button"
+            onclick="sendStudentsToFirebase()"
+          >
+            Send Students
+          </button>
+        </div>
+        <div class="tab-pane fade" id="pills-judge" role="tabpanel">
+          <label for="excelFileJudge">File:</label>
+          <input type="file" id="excelFileJudge" accept=".xlsx" />
+          <button
+            id="convertJudges"
+            class="btn btn-primary btn-sm"
+            type="button"
+            onclick="sendJudgesToFirebase()"
+          >
+            Send Judges
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="./js/sidebar.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
