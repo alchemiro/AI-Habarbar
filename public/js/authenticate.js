@@ -59,8 +59,8 @@ async function checkStudents(id, password) {
 
 async function checkIfAdmin() {
   const adminFetch = await judgeCollection
-    .doc("0")
-    // .doc("admin")
+    // .doc("0")
+    .doc("admin")
     .withConverter(judgeConverter)
     .get()
     .then((document) => {
@@ -76,8 +76,8 @@ async function checkIfAdmin() {
 
 async function checkAdmin(id, password) {
   const adminFetch = await judgeCollection
-    .doc("0")
-    // .doc("admin")
+    // .doc("0")
+    .doc("admin")
     .withConverter(judgeConverter)
     .get()
     .then((document) => {
