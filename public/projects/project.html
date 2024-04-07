@@ -20,7 +20,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   </head>
-  <body onload="ProjectLoaded()">
+  <body onload="redirectUser()">
     <header>
       <div class="sidebar" id="sidebar"></div>
 
@@ -32,70 +32,11 @@
       </i>
     </header>
     <main>
-      <div class="container">
-        <div class="row">
-          <!-- Image (Top Left on Desktop) -->
-          <div class="col-md-6 order-md-1">
-            <img
-              id="projectImg"
-              src="path/to/project-image.jpg"
-              class="img-fluid rounded"
-              alt="Project Image"
-            />
-          </div>
-
-          <!-- Title and Like Button (Top Center on Desktop) -->
-          <div class="col-md-6 order-md-2">
-            <h1 class="text-center mt-4 mb-3" id="nametag"></h1>
-            <div class="input-group mb-3" id="gradeDiv">
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                id="gradeButton"
-              >
-                Save
-              </button>
-              <input
-                id="gradeInput"
-                type="text"
-                class="form-control"
-                placeholder="Grade..."
-              />
-            </div>
-            <div id="qr-code"></div>
-          </div>
-        </div>
-
-        <!-- Name of Students -->
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <h3>Students</h3>
-            <ul style="list-style: decimal" id="studentList">
-              <!-- Add more students if needed -->
-            </ul>
-          </div>
-
-          <!-- Summary -->
-          <div class="col-md-6">
-            <h3>Summary</h3>
-            <p id="summarytag">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
-              id quam sapien.
-              <!-- Add project summary content here -->
-            </p>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <button
-            type="button"
-            title="displayQR"
-            id="displayQR"
-            onclick="createQRByPage()"
-            class="btn btn-primary btn-sm"
-          >
-            <i class="fa-solid fa-qrcode qr-icon"></i>
-          </button>
-        </div>
+      <div class="container text-center">
+        <h1 class="align-middle">Now redirecting you to the proper page...</h1>
+        <span class="align-middle"
+          ><i class="fa-solid fa-spinner fa-spin fa-6x"></i
+        ></span>
       </div>
     </main>
 
@@ -104,14 +45,10 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-    <script src="../js/modules/converters.js"></script>
+    <script src="../js/authenticate.js"></script>
+    <script src="../js/modules/sidebar.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="../js/modules/init-firebase.js"></script>
     <script src="../js/modules/functions.js"></script>
-
-    <script src="../js/sidebar.js"></script>
+    <script src="../js/redirection.js"></script>
   </body>
 </html>

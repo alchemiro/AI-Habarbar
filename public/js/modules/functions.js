@@ -1,5 +1,5 @@
 function redirectWithParams(id, key) {
-  const url = `./${key}.html`;
+  const url = `${key}.html`;
   window.location.href = `${url}?id=${id}`;
 }
 
@@ -28,7 +28,6 @@ async function FindStudentsByProject(project) {
   return list;
 }
 
-
 async function FindJudgeByGrade(grade) {
   let str = "";
   await judgeCollection
@@ -45,13 +44,13 @@ async function searchProjects(what = "") {
   console.log(what);
   var proj = "";
   const gridrow = document.getElementById("gallery-container-row");
-  gridrow.innerHTML = ``;
   const projectsRef = await projectCollection
     .withConverter(projectConverter)
     .get();
   const projects = projectsRef.docs.map((doc) => doc.data());
+  gridrow.innerHTML = ``;
   projects.forEach(async (project) => {
-    if (what == project.id){
+    if (what == project.id) {
       project.name = project.name == " " ? "N/A" : project.name;
       project.summary = project.summary == " " ? "NONE" : project.summary;
       const cardDiv = document.createElement("div");
@@ -66,18 +65,7 @@ async function searchProjects(what = "") {
             <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>`;
       cardDiv.addEventListener("click", () => {
-        if(isAdmin){
-          redirectWithParams(project.id, "projects/project-admin");
-        }
-        else if(isJudge){
-          redirectWithParams(project.id, "projects/project-judge");
-        }
-        else if(isStudent){
-          redirectWithParams(project.id, "projects/project-student");
-        }
-        else{
-          redirectWithParams(project.id, "projects/project");
-        }
+        redirectWithParams(project.id, "./projects/project");
       });
       gridrow.appendChild(cardDiv);
       return true;
@@ -104,39 +92,15 @@ async function searchProjects(what = "") {
             <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>`;
       cardDiv.addEventListener("click", () => {
-        if(isAdmin){
-          redirectWithParams(project.id, "projects/project-admin");
-        }
-        else if(isJudge){
-          redirectWithParams(project.id, "projects/project-judge");
-        }
-        else if(isStudent){
-          redirectWithParams(project.id, "projects/project-student");
-        }
-        else{
-          redirectWithParams(project.id, "projects/project");
-        }
+        cardDiv.addEventListener("click", () => {
+          redirectWithParams(project.id, "./projects/project");
+        });
       });
       gridrow.appendChild(cardDiv);
     }
   });
 
   console.log("done searching");
-}
-const isAdmin = localStorage.getItem("UserType") === "admin";
-const isJudge = localStorage.getItem("UserType") === "judge";
-const isGuest = localStorage.getItem("UserType") === "guest";
-const isStudent = localStorage.getItem("UserType") === "student";
-
-const isLoggedIn = !(!isJudge && !isGuest && !isStudent && !isAdmin);
-
-function checkIfAdmin() {
-  if (!isAdmin) return bailout();
-}
-//pages that need admin permission:
-function bailout() {
-  const url = "../public/index.html";
-  window.location.href = url;
 }
 
 const indexLoaded = async () => {
@@ -163,7 +127,7 @@ const ProjectLoaded = async () => {
 
   const user = localStorage.getItem("CurrentUser");
   const type = localStorage.getItem("UserType");
-  if (isJudge || isAdmin) {
+  if (type == "judge" || type == "admin") {
     gradeDiv.style.visibility = "visible";
   } else {
     gradeDiv.style.visibility = "hidden";
@@ -250,7 +214,9 @@ const AdminLoaded = async () => {
   const GradeTable = document.getElementById("judgesGraded");
   const GradeRows = document.getElementById("gradesTable");
 
-  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRef = await projectCollection
+    .withConverter(projectConverter)
+    .get();
   const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
   const judgesRef = await judgeCollection.withConverter(judgeConverter).get();
@@ -259,13 +225,21 @@ const AdminLoaded = async () => {
   const guestsRef = await guestCollection.withConverter(guestConverter).get();
   const guestRefMapped = guestsRef.docs.map((doc) => doc.data());
 
-  const studentsRef = await studentCollection.withConverter(studentConverter).get();
+  const studentsRef = await studentCollection
+    .withConverter(studentConverter)
+    .get();
   const studentRefMapped = studentsRef.docs.map((doc) => doc.data());
 
   async function FindGradesByProject(project) {
-    const gradesQuery = gradeCollection.where("project","==",project.id.toString());
+    const gradesQuery = gradeCollection.where(
+      "project",
+      "==",
+      project.id.toString()
+    );
     const list = [];
-    await gradesQuery.withConverter(gradeConverter).get()
+    await gradesQuery
+      .withConverter(gradeConverter)
+      .get()
       .then((result) => {
         result.forEach((doc) => {
           list.push(doc.data());
@@ -331,18 +305,16 @@ const AdminLoaded = async () => {
       row.appendChild(students);
       row.appendChild(gradeRow);
       row.appendChild(summary);
+      const type = localStorage.getItem("UserType");
       row.addEventListener("click", () => {
-        if(isAdmin){
+        if (type == "admin") {
           redirectWithParams(project.id, "projects/project-admin");
-        }
-        else if(isJudge){
+        } else if (type == "judge") {
           redirectWithParams(project.id, "projects/project-judge");
-        }
-        else if(isStudent){
+        } else if (type == "student") {
           redirectWithParams(project.id, "projects/project-student");
-        }
-        else{
-          redirectWithParams(project.id, "projects/project");
+        } else {
+          redirectWithParams(project.id, "projects/project-anon");
         }
       });
       ProjectTable.appendChild(row);
@@ -364,9 +336,58 @@ const AdminLoaded = async () => {
       const judgeProjects = document.createElement("td");
       judgeProjects.textContent = `[${judge.projects}]`;
 
+      const judgeEdit = document.createElement("td");
+      const editButton = document.createElement("button");
+      editButton.type = "button";
+      editButton.classList.add("btn", "btn-primary");
+      editButton.id = `judge-${judge.id}`;
+      editButton.textContent = "Edit";
+      editButton.addEventListener("click", async () => {
+        const projectstoAdd = prompt(
+          "Please enter project IDs:\n(Format: 1-10 OR 1,2,3 OR 1) NO SPACES!",
+          0
+        );
+        if (projectstoAdd.includes("-")) {
+          const splits = projectstoAdd.split("-", 2);
+          console.log(splits);
+          judge.projects.push(...splits);
+          await judgeCollection
+            .doc(judge.id)
+            .withConverter(judgeConverter)
+            .set(judge)
+            .then(() => {
+              console.log("done");
+            });
+        }
+        if (projectstoAdd.includes(",")) {
+          const splits = projectstoAdd.split(",");
+          console.log(splits);
+          judge.projects.push(...splits);
+          await judgeCollection
+            .doc(judge.id)
+            .withConverter(judgeConverter)
+            .set(judge)
+            .then(() => {
+              console.log("done");
+            });
+        } else {
+          console.log(projectstoAdd);
+          judge.projects.push(...projectstoAdd);
+          await judgeCollection
+            .doc(judge.id)
+            .withConverter(judgeConverter)
+            .set(judge)
+            .then(() => {
+              console.log("done");
+            });
+        }
+      });
+      judgeEdit.appendChild(editButton);
+
       judgeRow.appendChild(judgeHeader);
       judgeRow.appendChild(judgeName);
       judgeRow.appendChild(judgeProjects);
+      judgeRow.appendChild(judgeEdit);
 
       JudgeTable.appendChild(judgeRow);
     });
@@ -409,7 +430,7 @@ const AdminLoaded = async () => {
   function MostLikes(topLikes) {
     projectsRefMapped.forEach((project) => {
       console.log(project.category);
-      if(Object.keys(topLikes).includes(project.category)){
+      if (Object.keys(topLikes).includes(project.category)) {
         const currentTop = topLikes[project.category];
         console.log(parseInt(project.likes) + "i am here");
         currentTop[project.id.toString()] = parseInt(project.likes);
@@ -419,7 +440,6 @@ const AdminLoaded = async () => {
         const slicedTop = entries.slice(0, 5);
         topLikes[project.category] = Object.fromEntries(slicedTop);
       }
-      
     });
     return topLikes;
   }
@@ -553,93 +573,14 @@ const AdminLoaded = async () => {
 
   gradesTable();
   charts();
-
-
 };
 
 function logout() {
-  localStorage.setItem("CurrentUser", "logout");
-  localStorage.setItem("UserType", "logout");
+  localStorage.setItem("CurrentUser", "anon");
+  localStorage.setItem("UserType", "guest");
 }
 const LoginLoaded = async () => {
   navigate();
-  async function checkGuests(id, password) {
-    const querySnapshot = await guestCollection
-      .where("id", "==", id)
-      .where("pass", "==", password)
-      .withConverter(guestConverter)
-      .get();
-
-    if (querySnapshot.empty) {
-      return null; // No user found
-    } else {
-      localStorage.setItem("UserType", "guest");
-
-      return querySnapshot.docs[0].data(); // Return user data from the first match
-    }
-  }
-
-  async function checkJudges(id, password) {
-    const querySnapshot = await judgeCollection
-      .where("id", "==", id)
-      .where("pass", "==", password)
-      .withConverter(judgeConverter)
-      .get();
-
-    if (querySnapshot.empty) {
-      return null; // No user found
-    } else {
-      localStorage.setItem("UserType", "judge");
-
-      return querySnapshot.docs[0].data(); // Return user data from the first match
-    }
-  }
-
-  async function checkStudents(id, password) {
-    const querySnapshot = await studentCollection
-      .where("id", "==", id)
-      .where("pass", "==", password)
-      .withConverter(studentConverter)
-      .get();
-
-    if (querySnapshot.empty) {
-      return null; // No user found
-    } else {
-      localStorage.setItem("UserType", "student");
-      return querySnapshot.docs[0].data(); // Return user data from the first match
-    }
-  }
-
-  async function checkExist(id, password) {
-    const adminFetch = await judgeCollection
-      .doc("admin")
-      .withConverter(judgeConverter)
-      .get()
-      .then((document) => {
-        return document.data();
-      });
-    // console.log(adminFetch);
-    if (password == adminFetch.pass && id == adminFetch.name) {
-      console.log("admin detected from firebase.");
-      localStorage.setItem("CurrentUser", "admin");
-      localStorage.setItem("UserType", "admin");
-      return Promise.resolve(true);
-    } else {
-      const user =
-        (await checkGuests(id, password)) ||
-        (await checkStudents(id, password)) ||
-        (await checkJudges(id, password));
-
-      if (user) {
-        console.log("User found:", user.toString());
-        localStorage.setItem("CurrentUser", JSON.stringify(user.id));
-        return Promise.resolve(true);
-      } else {
-        console.log("User not found");
-        return Promise.resolve(false);
-      }
-    }
-  }
 
   document.getElementById("logBTN").addEventListener("click", () => {
     // console.log("I AM HERE");
@@ -658,6 +599,7 @@ const LoginLoaded = async () => {
     };
     checkExist(usernameValue, passwordValue).then((result) => {
       if (result) {
+        // console.log("HELLO");
         window.location.href = "./index.html";
       } else {
         appendAlert(
@@ -684,6 +626,7 @@ const MyPageLoaded = async () => {
       project.summary = project.summary == " " ? "NONE" : project.summary;
       projects.push(project);
 
+      const type = localStorage.getItem("UserType");
       const cardDiv = document.createElement("div");
       cardDiv.classList.add("card");
       cardDiv.style = "width: 18rem;";
@@ -697,17 +640,14 @@ const MyPageLoaded = async () => {
         `;
 
       cardDiv.addEventListener("click", () => {
-        if(isAdmin){
+        if (type == "admin") {
           redirectWithParams(project.id, "projects/project-admin");
-        }
-        else if(isJudge){
+        } else if (type == "judge") {
           redirectWithParams(project.id, "projects/project-judge");
-        }
-        else if(isStudent){
+        } else if (type == "student") {
           redirectWithParams(project.id, "projects/project-student");
-        }
-        else{
-          redirectWithParams(project.id, "projects/project");
+        } else {
+          redirectWithParams(project.id, "projects/project-anon");
         }
       });
       gridrow.appendChild(cardDiv);
@@ -717,15 +657,16 @@ const MyPageLoaded = async () => {
   await GetProjectToGrade();
 };
 
-
 async function CheckProjects() {
-  const projectsRef = await projectCollection.withConverter(projectConverter).get();
+  const projectsRef = await projectCollection
+    .withConverter(projectConverter)
+    .get();
   const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
 
   const container = document.getElementById("SetProjects");
 
   projectsRefMapped.forEach((project) => {
-      container.innerHTML += `
+    container.innerHTML += `
       <div class="col">
           <div class="form-check">
               <input class="form-check-input" type="checkbox" value="${project.id}" id="project${project.id}" onchange="onCheck(this)">

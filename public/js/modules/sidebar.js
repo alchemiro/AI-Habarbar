@@ -62,7 +62,7 @@ function navigate() {
         profile.href = "/public/profiles/judge.html";
       }
     });
-  } else if (isAdmin) {
+  } else if (isAnAdmin) {
     profile.textContent = "Admin Dashboard";
     profile.href = "/public/admin.html";
   }
@@ -79,7 +79,7 @@ function navigate() {
   // if (isLoggedIn){head.appendChild(lo)};
   // else {head.appendChild(login)};
   // console.log(isUserLoggedIn);
-  if (isUserLoggedIn) {
+  if (localStorage.getItem("CurrentUser") != "anon") {
     // console.log("I am signed in");
     head.appendChild(lo);
   } else {
@@ -88,7 +88,7 @@ function navigate() {
     head.appendChild(login);
   }
 
-  if (isUserLoggedIn && !isGuest) {
+  if (isUserLoggedIn && !isAGuest) {
     // console.log("I am signed in but not a guest");
 
     head.appendChild(profile);

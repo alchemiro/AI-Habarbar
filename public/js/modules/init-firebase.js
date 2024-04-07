@@ -18,7 +18,6 @@ const projectCollection = db.collection("projects");
 const guestCollection = db.collection("guests");
 const judgeCollection = db.collection("judges");
 
-
 class User {
   #id;
   constructor(ID = -1) {
@@ -163,12 +162,12 @@ class Project {
 
   get color() {
     switch (this.#category) {
-      case "Electronics":
-        return "#4062BB";
-      case "ICT":
+      case "אלקטרוניקה":
+        return "#fffff0";
+      case "תקשוב":
         return "#D4AF37";
-      case "Robotics":
-        return "#A33945";
+      case "מכטרוניקה":
+        return "#ffe55e";
       default:
         return "#000000";
     }
@@ -176,14 +175,14 @@ class Project {
 
   get textColor() {
     switch (this.#category) {
-      case "Electronics":
-        return "#fffff0";
-      case "ICT":
+      case "אלקטרוניקה":
         return "#121212";
-      case "Robotics":
-        return "#fffff0";
+      case "תקשוב":
+        return "#121212";
+      case "מכטרוניקה":
+        return "#121212";
       default:
-        return "#ffffff";
+        return "#121212";
     }
   }
 }
@@ -409,6 +408,3 @@ const setDocument = async function (object) {
     return Promise.reject();
   }
 };
-
-
-

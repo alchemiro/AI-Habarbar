@@ -63,12 +63,34 @@
 </script>
 <script defer>
     let projects = [];
+    const up = new URLSearchParams();
+    const judge_id = up.get("id");
+    const judge_ps = up.get("ps");
+    const judge_name = up.get("jn");
+    const id = document.getElementById("idInput");
+    const jname = document.getElementById("nameInput");
+    const pass = document.getElementById("passwordInput");
+
+    if(judge_id != undefined){
+      id.value = judge_id;
+    }
+
+    if(judge_name != undefined){
+      jname.value = judge_name;
+    }
+
+    if(judge_ps != undefined){
+      pass.value = judge_ps;
+    }
     async function send(){
         event.preventDefault(); 
-        const id = document.getElementById("idInput");
-        const name = document.getElementById("nameInput");
-        const pass = document.getElementById("passwordInput");
-        const judge = new Judge(id.value, name.value, pass.value, projects);
+        
+
+        let judge, new_id, new_name, new_pass;
+        new_id = !judge_id ? id.value : judge_id;
+        new_name = !judge_name ? name.value : judge_name;
+        new_pass = !judge_ps ? pass.value : judge_ps;
+        judge = new Judge(new_id, name.value, pass.value, projects);
         await sendAny(judge);
         window.close();
     }

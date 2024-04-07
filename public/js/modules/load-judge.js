@@ -80,10 +80,10 @@ async function find_project_profile_grade(id) {
     .withConverter(gradeConverter)
     .get()
     .then((result) => {
-      console.log(`🚀 ~ .then ~ result:`, result.empty);
+      // console.log(`🚀 ~ .then ~ result:`, result.empty);
 
       result.forEach((doc) => {
-        console.log(doc.data());
+        // console.log(doc.data());
         currentGrade = doc.data();
       });
     });
@@ -102,10 +102,10 @@ async function uploadGrade(score, project, judge) {
     if (snapshot.empty) {
       //if no current judge grade, make a new admin grade
       gradeCollection.add({ temp: "temp" }).then((docRef) => {
-        gradeCollection
-          .doc(docRef.id)
-          .withConverter(gradeConverter)
-          .set(new Grade(docRef.id, judge, project, score));
+        let grade = new Grade(docRef.id, judge, project, score);
+
+        // console.log(`🚀 ~ gradeCollection.add ~ grade:`, grade);
+        gradeCollection.doc(docRef.id).withConverter(gradeConverter).set(grade);
         // console.log("hello 2");
       });
       console.log("empty and done");
@@ -126,9 +126,10 @@ async function uploadGrade(score, project, judge) {
 }
 
 async function project_judge_load() {
-  await find_project_profile_grade(id).then(
-    (grade) => (thisJudgeGrade.textContent = grade.score)
-  );
+  await find_project_profile_grade(id).then((grade) => {
+    if (!grade) thisJudgeGrade.textContent = "No grade.";
+    else thisJudgeGrade.textContent = grade.score;
+  });
 
   await getProject(id, nameDiv, sumDiv, imgObject, studentList);
 
@@ -136,7 +137,7 @@ async function project_judge_load() {
     console.log("test");
     await uploadGrade(parseInt(input.value), id, user_id).then((worked) => {
       if (worked) {
-        window.location.reload();
+        // window.location.reload();
       }
     });
     // window.location.href = window.location.href;

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Page</title>
+    <link rel="stylesheet" href="../css/glob-header.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <script
+      src="https://kit.fontawesome.com/4520f8aada.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  </head>
+  <body onload="ProjectLoaded()">
+    <header>
+      <div class="sidebar" id="sidebar"></div>
+
+      <i
+        class="fa-solid fa-bars nav-icon"
+        id="openSidebar"
+        onclick="navigate()"
+      >
+      </i>
+    </header>
+    <main>
+      <div class="container">
+        <div class="row">
+          <!-- Image (Top Left on Desktop) -->
+          <div class="col-md-6 order-md-1">
+            <img
+              id="projectImg"
+              src="path/to/project-image.jpg"
+              class="img-fluid rounded"
+              alt="Project Image"
+            />
+          </div>
+
+          <!-- Title and Like Button (Top Center on Desktop) -->
+          <div class="col-md-6 order-md-2">
+            <h1 class="text-center mt-4 mb-3" id="nametag"></h1>
+            <div class="input-group mb-3" id="gradeDiv">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="gradeButton"
+              >
+                Save
+              </button>
+              <input
+                id="gradeInput"
+                type="text"
+                class="form-control"
+                placeholder="Grade..."
+              />
+            </div>
+            <div id="qr-code"></div>
+          </div>
+        </div>
+
+        <!-- Name of Students -->
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h3>Students</h3>
+            <ul style="list-style: decimal" id="studentList">
+              <!-- Add more students if needed -->
+            </ul>
+          </div>
+
+          <!-- Summary -->
+          <div class="col-md-6">
+            <h3>Summary</h3>
+            <p id="summarytag">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
+              id quam sapien.
+              <!-- Add project summary content here -->
+            </p>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <button
+            type="button"
+            title="displayQR"
+            id="displayQR"
+            onclick="createQRByPage()"
+            class="btn btn-primary btn-sm"
+          >
+            <i class="fa-solid fa-qrcode qr-icon"></i>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../js/modules/sidebar.js"></script>
+    <script src="../js/modules/converters.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="../js/modules/init-firebase.js"></script>
+    <script src="../js/modules/functions.js"></script>
+
+    <script src="../js/sidebar.js"></script>
+  </body>
+</html>

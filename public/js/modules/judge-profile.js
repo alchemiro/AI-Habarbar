@@ -1,11 +1,9 @@
 const user_id = JSON.parse(localStorage.getItem("CurrentUser"));
 const isJudge = localStorage.getItem("UserType") == "judge";
-const roundone = document.getElementById("gallery-round1");
-const roundtwo = document.getElementById("gallery-round2");
-const roundthree = document.getElementById("gallery-round3");
+const maincontainer = document.getElementById("mainContainer");
 
 function judge_profile_bailout() {
-  window.location.href = "/public/index.html";
+  window.location.href = "../index.html";
 }
 
 if (!isJudge) judge_profile_bailout();
@@ -37,6 +35,7 @@ async function on_judge_profile_load() {
       });
     const project_card = document.createElement("div");
     project_card.classList.add("card");
+    project_card.classList.add("text-center");
     project_card.style = "width: 18rem;";
 
     project_card.innerHTML = `
@@ -50,20 +49,7 @@ async function on_judge_profile_load() {
     project_card.addEventListener("click", () => {
       window.location.href = `../projects/project-judge.html?id=${projectId}`;
     });
-    let gridrow = roundone;
-    if (
-      project_distribution >= judge_obj.projects.length / 3 &&
-      project_distribution < (2 * judge_obj.projects.length) / 3
-    ) {
-      gridrow = roundtwo;
-    }
-    if (
-      project_distribution >= (2 * judge_obj.projects.length) / 3 &&
-      project_distribution < judge_obj.projects.length
-    ) {
-      gridrow = roundthree;
-    }
-    gridrow.appendChild(project_card);
+    mainContainer.appendChild(project_card);
     project_distribution++;
     // console.log(project_obj.toString());
   });
