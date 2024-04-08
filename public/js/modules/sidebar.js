@@ -34,19 +34,19 @@ function navigate() {
   head.innerHTML = "";
 
   const login = document.createElement("a");
-  login.href = "/login.html";
+  login.href = "../login.html";
   login.textContent = "Sign In";
 
   const lo = document.createElement("a");
   lo.textContent = "Sign Out";
-  lo.href = "/index.html";
+  lo.href = "../index.html";
   lo.addEventListener("click", () => {
     logout();
   });
 
   const index = document.createElement("a");
   index.href = "../index.html";
-  index.textContent = "Home";
+  index.textContent = "PROOF";
 
   const profile = document.createElement("a");
   profile.href = "../login.html";
