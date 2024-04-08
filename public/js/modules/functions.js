@@ -40,6 +40,7 @@ async function FindJudgeByGrade(grade) {
     }); //find judge associated with this grade
   return str;
 }
+
 async function searchProjects(what = "") {
   console.log(what);
   var proj = "";
@@ -349,6 +350,10 @@ const AdminLoaded = async () => {
         );
         if (projectstoAdd.includes("-")) {
           const splits = projectstoAdd.split("-", 2);
+          const filled = [];
+          for (i = parseInt(splits[0]); i <= parseInt(splits[1]); i++) {
+            filled.push(i.toString());
+          }
           console.log(splits);
           judge.projects.push(...splits);
           await judgeCollection
@@ -398,8 +403,8 @@ const AdminLoaded = async () => {
       GuestTable.innerHTML += `<tr>
                     <th scope="row">${guest.id}</th>
                     <td>${guest.name}</td>
-                    <td>none!</td>
-                    <td>none!</td>
+                    <td>${guest.likes}</td>
+                    <td>${guest.likes.length}</td>
                 </tr>`;
     });
   }
@@ -444,6 +449,7 @@ const AdminLoaded = async () => {
     return topLikes;
   }
   topLikes = MostLikes(topLikes);
+
   function createChartContainer(id) {
     const container = document.createElement("div");
     container.classList.add("col-xl-4", "col-lg-6", "col-md-8", "mt-5");
@@ -538,6 +544,7 @@ const AdminLoaded = async () => {
       options: options,
     });
   }
+
   function gradesTable() {
     var i = 0;
     var judgeDict = {};
@@ -579,6 +586,7 @@ function logout() {
   localStorage.setItem("CurrentUser", "anon");
   localStorage.setItem("UserType", "guest");
 }
+
 const LoginLoaded = async () => {
   navigate();
 

@@ -34,41 +34,43 @@ function navigate() {
   head.innerHTML = "";
 
   const login = document.createElement("a");
-  login.href = "../login.html";
+  login.href = "/login.html";
   login.textContent = "Sign In";
 
   const lo = document.createElement("a");
   lo.textContent = "Sign Out";
-  lo.href = "../index.html";
+  lo.href = "/index.html";
   lo.addEventListener("click", () => {
-    logout();
+    localStorage.setItem("CurrentUser", "anon");
+    localStorage.setItem("UserType", "guest");
+    localStorage.setItem("CurrentPassword", "");
   });
 
   const index = document.createElement("a");
-  index.href = "../index.html";
-  index.textContent = "PROOF";
+  index.href = "/index.html";
+  index.textContent = "Home";
 
   const profile = document.createElement("a");
-  profile.href = "../login.html";
+  profile.href = "/login.html";
   profile.textContent = "Profile";
   // console.log(localStorage.getItem("CurrentUser"));
   if (isAStudent || isAJudge) {
     profile.addEventListener("click", () => {
       profile.href = "#";
       if (isAStudent) {
-        profile.href = "../profiles/student.html";
+        profile.href = "/profiles/student.html";
       }
       if (isAJudge) {
-        profile.href = "../profiles/judge.html";
+        profile.href = "/profiles/judge.html";
       }
     });
   } else if (isAnAdmin) {
     profile.textContent = "Admin Dashboard";
-    profile.href = "../admin.html";
+    profile.href = "/admin.html";
   }
 
   const qrcode = document.createElement("a");
-  qrcode.href = "../qrcode.html";
+  qrcode.href = "/qrcode.html";
   qrcode.textContent = "Scan QR";
 
   head.appendChild(index);

@@ -29,7 +29,6 @@ async function checkJudges(id, password) {
     .withConverter(judgeConverter)
     .get();
 
-  console.log(judgeCollection.doc("1").withConverter(judgeConverter).get());
   if (querySnapshot.empty) {
     console.log("no judge found");
 
@@ -59,7 +58,6 @@ async function checkStudents(id, password) {
 
 async function checkIfAdmin() {
   const adminFetch = await judgeCollection
-    // .doc("0")
     .doc("admin")
     .withConverter(judgeConverter)
     .get()
@@ -70,13 +68,12 @@ async function checkIfAdmin() {
     localStorage.getItem("CurrentUser") != adminFetch.name ||
     adminFetch.pass != localStorage.getItem("CurrentPassword")
   ) {
-    // bailout();
+    bailout();
   }
 }
 
 async function checkAdmin(id, password) {
   const adminFetch = await judgeCollection
-    // .doc("0")
     .doc("admin")
     .withConverter(judgeConverter)
     .get()
@@ -92,7 +89,7 @@ async function checkAdmin(id, password) {
       pass: adminFetch.pass,
     };
   } else {
-    // bailout();
+    return null;
   }
 }
 
