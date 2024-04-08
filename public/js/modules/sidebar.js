@@ -34,45 +34,41 @@ function navigate() {
   head.innerHTML = "";
 
   const login = document.createElement("a");
-  login.href = "/public/login.html";
+  login.href = "/login.html";
   login.textContent = "Sign In";
 
   const lo = document.createElement("a");
   lo.textContent = "Sign Out";
-  lo.href = "/public/index.html";
+  lo.href = "/index.html";
   lo.addEventListener("click", () => {
     logout();
   });
 
   const index = document.createElement("a");
-  index.href = "/public/index.html";
+  index.href = "../index.html";
   index.textContent = "Home";
 
   const profile = document.createElement("a");
-  profile.href = "/public/login.html";
+  profile.href = "../login.html";
   profile.textContent = "Profile";
   // console.log(localStorage.getItem("CurrentUser"));
   if (isAStudent || isAJudge) {
     profile.addEventListener("click", () => {
       profile.href = "#";
       if (isAStudent) {
-        profile.href = "/public/profiles/student.html";
+        profile.href = "../profiles/student.html";
       }
       if (isAJudge) {
-        profile.href = "/public/profiles/judge.html";
+        profile.href = "../profiles/judge.html";
       }
     });
   } else if (isAnAdmin) {
     profile.textContent = "Admin Dashboard";
-    profile.href = "/public/admin.html";
+    profile.href = "../admin.html";
   }
 
-  const input = document.createElement("a");
-  input.href = "/public/projectInput.html";
-  input.textContent = "Project Input";
-
   const qrcode = document.createElement("a");
-  qrcode.href = "/public/qrcode.html";
+  qrcode.href = "../qrcode.html";
   qrcode.textContent = "Scan QR";
 
   head.appendChild(index);
@@ -92,12 +88,6 @@ function navigate() {
     // console.log("I am signed in but not a guest");
 
     head.appendChild(profile);
-  }
-
-  if (isAnAdmin) {
-    // console.log("I am signed in as admin");
-
-    head.appendChild(input);
   }
 
   head.appendChild(qrcode);
