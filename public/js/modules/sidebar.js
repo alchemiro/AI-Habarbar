@@ -50,6 +50,11 @@ function navigate() {
   index.href = "/index.html";
   index.textContent = "Home";
 
+  const apge = document.createElement("a");
+  apge.href = "/apge.html";
+  apge.textContent = "Upload";
+
+  let flag = false;
   const profile = document.createElement("a");
   profile.href = "/login.html";
   profile.textContent = "Profile";
@@ -67,6 +72,7 @@ function navigate() {
   } else if (isAnAdmin) {
     profile.textContent = "Admin Dashboard";
     profile.href = "/admin.html";
+    flag = true;
   }
 
   const qrcode = document.createElement("a");
@@ -74,24 +80,17 @@ function navigate() {
   qrcode.textContent = "Scan QR";
 
   head.appendChild(index);
-  // if (isLoggedIn){head.appendChild(lo)};
-  // else {head.appendChild(login)};
-  // console.log(isUserLoggedIn);
   if (localStorage.getItem("CurrentUser") != "anon") {
-    // console.log("I am signed in");
     head.appendChild(lo);
   } else {
-    // console.log("I am not signed in");
-
     head.appendChild(login);
   }
-
   if (isUserLoggedIn && !isAGuest) {
-    // console.log("I am signed in but not a guest");
-
     head.appendChild(profile);
+    if (flag) {
+      head.appendChild(apge);
+    }
   }
-
   head.appendChild(qrcode);
 
   const openButton = document.getElementById("openSidebar");

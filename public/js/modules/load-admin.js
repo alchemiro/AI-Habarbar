@@ -12,8 +12,15 @@ const isStudent = localStorage.getItem("UserType") === "student";
 
 const table = document.getElementById("adminProjectGradeTable");
 
+//pages that need admin permission:
+function admin_project_bailout() {
+  const url = "../index.html";
+  window.location.href = url;
+}
+
+authenticate();
 function checkIfAdmin() {
-  if (!isAdmin) return bailout();
+  if (!isAdmin) return admin_project_bailout();
 }
 
 async function getProject(id, nameDiv, sumDiv, imgObject, studentList) {
@@ -31,22 +38,10 @@ async function getProject(id, nameDiv, sumDiv, imgObject, studentList) {
 
   sumDiv.textContent = p.summary;
   imgObject.src = p.img;
-
-  // iddiv.textContent = id;
-
-  //   if(loginIsGuest) show likes
-  //   else if(loginIsJudge) show grading
-}
-
-//pages that need admin permission:
-function admin_project_bailout() {
-  const url = "../index.html";
-  window.location.href = url;
 }
 
 const urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get("id");
-console.log(id);
 
 async function find_students_project_in_admin(project) {
   const studentsQuery = studentCollection.where("project", "==", project.id);

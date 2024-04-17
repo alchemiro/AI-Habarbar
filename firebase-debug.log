@@ -1,0 +1,69 @@
+[debug] [2024-04-17T07:31:16.671Z] ----------------------------------------------------------------------
+[debug] [2024-04-17T07:31:16.676Z] Command:       C:\Users\mayer\DOWNLO~1\firebase-tools-instant-win.exe C:\Users\mayer\.cache\firebase\tools\lib\node_modules\firebase-tools\lib\bin\firebase deploy --only hosting
+[debug] [2024-04-17T07:31:16.677Z] CLI Version:   13.0.3
+[debug] [2024-04-17T07:31:16.677Z] Platform:      win32
+[debug] [2024-04-17T07:31:16.678Z] Node Version:  v18.5.0
+[debug] [2024-04-17T07:31:16.680Z] Time:          Wed Apr 17 2024 10:31:16 GMT+0300 (Israel Daylight Time)
+[debug] [2024-04-17T07:31:16.680Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-04-17T07:31:16.813Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2024-04-17T07:31:16.814Z] > authorizing via signed-in user (mayerchemtob2004@gmail.com)
+[debug] [2024-04-17T07:31:16.815Z] [iam] checking project ai-habarbar for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2024-04-17T07:31:16.819Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ai-habarbar:testIamPermissions [none]
+[debug] [2024-04-17T07:31:16.819Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ai-habarbar:testIamPermissions x-goog-quota-user=projects/ai-habarbar
+[debug] [2024-04-17T07:31:16.820Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ai-habarbar:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-04-17T07:31:18.184Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/ai-habarbar:testIamPermissions 200
+[debug] [2024-04-17T07:31:18.184Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ai-habarbar:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2024-04-17T07:31:18.188Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/ai-habarbar [none]
+[debug] [2024-04-17T07:31:18.687Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/ai-habarbar 200
+[debug] [2024-04-17T07:31:18.687Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/ai-habarbar {"projectId":"ai-habarbar","projectNumber":"377582621016","displayName":"AI habarbar","name":"projects/ai-habarbar","resources":{"hostingSite":"ai-habarbar","realtimeDatabaseInstance":"ai-habarbar-default-rtdb"},"state":"ACTIVE","etag":"1_58aa7d0d-7a8f-4de7-8efb-b69901d4ea06"}
+[info] 
+[info] === Deploying to 'ai-habarbar'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2024-04-17T07:31:18.701Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions [none]
+[debug] [2024-04-17T07:31:18.701Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2024-04-17T07:31:20.361Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions 200
+[debug] [2024-04-17T07:31:20.362Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions {"name":"projects/377582621016/sites/ai-habarbar/versions/1c51db882b814491","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[ai-habarbar]: beginning deploy... 
+[info] i  hosting[ai-habarbar]: found 44 files in public 
+[debug] [2024-04-17T07:31:20.428Z] [hosting] uploading with 200 concurrency
+[debug] [2024-04-17T07:31:20.489Z] [hosting] hash cache [cHVibGlj] stored for 44 files
+[debug] [2024-04-17T07:31:20.490Z] [hosting][hash queue][FINAL] {"max":33,"min":1,"avg":1.3636363636363635,"active":0,"complete":44,"success":44,"errored":0,"retried":0,"total":44,"elapsed":50}
+[debug] [2024-04-17T07:31:20.491Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/377582621016/sites/ai-habarbar/versions/1c51db882b814491:populateFiles [none]
+[debug] [2024-04-17T07:31:20.491Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/377582621016/sites/ai-habarbar/versions/1c51db882b814491:populateFiles {"files":{"/404.html":"1861cc31e9ec050ad1cf0dfe5941f11102f894cb2c95fb9480fe4e1986c5ea77","/admin.html":"37444d125f7e4999477bba5f896c64a86ed0a1ebf07ae9c5356bd8a0885d174b","/apge.html":"1082fd8e41e87d29705376a8203d02c87b75852ee0f68e9026ef469c5a13bbf7","/index.html":"ab55778e5b99dca4d636c135fa4dbe32ee73c92405529aab4d0b804941003817","/login.html":"cfb5d60fe6da6ecf1cb3f39ca00bcfd6a4bd05bc365eacf262287448ee7f226a","/qrcode.html":"93c01f73e20547bbcbb62a79f99a52a7512252ce0fadb4562e4df323c2cc6cd6","/add_new/addGuest.html":"d5f2516968bd3551808925b9aad574a72a901a639b304bb38b327956776f035b","/add_new/addJudge.html":"3c3796d07311ba626b6fc4500b790ce0da73e634d3d337411ad33c7c9855db2b","/add_new/addProject.html":"b14e0fcecc3cd617b6160faec04cc536de881f0080578d649af540d86dce1d75","/add_new/addStudent.html":"583813d56882dab8343a6eaa06d35ee54c2ae038dc291747eff235433c0682b6","/css/carousel.css":"428670031418c863c4fb18438c93c6574ee52416605f8cbce73562eb88586a92\r","/css/glob-header.css":"24453c48d92c30f1b62426d27dad6544c4286e372f35f0335a07203385e0e0dd\r","/css/project.css":"8301b1ab859eb59f582450f1a4aae040ce47016e5aa3840fc2b0c70bcfa775b8\r","/css/qrcode.css":"cd3dbbda68db2390f69fdbd84a0f1be82c2dfaa637146438e4d88819990082cd\r","/css/style.css":"6a02f838e734577f4f9869671ae656c03112f8fe8634edad7de40560bd3a1ccb\r","/css/wrapper.css":"7988dfe368f38a5d7156f27eb8c171f20fcf57f994b56b9791a1d2d6129526c6\r","/img/america.png":"a7ca8ed52d5203cb99166727a1a77276f7bdf36b189f3da6a161feb423fe2c03\r","/img/catfull.jpg":"403320e9d9cc04f26aecad44ad299119e7cd17981faa741bce9a30ee2ca55581\r","/img/catshine.jpg":"ca64ac9466591dd9f151df3b2e3a0a993959be3bbae1ce1f5ef554a3a91c7d04\r","/img/eeper.jpg":"47efd5b5088f27443b7ac48381070713d30218e2408ca385f51401711efb1ecb\r","/img/kirbysmile.jpg":"3f024bedd54c506afe67effe2972b70512d33d59db1e790dbdc144201cef7047\r","/img/pizza.jpg":"0382a06162a302c49ac9edb98c028d82626e636ff9a2d67753a88c4d3a6b3bac\r","/img/woeroger.jpg":"102111ebc757c98092821e41df217b48596506e6b3365de72f05f5ec8e132e94\r","/js/authenticate.js":"6fccc17088b2d17cc1cf68da4a2dd8138bd26abf4e67c9cd9663416c9b7e5b03","/js/qr.js":"4780f636142a10f4216c3244da218e6ee3fe81705dc11f174afa23ce0ea11a87","/js/redirection.js":"97867f2481afd82aac012d68db0ceb90d1b9fd4e0c0eb72280d0079a5f21ca74","/js/modules/converters.js":"c82baf3690507f376f9cd8b11beb79b120a77475bd1c060a55bf9c562bdf92e8","/js/modules/functions.js":"6bb17e9a5073613bdfdae6de8719f143be5d3cd00d5d6409437b7113fe523177","/js/modules/init-firebase.js":"b0ce471e97f399d81725f6ead881c9c27ef1dd81ce72e4e4a54e912a67b6891f","/js/modules/judge-profile.js":"27127d42d9ce650372a21d3c460ab5c8d08e3932221eeb7690d9bbf006e9d2b7","/js/modules/load-admin.js":"289eed7b87f2827ed6681f0be660a83683f20ed590c3d73c155927a9908d29fd","/js/modules/load-guest.js":"46b50c321b39e89a491b6727a01628c34245605a30beb3e7414c5e01cff90e6e","/js/modules/load-judge.js":"41408eb2841006012bb5f9922e5611a95bdfa092ecb270ec23849115b8256c51","/js/modules/load-student.js":"3521a16f8e2cfead46e1c6ed6f7c09b0212c1e2661840dd0946ead3025b1c264","/js/modules/makejson.js":"d7ceaf2c3e6bdeda4936881315dfec8ca37e64d443ef57c4f31340307319809d","/js/modules/push-firebase.js":"d833cd48ee6d8f7eeb68edba41dfc28385a6880f2e27ccb4b3562be2b81524d6","/profiles/judge.html":"5cd9c4e4587d0ccfd1298dc00e8043540d8e760aca830829464950ab8ba316b9","/profiles/student.html":"46b50c321b39e89a491b6727a01628c34245605a30beb3e7414c5e01cff90e6e","/projects/project-admin.html":"e2889ea47d60f467c6c1491cfa4191d3d0c1c5450c74f51350f9d39373923aec","/projects/project-guest.html":"43a9e6beb1838e3a3e28493532fcd279b8f6802361aeefd4f644df9c68cfd899","/projects/project-judge.html":"d46273bb201a23e5071fef9bdc0ea741c099e4dd04ab26ecb48504d513c9eea7","/projects/project-student.html":"7333d7259822e8a686145f5923b2b426e134a755ca11446ef7985dfba364a4e8","/projects/project.html":"07389dc5a8dbf3a4f171dffedd41ee055fb6ba40c2a86e76bf93205fd9560b71","/js/modules/sidebar.js":"0202a497f008d1dfff2f8ef646307034b88dbac7485c26f22735cce2b496b6aa"}}
+[debug] [2024-04-17T07:31:22.349Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/377582621016/sites/ai-habarbar/versions/1c51db882b814491:populateFiles 200
+[debug] [2024-04-17T07:31:22.349Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/377582621016/sites/ai-habarbar/versions/1c51db882b814491:populateFiles {"uploadRequiredHashes":["0202a497f008d1dfff2f8ef646307034b88dbac7485c26f22735cce2b496b6aa"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/ai-habarbar/versions/1c51db882b814491/files"}
+[debug] [2024-04-17T07:31:22.352Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/ai-habarbar/versions/1c51db882b814491/files/0202a497f008d1dfff2f8ef646307034b88dbac7485c26f22735cce2b496b6aa [none]
+[debug] [2024-04-17T07:31:22.352Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ai-habarbar/versions/1c51db882b814491/files/0202a497f008d1dfff2f8ef646307034b88dbac7485c26f22735cce2b496b6aa [stream]
+[debug] [2024-04-17T07:31:22.356Z] [hosting][populate queue][FINAL] {"max":1868,"min":1868,"avg":1868,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1873}
+[debug] [2024-04-17T07:31:22.356Z] [hosting] uploads queued: 1
+[debug] [2024-04-17T07:31:23.994Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/ai-habarbar/versions/1c51db882b814491/files/0202a497f008d1dfff2f8ef646307034b88dbac7485c26f22735cce2b496b6aa 200
+[debug] [2024-04-17T07:31:23.994Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/ai-habarbar/versions/1c51db882b814491/files/0202a497f008d1dfff2f8ef646307034b88dbac7485c26f22735cce2b496b6aa [stream]
+[debug] [2024-04-17T07:31:23.994Z] [hosting][upload queue][FINAL] {"max":1644,"min":1644,"avg":1644,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":1644}
+[info] +  hosting[ai-habarbar]: file upload complete 
+[debug] [2024-04-17T07:31:23.996Z] [hosting] deploy completed after 3630ms
+[debug] [2024-04-17T07:31:23.997Z] [
+  {
+    "config": {
+      "public": "public",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "site": "ai-habarbar"
+    },
+    "version": "projects/377582621016/sites/ai-habarbar/versions/1c51db882b814491"
+  }
+]
+[info] i  hosting[ai-habarbar]: finalizing version... 
+[debug] [2024-04-17T07:31:24.003Z] >>> [apiv2][query] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions/1c51db882b814491 updateMask=status%2Cconfig
+[debug] [2024-04-17T07:31:24.003Z] >>> [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions/1c51db882b814491 {"status":"FINALIZED","config":{}}
+[debug] [2024-04-17T07:31:25.944Z] <<< [apiv2][status] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions/1c51db882b814491 200
+[debug] [2024-04-17T07:31:25.945Z] <<< [apiv2][body] PATCH https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/versions/1c51db882b814491 {"name":"projects/377582621016/sites/ai-habarbar/versions/1c51db882b814491","status":"FINALIZED","config":{},"labels":{"deployment-tool":"cli-firebase"},"createTime":"2024-04-17T07:31:10.808488Z","createUser":{"email":"mayerchemtob2004@gmail.com"},"finalizeTime":"2024-04-17T07:31:16.617389Z","finalizeUser":{"email":"mayerchemtob2004@gmail.com"}}
+[debug] [2024-04-17T07:31:25.945Z] [hosting] finalized version for ai-habarbar:[object Object]
+[info] +  hosting[ai-habarbar]: version finalized 
+[info] i  hosting[ai-habarbar]: releasing new version... 
+[debug] [2024-04-17T07:31:25.947Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/channels/live/releases versionName=projects%2F377582621016%2Fsites%2Fai-habarbar%2Fversions%2F1c51db882b814491
+[debug] [2024-04-17T07:31:25.948Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/ai-habarbar/channels/live/releases {}

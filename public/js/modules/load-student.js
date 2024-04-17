@@ -22,7 +22,7 @@ const project_student_loaded = async () => {
   const currentStudent = await getDocument(new Student(user));
 
   var id = urlParams.get("id");
-  if (!id) window.location.href = "?id=100";
+  if (!id) id = 0;
 
   checkIfStudent(id);
 
@@ -30,6 +30,7 @@ const project_student_loaded = async () => {
 
   // console.log(id);
   let isOwnerStudent = false;
+
   async function getProject(id) {
     const p = await getDocument(new Project(id));
     await FindStudentsByProject(p).then((doc) => {
@@ -42,16 +43,10 @@ const project_student_loaded = async () => {
       });
     });
     nameDiv.textContent = p.name;
-
     sumDiv.textContent = p.summary;
     imgObject.src = p.img;
 
     return Promise.resolve(p);
-
-    // iddiv.textContent = id;
-
-    //   if(loginIsGuest) show likes
-    //   else if(loginIsJudge) show grading
   }
 
   const project = await getProject(id).then((doc) => {
@@ -75,11 +70,7 @@ const project_student_loaded = async () => {
         );
       }
       project.likes += 1;
-      //   console.log(currentStudent);
       currentStudent.likes.push(project.id);
-
-      console.log(project);
-      console.log(currentStudent);
 
       await projectCollection
         .doc(project.id)
@@ -90,23 +81,15 @@ const project_student_loaded = async () => {
         .doc(currentStudent.id)
         .withConverter(studentConverter)
         .set(currentStudent);
-
-      console.log(project);
-      console.log(currentStudent);
     } else {
       btn.classList.add("fa-regular");
       btn.classList.remove("fa-solid");
-
-      console.log(project);
-      console.log(currentStudent);
 
       project.likes -= 1;
       currentStudent.likes = currentStudent.likes.filter(
         (like) => like !== project.id
       );
 
-      console.log(project);
-      console.log(currentStudent);
       await projectCollection
         .doc(project.id)
         .withConverter(projectConverter)
@@ -118,9 +101,4 @@ const project_student_loaded = async () => {
         .set(currentStudent);
     }
   });
-
-  console.log(
-    `🚀 ~ constproject_student_loaded= ~ currentStudent:`,
-    currentStudent
-  );
 };

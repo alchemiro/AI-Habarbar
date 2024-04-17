@@ -68,7 +68,7 @@ async function checkIfAdmin() {
     localStorage.getItem("CurrentUser") != adminFetch.name ||
     adminFetch.pass != localStorage.getItem("CurrentPassword")
   ) {
-    bailout();
+    // bailout();
   }
 }
 

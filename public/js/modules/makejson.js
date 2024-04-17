@@ -1,3 +1,8 @@
+function verifyAdmin() {
+  authenticate();
+  checkIfAdmin();
+}
+
 function sendProjectsToFirebase() {
   const fileInput = document.getElementById("excelFileProject");
   const file = fileInput.files[0];

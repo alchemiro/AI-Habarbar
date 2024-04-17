@@ -37,17 +37,17 @@ class Guest extends User {
   //set and get done
   #pass;
   #likes;
-  name;
+  #name;
 
   constructor(ID, name = "", pass = "", likes = []) {
     super(ID);
     this.#pass = pass;
     this.#likes = likes;
-    this.name = name;
+    this.#name = name;
   }
 
   get name() {
-    return this.name;
+    return this.#name;
   }
   get likes() {
     return this.#likes;
@@ -57,9 +57,9 @@ class Guest extends User {
     return this.#pass;
   }
 
-  // set name(newname){
-  //     this.name = newname;
-  // }
+  set name(newname) {
+    this.#name = newname;
+  }
 
   set pass(newpass) {
     this.#pass = newpass;
@@ -69,14 +69,11 @@ class Guest extends User {
     this.#likes = newlikes;
   }
 
-  set name(newName) {
-    this.name = newName;
-  }
-
   toString() {
     return `Guest ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}`;
   }
 }
+
 class Project {
   #name;
   #id;
@@ -85,7 +82,6 @@ class Project {
   #img;
   #category;
   #avg;
-
   constructor(
     id,
     name = " ",
@@ -103,7 +99,6 @@ class Project {
     this.#category = category;
     this.#avg = avg;
   }
-
   get name() {
     return this.#name;
   }
@@ -186,12 +181,11 @@ class Project {
     }
   }
 }
+
 class Judge extends User {
-  //set and get done
   #name;
   #pass;
   #projects;
-
   constructor(ID, name = "", pass = "", projects = []) {
     super(ID);
     this.#pass = pass;
@@ -201,31 +195,24 @@ class Judge extends User {
   get name() {
     return this.#name;
   }
-
   get pass() {
     return this.#pass;
   }
-
   get projects() {
     return this.#projects;
   }
-
   set name(newName) {
     this.#name = newName;
   }
-
   set pass(newpass) {
     this.#pass = newpass;
   }
-
   set projects(newProjects) {
     this.#projects = newProjects;
   }
-
   AddProject(projectID) {
     this.#projects.push(projectID);
   }
-
   RemoveProject(projectID) {
     this.#projects.splice(this.#projects.indexOf(projectID), 1);
   }
@@ -234,6 +221,7 @@ class Judge extends User {
     return `Judge ID: ${this.id}, Password: ${this.pass}, Name: ${this.name}, Projects: ${this.projects}`;
   }
 }
+
 class Student extends Guest {
   //set and get done
   #project;
@@ -260,13 +248,11 @@ class Grade {
   #judge;
   #project;
   #score;
-  // #round;
   constructor(id, judge, project, score) {
     this.id = id;
     this.#judge = judge;
     this.#project = project;
     this.#score = score;
-    // this.#round = round;
   }
   get judge() {
     return this.#judge;
@@ -277,9 +263,7 @@ class Grade {
   get score() {
     return this.#score;
   }
-  // get round() {
-  //   return this.#round;
-  // }
+
   set judge(value) {
     this.#judge = value;
   }
@@ -289,10 +273,8 @@ class Grade {
   set score(value) {
     this.#judge = value;
   }
-  // set round(value) {
-  //   this.#judge = value;
-  // }
 }
+
 const getDocumentFirebase = async function (collection, keystring, converter) {
   // keystring = "1";
   // console.log("before proj get");

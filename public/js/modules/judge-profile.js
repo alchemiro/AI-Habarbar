@@ -6,6 +6,7 @@ function judge_profile_bailout() {
   window.location.href = "../index.html";
 }
 
+authenticate();
 if (!isJudge) judge_profile_bailout();
 
 async function on_judge_profile_load() {
@@ -20,8 +21,6 @@ async function on_judge_profile_load() {
         judge_profile_bailout();
       }
     });
-  console.log(judge_obj.toString());
-  let project_distribution = 1;
   judge_obj.projects.forEach(async (projectId) => {
     console.log(projectId);
     const project_obj = await projectCollection
@@ -49,13 +48,6 @@ async function on_judge_profile_load() {
     project_card.addEventListener("click", () => {
       window.location.href = `../projects/project-judge.html?id=${projectId}`;
     });
-    mainContainer.appendChild(project_card);
-    project_distribution++;
-    // console.log(project_obj.toString());
+    maincontainer.appendChild(project_card);
   });
 }
-//   if (!user_id) {
-//     judge_profile_bailout();
-//   } else {
-//   }
-// }

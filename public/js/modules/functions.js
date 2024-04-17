@@ -93,9 +93,7 @@ async function searchProjects(what = "") {
             <div class="card-footer" style="color:${project.textColor}">Likes: ${project.likes}</div>
         </div>`;
       cardDiv.addEventListener("click", () => {
-        cardDiv.addEventListener("click", () => {
-          redirectWithParams(project.id, "./projects/project");
-        });
+        redirectWithParams(project.id, "./projects/project");
       });
       gridrow.appendChild(cardDiv);
     }
@@ -664,22 +662,3 @@ const MyPageLoaded = async () => {
 
   await GetProjectToGrade();
 };
-
-async function CheckProjects() {
-  const projectsRef = await projectCollection
-    .withConverter(projectConverter)
-    .get();
-  const projectsRefMapped = projectsRef.docs.map((doc) => doc.data());
-
-  const container = document.getElementById("SetProjects");
-
-  projectsRefMapped.forEach((project) => {
-    container.innerHTML += `
-      <div class="col">
-          <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="${project.id}" id="project${project.id}" onchange="onCheck(this)">
-              <label class="form-check-label" for="project${project.id}">${project.name}</label>
-          </div>
-      </div>`;
-  });
-}
