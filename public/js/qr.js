@@ -1,3 +1,14 @@
+const fs = require("fs");
+
+// Data which will write in a file.
+let data = "Learning how to write in a file.";
+
+// Write data in 'Output.txt' .
+fs.writeFile("Output.txt", data, (err) => {
+  // In case of a error throw err.
+  if (err) throw err;
+});
+
 function domReady(fn) {
   if (
     document.readyState === "complete" ||
@@ -21,3 +32,17 @@ domReady(function () {
   });
   htmlscanner.render(onScanSuccess);
 });
+
+async function exportQRs() {
+  const projectsRef = await projectCollection
+    .withConverter(projectConverter)
+    .get();
+  const projects = projectsRef.docs.map((doc) => doc.data());
+  const projectlinks = [];
+  projects.forEach((project) => {
+    projectlinks.push(
+      `https://ai-habarbar.web.app/projects/project.html?id=${project.id}`
+    );
+  });
+  console.log(`🚀 projectlinks:`, JSON.stringify(projectlinks));
+}
